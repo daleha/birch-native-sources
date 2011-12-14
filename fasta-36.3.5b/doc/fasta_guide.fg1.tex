@@ -1,0 +1,61 @@
+\begin{footnotesize}
+\begin{quote}
+\begin{verbatim}
+# ../bin/ssearch36 ../seq/mgstm1.aa a
+SSEARCH performs a Smith-Waterman search
+ version 36.3.4 Mar, 2011
+Please cite:
+ T. F. Smith and M. S. Waterman, (1981) J. Mol. Biol. 147:195-197; 
+ W.R. Pearson (1991) Genomics 11:635-650
+
+Query: ../seq/mgstm1.aa
+  1>>>mGSTM1 - mouse glutathione transferase M1 - 218 aa
+Library: PIR1 Annotated (rel. 66) 
+  5190103 residues in 13351 sequences
+
+Statistics:  Expectation_n fit: rho(ln(x))= 7.4508+/-0.00048; mu= 2.1374+/- 0.027
+ mean_var=56.9164+/-10.952, 0's: 9 Z-trim(119.6): 17  B-trim: 68 in 1/62
+ Lambda= 0.170003
+ statistics sampled from 13343 (13351) to 13343 sequences
+Algorithm: Smith-Waterman (SSE2, Michael Farrar 2006) (7.2 Nov 2010)
+Parameters: BL50 matrix (15:-5), open/ext: -10/-2
+ Scan time:  0.360
+
+The best scores are:                                                          s-w bits E(13351)
+gi|121749|sp|P04906|GSTP1_RAT Glutathione S-transferase P (GST 7-7) (C ( 210)  344 90.4 3.8e-19
+gi|62822551|sp|P00502|GSTA1_RAT Glutathione S-transferase alpha-1 (Glu ( 222)  237 64.1 3.2e-11
+gi|121714|sp|P14942|GSTA4_RAT Glutathione S-transferase alpha-4 (Gluta ( 222)  179 49.9 6.2e-07
+gi|121695|sp|P12653|GSTF1_MAIZE Glutathione S-transferase I (GST-I) (G ( 214)  120 35.4   0.013
+gi|1170090|sp|P04907|GSTF3_MAIZE Glutathione S-transferase III (GST-II ( 222)  115 34.2   0.033
+gi|121694|sp|P20432|GSTT1_DROME Glutathione S-transferase 1-1 (GST cla ( 209)  100 30.5    0.39
+gi|134798|sp|P11277|SPTB1_HUMAN Spectrin beta chain, erythrocyte (Beta (2137)  108 31.6     1.9
+... (alignments deleted) ...
+>>gi|121714|sp|P14942|GSTA4_RAT Glutathione S-transferase alpha-4 (Glutathio  (222 aa)
+ s-w opt: 179  Z-score: 231.1  bits: 49.9 E(13351): 6.2e-07
+Smith-Waterman score: 179; 25.6% identity (54.5% similar) in 211 aa overlap (5-207:7-207)
+                 10        20        30        40        50          60         70     
+mGSTM1   MPMILGYWNVRGLTHPIRMLLEYTDSSYDEKRYTMGDAPDFDRSQWLNEKF-KLG-LDFPNLPYL-IDGSHKITQSNA
+             : :.. ::  . :: ::  .   ..:         .: ...   ::. : : : : ..: . :::   .::. :
+gi|121 MEVKPKLYYFQGRGRMESIRWLLATAGVEFEE---------EFLETREQYEKLQKDGCLLFGQVPLVEIDG-MLLTQTRA
+               10        20        30                 40        50        60         70
+          80        90       100       110       120       130       140            150
+mGSTM1 ILRYLARKHHLDGETEEERIRADIVENQVMDTRMQLIMLCYNPDFEKQKPEFLKTIPEKMKLYSEF--LGK---RPWFAG
+       :: ::: :..: :.  .::.: :.  . ..:  :..:   ..   ::..   : .   : . .  :  . :   . ...:
+gi|121 ILSYLAAKYNLYGKDLKERVRIDMYADGTQDLMMMIIGAPFKAPQEKEESLALAVKRAKNRYFPVFEKILKDHGEAFLVG
+               80        90       100       110       120       130       140       150
+              160       170       180       190       200       210            
+mGSTM1 DKVTYVDFLAYDILDQYRMFEPKCLDAFPNLRDFLARFEGLKKISAYMKSSRYIATPIFSKMAHWSNK    
+       ......:.   . . . .      :. :: :. : .:. ..  :. ... .     :               
+gi|121 NQLSWADIQLLEAILMVEEVSAPVLSDFPLLQAFKTRISNIPTIKKFLQPGSQRKPPPDGHYVDVVRTVLKF
+              160       170       180       190       200       210       220  
+... (alignments deleted) ...
+218 residues in 1 query   sequences
+5190103 residues in 13351 library sequences
+ Tcomplib [36.3.4 Mar, 2011] (2 proc)
+ start: Wed Mar 16 14:45:51 2011 done: Wed Mar 16 14:45:52 2011
+ Total Scan time:  0.360 Total Display time:  0.020
+Function used was SSEARCH [36.3.4 Mar, 2011]
+\end{verbatim}
+\end{quote}
+\end{footnotesize}
+\vspace{-4.0ex}
