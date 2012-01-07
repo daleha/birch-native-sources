@@ -10,7 +10,6 @@ INCDIR=PROJDIR.."include/"
 		buildoptions
 		{
 			"-O3"
-			,"-fomit-frame-pointer" --optimizations
 
 		}
 
@@ -35,6 +34,36 @@ INCDIR=PROJDIR.."include/"
 		targetdir "bin" -- and the bins into bin
 
 		dofile "./phylip4_lib.lua"
+
+	configuration "linux"
+
+		buildoptions
+		{
+			"-fomit-frame-pointer" --optimizations
+		}
+
+
+	configuration "solaris"
+
+		buildoptions
+		{
+			"-fomit-frame-pointer" --optimizations
+		}
+
+
+	configuration "macosx"
+
+		buildoptions
+		{
+			"-Wall -mmacosx-version-min=10.1"	
+		}
+		linkoptions
+		{
+			"-Wl"	
+		}
+
+
+
 	-- Executables section --
 
 	project "clique"
@@ -504,16 +533,25 @@ INCDIR=PROJDIR.."include/"
 		language    "C"
 		kind        "ConsoleApp"
 
+		
 		files
 		{
 			SRCDIR.."protdist.c"
 			,INCDIR.."seq.h"
+
 		}
+
+
+		configuration "macosx"
+			files { SRCDIR.."seq.c" }
 		
-		links
-		{
-			"seq"
-		}
+
+		configuration "not macosx"
+			links
+			{
+				"seq"
+			}
+
 
 
 
@@ -590,6 +628,18 @@ INCDIR=PROJDIR.."include/"
 			SRCDIR.."seqboot.c"
 		}
 
+		configuration "macosx"
+			files { SRCDIR.."seq.c" }
+		
+
+		configuration "not macosx"
+			links
+			{
+				"seq"
+			}
+
+
+
 		links
 		{
 			"seq"
@@ -654,6 +704,9 @@ newaction {
    	if ver.description == "solaris" then
 		print ("Detected platform as solaris")
 		os.execute("gmake CC=gcc")
+	else
+		os.execute("make")
+		
 	end	
    end
 }
@@ -670,9 +723,14 @@ newaction {
    	if ver.description == "solaris" then
 		print ("Detected platform as solaris")
 		os.execute("gmake clean")
-		os.chdir(PROJDIR)
-		os.execute("rm -rf build bin lib")
+	else
+		os.execute("make clean")
 	end	
+
+
+	os.chdir(PROJDIR)
+	os.execute("rm -rf build bin lib")
+
    end
 }
 
