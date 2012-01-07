@@ -4,6 +4,7 @@ PROJDIR=ROOTDIR
 SRCDIR=PROJDIR.."source/"
 INCDIR=PROJDIR.."include/"
 
+
 -- common configuration options
 	configuration "Debug"
 		buildoptions
@@ -13,14 +14,10 @@ INCDIR=PROJDIR.."include/"
 
 		}
 
-		links
-		{
-			"m" --math libraries
-		}
 
 		includedirs
 		{
-			INCDIR
+			INCDIR --add the header folder to include search path
 		}
 
 		files
@@ -29,14 +26,18 @@ INCDIR=PROJDIR.."include/"
 		}
 
 		links
+		{
+			"m" --math libraries
+			,"phylip_core"  -- everything links phylip core
+		}
 
-		targetdir "bin"
+		location "build"
+		targetdir "bin" -- and the bins into bin
 
-
-
+		dofile "./phylip4_lib.lua"
 	-- Executables section --
 
-	project "clique "
+	project "clique"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -51,10 +52,9 @@ INCDIR=PROJDIR.."include/"
 
 		{
 			"disc"
-			,"phylip_core"	
 		}
 
-	project "consense "
+	project "consense"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -69,11 +69,10 @@ INCDIR=PROJDIR.."include/"
 		
 		{
 			"cons"
-			,"phylip_core"
 		}
 
 
-	project "contml "
+	project "contml"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -86,11 +85,10 @@ INCDIR=PROJDIR.."include/"
 		links
 		{
 			"cont"
-			,"phylip_core"
 		}
 
 
-	project "contrast "
+	project "contrast"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -105,13 +103,12 @@ INCDIR=PROJDIR.."include/"
 		links
 		{
 			"cont"
-			,"phylip_core"
 		}	
 
 
 
 
-	project "dnacomp "
+	project "dnacomp"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -124,14 +121,13 @@ INCDIR=PROJDIR.."include/"
 		links
 		{
 			"seq"
-			,"phylip_core"
 		}
 
 
 
 
 
-	project "dnadist "
+	project "dnadist"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -145,13 +141,12 @@ INCDIR=PROJDIR.."include/"
 		links
 		{
 			"seq"
-			,"phylip_core"
 		}
 
 	
 
 
-	project "dnainvar "
+	project "dnainvar"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -166,13 +161,12 @@ INCDIR=PROJDIR.."include/"
 		links
 		{
 			"seq"
-			,"phylip_core"
 		}
 
 	
 
 
-	project "dnaml "
+	project "dnaml"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -187,299 +181,461 @@ INCDIR=PROJDIR.."include/"
 		links
 		{
 			"seq"
-			,"phylip_core"
 		}
 
 	
 
 
-	project "dnamlk "
+	project "dnamlk"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."dnamlk.c"
+			,INCDIR.."seq.h" 
+			,INCDIR.."mlclock.h" 
+			,INCDIR.."printree.h"
+		}
+		
+		links
+		{
+			"seq"
+			,"mlclock"
+			,"printree"
+		}	
+
+
+
+	project "dnamove"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."dnamove.c"
+			,INCDIR.." seq.h" 
+			,INCDIR.."moves.h" 
+		}
+
+		links
+		{
+			"seq"
+			,"moves"
+		}
+
+
+	project "dnapars"
 		language    "C"
 		kind        "ConsoleApp"
 
 
-dnamlk.o:      dnamlk.c seq.h phylip.h mlclock.h printree.h
-
-dnamlk:      dnamlk.o seq.o phylip.o mlclock.o printree.o
-	$(CC) $(CFLAGS) dnamlk.o seq.o phylip.o mlclock.o printree.o $(LIBS) -o dnamlk
-
-
-
-	project "dnamove "
-		language    "C"
-		kind        "ConsoleApp"
-
-dnamove.o:      dnamove.c seq.h moves.h phylip.h
-
-dnamove:      dnamove.o seq.o moves.o phylip.o
-	$(CC) $(CFLAGS) dnamove.o seq.o moves.o phylip.o $(LIBS) -o dnamove
+		files
+		{
+			SRCDIR.."dnapars.c"
+			,INCDIR.."seq.h"
+		}
+	
+		links
+		{
+			"seq"
+		}
 
 
 
-	project "dnapars "
-		language    "C"
-		kind        "ConsoleApp"
-
-dnapars.o:      dnapars.c seq.h phylip.h
-
-dnapars:      dnapars.o seq.o phylip.o
-	$(CC) $(CFLAGS) dnapars.o seq.o phylip.o $(LIBS) -o dnapars
-
-
-
-	project "dnapenny "
-		language    "C"
-		kind        "ConsoleApp"
-
-dnapenny.o:      dnapenny.c seq.h phylip.h
-
-dnapenny:      dnapenny.o seq.o phylip.o
-	$(CC) $(CFLAGS) dnapenny.o seq.o phylip.o $(LIBS) -o dnapenny
-
-
-
-	project "dolmove "
-		language    "C"
-		kind        "ConsoleApp"
-
-dolmove.o:       dolmove.c disc.h moves.h dollo.h phylip.h
-
-dolmove:       dolmove.o disc.o moves.o dollo.o phylip.o
-	$(CC) $(CFLAGS) dolmove.o disc.o moves.o dollo.o phylip.o $(LIBS) -o dolmove
-
-
-	project "dollop "
-		language    "C"
-		kind        "ConsoleApp"
-
-dollop.o:       dollop.c disc.h dollo.h phylip.h
-
-dollop:       dollop.o disc.o dollo.o phylip.o
-	$(CC) $(CFLAGS) dollop.o disc.o dollo.o phylip.o $(LIBS) -o dollop
-
-
-	project "dolpenny "
-		language    "C"
-		kind        "ConsoleApp"
-
-dolpenny.o:       dolpenny.c disc.h dollo.h phylip.h
-
-dolpenny:       dolpenny.o disc.o dollo.o phylip.o
-	$(CC) $(CFLAGS) dolpenny.o disc.o dollo.o phylip.o $(LIBS) -o dolpenny
-
-
-	project "factor "
-		language    "C"
-		kind        "ConsoleApp"
-
-factor.o:       factor.c phylip.h
-
-factor:       factor.o phylip.o
-	$(CC) $(CFLAGS) factor.o phylip.o $(LIBS) -o factor
-
-
-	project "fitch "
+	project "dnapenny"
 		language    "C"
 		kind        "ConsoleApp"
 
 
+		files
+		{
+			SRCDIR.."dnapenny.c"
+			,INCDIR.."seq.h"
+		}
 
-fitch.o:        fitch.c dist.h phylip.h
+		links
+		{
+			"seq"
+		}
 
-fitch:        fitch.o dist.o phylip.o
-	$(CC) $(CFLAGS) fitch.o dist.o phylip.o $(LIBS) -o fitch
 
 
-	project "gendist "
+	project "dolmove"
 		language    "C"
 		kind        "ConsoleApp"
 
-gendist.o:      gendist.c phylip.h
+		files
+		{
+			SRCDIR.."dolmove.c"
+			,INCDIR.."disc.h"
+			,INCDIR.."moves.h"
+			,INCDIR.."dollo.h"
+		}
 
-gendist:      gendist.o phylip.o
-	$(CC) $(CFLAGS) gendist.o phylip.o $(LIBS) -o gendist
-
-
-	project "kitsch "
-		language    "C"
-		kind        "ConsoleApp"
-
-kitsch.o:        kitsch.c dist.h phylip.h
-
-kitsch:        kitsch.o dist.o phylip.o
-	$(CC) $(CFLAGS) kitsch.o dist.o phylip.o $(LIBS) -o kitsch
-
-
-	project "mix "
-		language    "C"
-		kind        "ConsoleApp"
-
-mix.o:        mix.c disc.h wagner.h phylip.h
-
-mix:        mix.o disc.o wagner.o phylip.o
-	$(CC) $(CFLAGS) mix.o disc.o wagner.o phylip.o $(LIBS) -o mix
+		
+		links
+		{
+			"disc"
+			,"moves"
+			,"dollo"
+		}
 
 
-	project "move "
-		language    "C"
-		kind        "ConsoleApp"
-
-
-move.o:        move.c disc.h moves.h wagner.h phylip.h
-
-move:        move.o disc.o moves.o wagner.o phylip.o
-	$(CC) $(CFLAGS) move.o disc.o moves.o wagner.o phylip.o $(LIBS) -o move
-
-
-	project "neighbor "
+	project "dollop"
 		language    "C"
 		kind        "ConsoleApp"
 
 
-neighbor.o:        neighbor.c dist.h phylip.h
+		files
+		{
+			SRCDIR.."dollop.c"
+			,INCDIR.."disc.h"
+			,INCDIR.."dollo.h"
+			
+		}
+		
+		links
+		{
+			"disc"
+			,"dollo"	
+		}
 
-neighbor:        neighbor.o dist.o phylip.o
-	$(CC) $(CFLAGS) neighbor.o dist.o phylip.o $(LIBS) -o neighbor
 
-
-	project "pars "
+	project "dolpenny"
 		language    "C"
 		kind        "ConsoleApp"
 
-pars.o:   pars.c discrete.h phylip.h
+		files
+		{
+			SRCDIR.."dolpenny.c"
+			,INCDIR.."disc.h"
+			,INCDIR.."dollo.h"
+		}
 
-pars: pars.o discrete.o phylip.o
-	$(CC) $(CFLAGS) pars.o discrete.o phylip.o $(LIBS) -o pars
+		links
+		{
+			"disc"
+			,"dollo"
+		}
 
 
-	project "penny "
+	project "factor"
 		language    "C"
 		kind        "ConsoleApp"
 
-penny.o:  penny.c disc.h wagner.h phylip.h
-
-penny:  penny.o disc.o wagner.o phylip.o
-	$(CC) $(CFLAGS) penny.o disc.o wagner.o  phylip.o $(LIBS) -o penny
-
-
-	project "proml "
-		language    "C"
-		kind        "ConsoleApp"
-
-proml.o:      proml.c seq.h phylip.h
-
-proml:      proml.o seq.o phylip.o
-	$(CC) $(CFLAGS) proml.o seq.o phylip.o $(LIBS) -o proml
+		files
+		{
+			SRCDIR.."factor.c"
+		}
 
 
-	project "promlk "
-		language    "C"
-		kind        "ConsoleApp"
-
-
-promlk.o:      promlk.c seq.h phylip.h mlclock.h printree.h
-
-promlk:      promlk.o seq.o phylip.o mlclock.o printree.o
-	$(CC) $(CFLAGS) promlk.o seq.o phylip.o mlclock.o printree.o $(LIBS) -o promlk
-
-
-	project "protdist "
-		language    "C"
-		kind        "ConsoleApp"
-
-protdist.o:      protdist.c seq.h phylip.h
-
-protdist:      protdist.o seq.o phylip.o
-	$(CC) $(CFLAGS) protdist.o seq.o phylip.o $(LIBS) -o protdist
-
-
-	project "protpars "
-		language    "C"
-		kind        "ConsoleApp"
-
-protpars.o: protpars.c seq.h phylip.h
-
-protpars: protpars.o seq.o phylip.o
-	$(CC) $(CFLAGS) protpars.o seq.o phylip.o $(LIBS) -o protpars
-
-
-	project "restdist "
-		language    "C"
-		kind        "ConsoleApp"
-
-restdist.o: restdist.c seq.h phylip.h
-
-restdist: restdist.o seq.o phylip.o
-	$(CC) $(CFLAGS) restdist.o seq.o phylip.o $(LIBS) -o restdist
-
-
-	project "restml "
-		language    "C"
-		kind        "ConsoleApp"
-
-restml.o: restml.c seq.h phylip.h
-
-restml: restml.o seq.o phylip.o
-	$(CC) $(CFLAGS) restml.o seq.o phylip.o $(LIBS) -o restml
-
-
-	project "retree "
-		language    "C"
-		kind        "ConsoleApp"
-
-retree.o:       retree.c moves.h phylip.h
-
-retree:       retree.o moves.o phylip.o
-	$(CC) $(CFLAGS) retree.o moves.o phylip.o $(LIBS) -o retree
-
-
-	project "seqboot "
+	project "fitch"
 		language    "C"
 		kind        "ConsoleApp"
 
 
-seqboot.o:      seqboot.c phylip.h
+		files
+		{	
+			SRCDIR.."fitch.c"
+			,INCDIR.."dist.h"
+		}
 
-seqboot:      seqboot.o seq.o phylip.o
-	$(CC) $(CFLAGS) seqboot.o seq.o phylip.o $(LIBS) -o seqboot
+		links
+		{
+			"dist"
+		}
+
+
+	project "gendist"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."gendist.c"
+		}
+		
+
+	project "kitsch"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."kitsch.c"
+			,INCDIR.."dist.h"
+		}
+
+		links
+		{
+			"dist"
+		}
+
+
+	project "mix"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."mix.c"
+			,INCDIR.."disc.h"
+			,INCDIR.."wagner.h"
+		}
+	
+		links
+		{
+			"disc"
+			,"wagner"
+		}
+
+
+	project "move"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."move.c"
+			,INCDIR.."disc.h"
+			,INCDIR.."moves.h"
+			,INCDIR.."wagner.h"
+		}
+		
+		links
+		{
+			"disc"
+			,"moves"
+			,"wagner"
+		}
+
+
+	project "neighbor"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."neighbor.c"
+			,INCDIR.."dist.h"
+			
+		}
+
+		links
+		{
+			"dist"
+		}
+
+
+	project "pars"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."pars.c"
+			,INCDIR.."discrete.h"
+		}
+
+		links
+		{
+			"discrete"
+		}
+
+	project "penny"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."penny.c"
+			,INCDIR.."disc.h"
+			,INCDIR.."wagner.h"
+			
+		}
+
+		links
+		{
+			"disc"
+			,"wagner"
+		}
+
+
+	project "proml"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."proml.c"
+			,INCDIR.."seq.h"
+		}
+
+		links
+		{
+			"seq"
+		}
 
 
 
-	project "treedist "
+	project "promlk"
 		language    "C"
 		kind        "ConsoleApp"
 
 
-treedist.o:     treedist.c cons.h phylip.h
+		files
+		{
+			SRCDIR.."promlk.c"
+			,INCDIR.."seq.h"
+			,INCDIR.."mlclock.h"
+			,INCDIR.."printree.h"
+		}
 
-treedist:     treedist.o phylip.o cons.o
-	$(CC) $(CFLAGS) treedist.o cons.o phylip.o $(LIBS) -o treedist
+		links
+		{
+			"seq"
+			,"mlclock"
+			,"printree"
+		}
 
 
-
-	project "drawgram "
+	project "protdist"
 		language    "C"
 		kind        "ConsoleApp"
 
-drawgram.o:     drawgram.c draw.h phylip.h
-	$(CC) $(DFLAGS) -c drawgram.c
+		files
+		{
+			SRCDIR.."protdist.c"
+			,INCDIR.."seq.h"
+		}
+		
+		links
+		{
+			"seq"
+		}
 
-drawgram:     drawgram.o draw.o draw2.o phylip.o
-	$(CC) $(DFLAGS) draw.o draw2.o drawgram.o phylip.o $(DLIBS) -o drawgram
 
 
-
-	project "drawtree"
+	project "protpars"
 		language    "C"
 		kind        "ConsoleApp"
 
+		files
+		{
+			SRCDIR.."protpars.c"
+			,INCDIR.."seq.h"
+		}
+		
+		links
+		{
+			"seq"
+		}
 
-drawtree.o:     drawtree.c draw.h phylip.h
-	$(CC) $(DFLAGS) -c drawtree.c
 
-drawtree:     drawtree.o draw.o draw2.o phylip.o
-	$(CC) $(DFLAGS) draw.o draw2.o drawtree.o phylip.o $(DLIBS) -o drawtree
+	project "restdist"
+		language    "C"
+		kind        "ConsoleApp"
 
+		files
+		{
+			SRCDIR.."restdist.c"
+			,INCDIR.."seq.h"
+		}
+
+		links
+		{
+			"seq"
+		}
+
+
+	project "restml"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."restml.c"
+			,INCDIR.."seq.h"	
+		}
+
+		links
+		{
+			"seq"
+		}
+
+
+	project "retree"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."retree.c"
+			,INCDIR.."moves.h"
+		}	
+
+		links
+		{
+			"moves"
+		}
+
+
+	project "seqboot"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."seqboot.c"
+		}
+
+		links
+		{
+			"seq"
+		}
+
+
+	project "treedist"
+		language    "C"
+		kind        "ConsoleApp"
+
+		files
+		{
+			SRCDIR.."treedist.c"
+			,INCDIR.."cons.h"
+		}
+	
+		links
+		{
+			"cons"
+		}
+
+
+
+--	project "drawgram"
+--		language    "C"
+--		kind        "ConsoleApp"
+--
+--drawgram.o:     drawgram.c draw.h phylip.h
+--	$(CC) $(DFLAGS) -c drawgram.c
+--
+--drawgram:     drawgram.o draw.o draw2.o phylip.o
+--	$(CC) $(DFLAGS) draw.o draw2.o drawgram.o phylip.o $(DLIBS) -o drawgram
+--
+--
+--
+--	project "drawtree"
+--		language    "C"
+--		kind        "ConsoleApp"
+--
+--
+--drawtree.o:     drawtree.c draw.h phylip.h
+--	$(CC) $(DFLAGS) -c drawtree.c
+--
+--drawtree:     drawtree.o draw.o draw2.o phylip.o
+--	$(CC) $(DFLAGS) draw.o draw2.o drawtree.o phylip.o $(DLIBS) -o drawtree
+--
 
 
 

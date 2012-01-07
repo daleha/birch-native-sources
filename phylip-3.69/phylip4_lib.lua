@@ -4,45 +4,24 @@ SRCDIR=PROJDIR.."source/"
 INCDIR=PROJDIR.."include/"
 
 -- common configuration options
-	configuration "Debug"
-		buildoptions
-		{
-			"-O3"
-			,"-fomit-frame-pointer" --optimizations
-
-		}
-
-		links
-		{
-			"m" --math libraries
-		}
-
-		includedirs
-		{
-			INCDIR
-		}
-
-		files
-		{
-			INCDIR.."phylip.h"
-		}
-
-		targetdir "lib"
 
 	-- shared libs section --
 
 	project "phylip_core"     
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files 
 		{ 
 			SRCDIR.."phylip.c" 
 		}
+		
 
 	project "seq"        
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files 
 		{
@@ -52,7 +31,8 @@ INCDIR=PROJDIR.."include/"
 
 	project "disc"       
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files
 		{
@@ -62,7 +42,8 @@ INCDIR=PROJDIR.."include/"
 
 	project "discrete"   
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files
 		{
@@ -72,7 +53,8 @@ INCDIR=PROJDIR.."include/"
 
 	project "dollo"      
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files
 		{
@@ -83,17 +65,19 @@ INCDIR=PROJDIR.."include/"
 
 	project "wagner"     
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files
 		{
 			SRCDIR.."wagner.c"
-			INCDIR.."wagner.h"
+			,INCDIR.."wagner.h"
 		}
 
 	project "dist"       
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files
 		{
@@ -103,7 +87,8 @@ INCDIR=PROJDIR.."include/"
 
 	project "cont"       
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files
 		{
@@ -113,7 +98,8 @@ INCDIR=PROJDIR.."include/"
 
 	project "mlclock"    
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files
 		{
@@ -123,7 +109,8 @@ INCDIR=PROJDIR.."include/"
 	
 	project "moves"      
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files
 		{
@@ -133,17 +120,19 @@ INCDIR=PROJDIR.."include/"
 
 	project "printree"   
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files
 		{
 			SRCDIR.."printree.c"
-			INCDIR.."printree.h"
+			,INCDIR.."printree.h"
 		}
 
 	project "cons"
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 
 		files
@@ -155,7 +144,8 @@ INCDIR=PROJDIR.."include/"
 
 	project "draw"
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files
 		{
@@ -170,7 +160,8 @@ INCDIR=PROJDIR.."include/"
 	--convenience lib
 	project "phylip_gui"
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files
 		{
@@ -186,7 +177,8 @@ INCDIR=PROJDIR.."include/"
 
 	project "draw"
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files
 		{
@@ -200,7 +192,8 @@ INCDIR=PROJDIR.."include/"
 	project "draw2"
 
 		language    "C"
-		kind        "SharedLib"
+		kind        "StaticLib"
+		targetdir "lib"
 
 		files
 		{

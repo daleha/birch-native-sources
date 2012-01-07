@@ -3,6 +3,6 @@ ROOTDIR=os.getcwd().."/"
 
 
 solution "Phylip"
-	configurations { "Release", "Debug" }
+	configurations {  "Debug", "Release"}
 
 dofile "phylip4.lua"
