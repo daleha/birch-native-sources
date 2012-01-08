@@ -643,8 +643,38 @@ INCDIR=PROJDIR.."include/"
 
 
 
+newaction {
+   trigger     = "build",
+   description = "Run a command line build",
+   execute = function ()
+	os.chdir(PROJDIR.."build")
+	local ver = os.getversion()
+	
+	print("Running a build")
+   	if ver.description == "solaris" then
+		print ("Detected platform as solaris")
+		os.execute("gmake CC=gcc")
+	end	
+   end
+}
 
 
+newaction {
+   trigger     = "clean",
+   description = "Run a command line clean",
+   execute = function ()
+	os.chdir(PROJDIR.."build")
+	local ver = os.getversion()
+			
+	print("Performing a clean") 
+   	if ver.description == "solaris" then
+		print ("Detected platform as solaris")
+		os.execute("gmake clean")
+		os.chdir(PROJDIR)
+		os.execute("rm -rf build bin lib")
+	end	
+   end
+}
 
 
 
