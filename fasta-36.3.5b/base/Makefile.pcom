@@ -3,7 +3,7 @@
 #
 DROPNSW_O = dropnsw.o  wm_align.o calcons_sw.o
 DROPNFA_O = drop_nfa.o wm_align.o calcons_fa.o
-DROPBD_O = dropsbd.o wm_align.o calcons_fa.o
+dROPBD_O = dropsbd.o wm_align.o calcons_fa.o
 DROPTFA_O = drop_tfa.o wm_align.o calcons_tfa.o
 DROPFF_O = drop_ff2.o calcons_ff.o
 DROPFS_O = drop_fs2.o calcons_fs.o
