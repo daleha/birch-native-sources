@@ -1,0 +1,23 @@
+********************Bootstrapping completed:********************
+>>Got request: 
+Object key 
+	request:
+has value:
+	['/home/umhameld/bin/git-kit/gk']
+>>Loading repo configurations
+>>Traceback (most recent call last):
+  File "/home/umhameld/bin/git-kit/lib/__init__.py", line 86, in init
+    main(request)
+  File "/home/umhameld/bin/git-kit/gk", line 60, in main
+    cmds._handHold(repos)
+  File "/home/umhameld/bin/git-kit/lib/cmds/__init__.py", line 55, in _handHold
+    handhold=prompt_user("No arguments eh? Want some help?",default="Y")
+  File "/home/umhameld/bin/git-kit/lib/ui/__init__.py", line 51, in prompt_user
+    answer=getInput(message,opts)
+  File "/home/umhameld/bin/git-kit/lib/ui/__init__.py", line 48, in getInput
+    answer = raw_input(message+optlist)
+  File "/home/umhameld/bin/git-kit/lib/async/__init__.py", line 21, in thread_interrupt_handler
+    prev_handler(signum, frame)
+KeyboardInterrupt
+
+>>Exitting on error code 0
