@@ -180,11 +180,70 @@ project "fasta36"
 
 	 
 
+project "fastax36" 
+	language    "C"
+	kind        "ConsoleApp"
+
+	files
+	{
+
+		SRCDIR.."re_getlib.c"
+		,SRCDIR.."htime.c"
+		,SRCDIR.."apam.c"
+		,SRCDIR.."initfa.c"
+		,SRCDIR.."doinit.c"
+		,SRCDIR.."scaleswn.c" -- scalese DLOCAL_SCORE --
+		,SRCDIR.."karlin.c"
+		,SRCDIR.."dropfx.c"
+		,SRCDIR.."c_dispn.c"
+		,SRCDIR.."lib_sel.c"
+		,SRCDIR.."mrandom.c"
+		,SRCDIR.."url_subs.c"
+		,SRCDIR.."pssm_asn_subs.c"
+		,SRCDIR.."faatran.c"
+
+	}
+
+	defines
+	{
+		"FASTX"
+		,"LOCAL_SCORE"
+		--,"LALIGN"
+		--,"LCAL_CONS"
+	}
+
+
+	configuration "linux"
+		files
+		{
+
+			SRCDIR.."comp_lib8.c"
+			,SRCDIR.."compacc2.c"
+			,SRCDIR.."mshowbest.c"
+			,SRCDIR.."build_ares.c"
+			,SRCDIR.."mshowalign2.c"
+			,SRCDIR.."nmgetlib.c"
+			,SRCDIR.."mmgetaa.c"
+			,SRCDIR.."ncbl2_mlib.c"
+		}
+
+		defines
+		{
+			"COMP_MLIB"
+		}
+
+	 
+
+
+
+
 
 
 --
 --fastx36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_fx.o scale_se.o karlin.o drop_fx.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o faatran.o url_subs.o mrandom.o
---	$(CC) $(HFLAGS) $(BIN)/fastx36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_fx.o drop_fx.o scale_se.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o faatran.o url_subs.o mrandom.o $(LIB_M)
+
+
+--	$(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_fx.o drop_fx.o scale_se.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o faatran.o url_subs.o mrandom.o $(LIB_M)
 --
 --fasty36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_fy.o scale_se.o karlin.o drop_fz.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o faatran.o url_subs.o mrandom.o
 --	$(CC) $(HFLAGS) $(BIN)/fasty36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_fy.o drop_fz.o scale_se.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o faatran.o url_subs.o mrandom.o $(LIB_M)
