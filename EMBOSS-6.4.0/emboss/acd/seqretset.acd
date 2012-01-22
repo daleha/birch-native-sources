@@ -1,0 +1,42 @@
+application: seqretset [
+  documentation: "Reads and writes (returns) a set of
+                  sequences all at once"
+  groups: "Edit"
+    relations: "EDAM:0000091 topic Data handling"
+    relations: "EDAM:0000090 topic Data retrieval"
+    relations: "EDAM:0001813 operation Sequence retrieval"
+    relations: "EDAM:0002121 operation Sequence file processing"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  boolean: feature [
+    information: "Use feature information"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+  seqset: sequence [
+    parameter: "Y"
+    features: "$(feature)"
+    type: "gapany"
+    aligned: "N"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqoutset: outseq [
+    parameter: "Y"
+    features: "$(feature)"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: output

@@ -1,0 +1,8 @@
+Need sources for:
+
+-mrtrans 
+-DIALIGN 
+-cap3 
+-mapmaker3 
+-primer3
+-weblogo 

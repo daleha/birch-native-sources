@@ -1,0 +1,78 @@
+application: splitter [
+  documentation: "Split sequence(s) into smaller sequences"
+  groups: "Edit"
+    relations: "EDAM:0000091 topic Data handling"
+    relations: "EDAM:0000369 operation Sequence cutting"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  boolean: feature [
+    default: "N"
+    information: "Use feature information"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "any"
+    features: "$(feature)"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: size [
+    additional: "Y"
+    minimum: "1"
+    default: "10000"
+    information: "Size to split at"
+    relations: "EDAM:0001249 data Sequence length"
+  ]
+
+  integer: overlap [
+    additional: "Y"
+    minimum: "0"
+    maximum: "@($(size)-1)"
+    default: "0"
+    failrange: "N"
+    trueminimum: "Y"
+    information: "Overlap between split sequences"
+    relations: "EDAM:0001249 data Sequence length"
+  ]
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: addoverlap [
+    default: "N"
+    information: "Include overlap in output sequence size"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqoutall: outseq [
+    parameter: "Y"
+    features: "$(feature)"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: output

@@ -1,0 +1,32 @@
+application: origunion [
+  documentation: "Reads sequence fragments and builds one
+                  sequence"
+  groups: "Edit"
+    relations: "EDAM:0000156 topic Sequence editing"
+    relations: "EDAM:0000232 operation Sequence merging"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "gapany"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqout: outseq [
+    parameter: "Y"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: output

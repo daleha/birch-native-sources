@@ -1,0 +1,48 @@
+application: skipseq [
+  documentation: "Reads and writes (returns) sequences,
+                  skipping first few"
+  groups: "Edit"
+    relations: "EDAM:0000091 topic Data handling"
+    relations: "EDAM:0000090 topic Data retrieval"
+    relations: "EDAM:0001813 operation Sequence retrieval"
+    relations: "EDAM:0002121 operation Sequence file processing"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  boolean: feature [
+    information: "Use feature information"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+  seqall: sequence [
+    parameter: "Y"
+    features: "$(feature)"
+    type: "gapany"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+  integer: skip [
+    standard: "Y"
+    default: "0"
+    information: "Number of sequences to skip at start"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqoutall: outseq [
+    parameter: "Y"
+    features: "$(feature)"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: output

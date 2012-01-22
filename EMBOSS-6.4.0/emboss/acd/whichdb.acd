@@ -1,0 +1,50 @@
+application: whichdb [
+  documentation: "Search all sequence databases for an entry and retrieve it"
+  groups: "Data retrieval:Sequence data"
+  gui: "yes"
+  batch: "yes"
+  cpu: "low"
+  relations: "EDAM:0000090 topic Data retrieval"
+  relations: "EDAM:0000344 operation Sequence retrieval (by code)"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  string: entry [
+    parameter: "Y"
+    information: "ID or Accession number"
+    knowntype: "sequence id input"
+    relations: "EDAM:0001063 identifier Sequence identifier"
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  toggle: get [
+    default: "N"
+    information: "Retrieve sequences"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+  boolean: showall [
+    default: "N"
+    information: "Show failed attempts"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+  outfile: outfile [
+    standard: "@(!$(get))"
+    nullok: "$(get)"
+    nulldefault: "$(get)"
+    knowntype: "whichdb output"
+    relations: "EDAM:0000957 data Database metadata"
+  ]
+
+endsection: output

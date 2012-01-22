@@ -1,0 +1,33 @@
+application: seqinfo [
+  documentation: "Returns sequence information"
+  groups: "Test"
+    relations: "EDAM:0000155 topic Sequence retrieval"
+    relations: "EDAM:0000229 operation Sequence description"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "gapany"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    default: "stdout"
+    knowntype: "seqinfo output"
+    relations: "EDAM:0000969 data Text"
+  ]
+
+endsection: output

@@ -1,0 +1,69 @@
+application: pepcoil [
+  documentation: "Predicts coiled coil regions in protein sequences"
+  groups: "Protein:2D Structure, Protein:Domains"
+    relations: "EDAM:0000178 topic Protein secondary structure prediction"
+    relations: "EDAM:0000736 topic Protein domains"
+    relations: "EDAM:0000268 operation Protein super-secondary structure prediction"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "PureProtein"
+    relations: "EDAM:0002886 data Sequence record (protein)"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: window [
+    standard: "Y"
+    minimum: "7"
+    maximum: "28"
+    default: "28"
+    information: "Window size"
+    relations: "EDAM:0001251 data Window size"
+  ]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  boolean: coil [
+    default: "Y"
+    information: "Report coiled coil regions"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+  boolean: frame [
+    default: "$(coil)"
+    information: "Show coil frameshifts"
+    expected: "Yes if -coil is true"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+  boolean: other [
+    default: "N"
+    information: "Report non coiled coil regions"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+  report: outfile [
+    parameter: "Y"
+    rformat: "motif"
+    taglist: "float:Probability str:Predict int:pos=Max_coil_pos str:Frames"
+    relations: "EDAM:0000877 data Protein structure report (super-secondary)"
+  ]
+
+endsection: output

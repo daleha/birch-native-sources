@@ -1,0 +1,53 @@
+application: seqretsplit [
+  documentation: "Reads sequences and writes them to individual files"
+  groups: "Edit"
+    relations: "EDAM:0000091 topic Data handling"
+    relations: "EDAM:0000090 topic Data retrieval"
+    relations: "EDAM:0001813 operation Sequence retrieval"
+    relations: "EDAM:0002121 operation Sequence file processing"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  boolean: feature [
+    information: "Use feature information"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "gapany"
+    features: "$(feature)"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: firstonly [
+    information: "Read one sequence and stop"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqoutall: outseq [
+    parameter: "Y"
+    ossingle: "Y"
+    features: "$(feature)"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: output

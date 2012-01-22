@@ -1,0 +1,85 @@
+application: infobase
+[
+  documentation: "Return information on a given nucleotide base"
+  groups: "Data retrieval:Chemistry data"
+  gui: "yes"
+  batch: "yes"
+  cpu: "low"
+    relations: "EDAM:0000154 topic Small molecules"
+    relations: "EDAM:0002123 operation Small molecule property processing"
+]
+
+
+
+
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+  string: code
+  [
+    parameter: "Y"
+    information: "Nucleotide base code"
+    help: "Enter IUPAC nucleotide base codes, e.g. A, C, G, T, R, Y etc."
+    knowntype: "nucleotide codes"
+    default: "ABCDGHKMNRSTUVWXY"
+    relations: "EDAM:0001007 identifier Nucleotide code"
+  ]
+
+endsection: input
+
+
+
+
+
+section: required 
+[
+  information: "Required section"
+  type: "page"
+]
+endsection: required
+
+
+
+
+
+section: additional
+[
+  information: "Additional section"
+  type: "page"
+]
+endsection: additional
+
+
+
+
+
+section: advanced
+[
+  information: "Advanced section"
+  type: "page"
+]
+endsection: advanced
+
+
+
+
+
+section: output 
+[
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile
+  [
+    parameter: "Y"
+    knowntype: "infobase output"
+    relations: "EDAM:0000911 data Nucleotide base annotation"
+  ]
+  
+
+endsection: output

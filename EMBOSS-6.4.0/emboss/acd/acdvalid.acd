@@ -1,0 +1,7 @@
+application: acdvalid [
+  documentation: "Validate an application ACD file"
+  gui: "no"
+  groups: "Acd, Data retrieval:Tool data"
+    relations: "EDAM:0000091 topic Data handling"
+    relations: "EDAM:0000336 operation File validation"
+]

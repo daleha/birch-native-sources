@@ -1,0 +1,55 @@
+application: plotorf [
+  documentation: "Plot potential open reading frames in a nucleotide sequence"
+  groups: "Nucleic:Gene finding, Nucleic:Translation, Display"
+  relations: "EDAM:0000109 topic Gene finding"
+  relations: "EDAM:0000108 topic Translation"
+  relations: "EDAM:0000092 topic Data rendering and visualisation"
+  relations: "EDAM:0000436 operation Coding region prediction"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "Y"
+    type: "dna"
+    relations: "EDAM:0002887 data Sequence record (nucleic acid)"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  string: start [
+    default: "ATG"
+    information: "Start codons"
+    knowntype: "codon list"
+    relations: "EDAM:0000848 data Raw sequence"
+  ]
+
+  string: stop [
+    default: "TAA,TAG,TGA"
+    information: "Stop codons"
+    knowntype: "codon list"
+    relations: "EDAM:0000848 data Raw sequence"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  xygraph: graph [
+    standard: "Y"
+    multiple: "6"
+    relations: "EDAM:0001313 data Gene features (coding region)"
+  ]
+
+endsection: output

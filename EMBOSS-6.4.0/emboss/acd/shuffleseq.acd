@@ -1,0 +1,46 @@
+application: shuffleseq [
+  documentation: "Shuffles a set of sequences maintaining
+                  composition"
+  groups: "Nucleic:Mutation, Protein:Mutation"
+  relations: "EDAM:0000091 topic Data handling"
+  relations: "EDAM:0000199 topic Mutation and polymorphism"
+  relations: "EDAM:0000367 operation Sequence mutation and randomization"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "any"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: shuffle [
+    default: "1"
+    information: "Number of shuffles"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqoutall: outseq [
+    parameter: "Y"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: output

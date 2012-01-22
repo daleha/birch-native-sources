@@ -1,0 +1,68 @@
+application: union [
+  documentation: "Concatenate multiple sequences into a single sequence"
+  groups: "Edit"
+    relations: "EDAM:0000091 topic Data handling"
+    relations: "EDAM:0000232 operation Sequence merging"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  boolean: feature [
+    default: "N"
+    information: "Use feature information"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "gapany"
+    features: "$(feature)"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: source [
+    default: "N"
+    information: "Create source features"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+  boolean: findoverlap [
+    default: "N"
+    information: "Look for overlaps when joining"
+    relations: "EDAM:0002527 data Parameter or primitive"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqout: outseq [
+    parameter: "Y"
+    features: "$(feature)"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+  outfile: overlapfile [
+    additional: "Y"
+    information: "Sequence overlaps output file (optional)"
+    knowntype: "sequence overlap"
+    extension: "overlaps"
+    nullok: "Y"
+    nulldefault: "Y"
+    relations: "EDAM:0000850 data Sequence set"
+  ]
+
+endsection: output

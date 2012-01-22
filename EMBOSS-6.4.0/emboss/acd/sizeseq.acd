@@ -1,0 +1,100 @@
+application: sizeseq
+[
+  documentation: "Sort sequences by size"
+  groups: "Edit"
+  gui: "yes"
+  batch: "yes"
+  cpu: "low"
+    relations: "EDAM:0000091 topic Data handling"
+    relations: "EDAM:0002121 operation Sequence file processing"
+]
+
+
+
+
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+boolean: feature 
+[
+    information: "Use feature information"
+    help: "Sequence feature information will be retained if this option is set."
+    relations: "EDAM:0002527 data Parameter or primitive"
+]
+
+seqset: sequences 
+[
+    parameter: "Y"
+    type: "gapany"
+    features: "$(feature)"
+    aligned: "N"
+    relations: "EDAM:0000849 data Sequence record"
+]
+
+endsection: input
+
+
+
+
+
+section: required 
+[
+  information: "Required section"
+  type: "page"
+]
+
+boolean: descending
+[
+    standard: "Y"
+    default: "N"
+    information: "Return longest sequence first"
+    help: "By default the shortest sequence is given first."
+    relations: "EDAM:0002527 data Parameter or primitive"
+]
+
+endsection: required
+
+
+
+
+
+section: additional
+[
+  information: "Additional section"
+  type: "page"
+]
+endsection: additional
+
+
+
+
+
+section: advanced
+[
+  information: "Advanced section"
+  type: "page"
+]
+endsection: advanced
+
+
+
+
+
+section: output 
+[
+  information: "Output section"
+  type: "page"
+]
+
+seqoutall: outseq 
+[
+    parameter: "Y"
+    features: "$(feature)"
+    relations: "EDAM:0000849 data Sequence record"
+]
+
+endsection: output
