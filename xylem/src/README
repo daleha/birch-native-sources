@@ -1,0 +1,38 @@
+This directory contains the Pascal source code for the XYELM package. If
+you simply wish to recompile the programs for you local system, follow
+the directions below. If you plan on porting them to a new compiler,
+read the documentation files in the pascal_tools directory.
+
+*****************************************
+Re-compiling the programs
+*****************************************
+
+1. Copy the programs to the 'install' directory.
+
+cp *.p install
+
+
+2. Move to the 'install' directory and compile the programs.
+
+cd install
+compile.csh &                         {& runs compilation in the background} 
+
+
+The script compile.csh writes executable code directly to xylem/bin, using
+the name with no file extension (eg. splitdb.p is compiled and written to
+xylem/bin/splitdb). By default, the code is statically linked at 
+compile time using the -BSTATIC option. If your system has Pascal libraries
+you can save some disk space by recompiling without that option. See the
+comments in compile.csh for more information.
+
+*****************************************
+Translating the programs to c
+*****************************************
+
+The directory p2c has files for use with David Gillespie's p2c program
+for translation of these programs to c. You must install p2c first
+before trying to do this. p2c-generated files directly compileable
+on Sun4 and HP9000 systems is available in the directory src.c.
+For other systems, you may need to change translation parameters found
+in loc.p2crc.
+

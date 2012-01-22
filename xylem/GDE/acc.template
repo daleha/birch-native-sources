@@ -1,0 +1,25 @@
+;---------------------------------------------------------------------------
+;                    FEATURES/GDE  Accession File Instructions
+; 
+; 1. Type in one or more GenBank Accession #'s below,
+;                    or
+;    Place cursor at end of this file and choose 'Include File' in the FILE
+;    menu to read in a file of numbers.
+;
+;    (NOTE: File can not contain LOCUS names.)
+;
+; 2. Choose 'Save Current File' in the File menu
+; 3. Quit this window
+;
+; FEATURES will then extract the appropriate sequences . YOU DON'T NEED TO EDIT
+; OUT THESE COMMENT LINES.
+;
+; NOTE: Put each accession # on a separate line
+; SAMPLE ACCESSION FILE:
+;
+; M18249
+; X13383
+; J03680 
+; 
+;---------------------------------------------------------------------------
+

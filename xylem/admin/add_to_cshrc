@@ -1,0 +1,7 @@
+##################################################
+# cshrc.source is a file that contains setup commands 
+# for molecular biology users. The source command
+# causes it to be read and executed each time a new
+# c-shell is initiated. 
+##################################################
+source ~psgendb/admin/cshrc.source

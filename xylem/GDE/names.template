@@ -1,0 +1,25 @@
+;---------------------------------------------------------------------------
+;                    FEATURES/GDE  Name File Instructions
+; 
+; 1. Type in one or more GenBank LOCUS names below,
+;                    or
+;    Place cursor at end of this file and choose 'Include File' in the FILE
+;    menu to read in a file of names.
+;
+;    (NOTE: File can not contain accession numbers.)
+;
+; 2. Choose 'Save Current File' in the File menu
+; 3. Quit this window
+;
+; FEATURES will then extract the appropriate sequences . YOU DON'T NEED TO EDIT
+; OUT THESE COMMENT LINES.
+;
+; NOTE: Put each name on a separate line
+; SAMPLE NAME FILE: 
+;
+; PEADRRA          
+; PSDRR1         
+; PEADRRG       
+; 
+;---------------------------------------------------------------------------
+

@@ -1,0 +1,98 @@
+
+     prostat.doc                                        update  8/30/93
+                                    PROSTAT
+
+     I. Function- PROSTAT reads in a protein sequence and prints a report 
+     listing amino acid composition and molecular weight.
+          
+     II. Program Flow
+     Below is the screen output of a typical interactive session with PROSTAT. 
+     Program output and user responses are listed as they would actually 
+     appear on the screen.  Comments, which are listed here for explanatory 
+     purposes but would not appear in the program, are enclosed in the 
+     symbols (* *). 
+
+     (* program begins *)
+     PROSTAT     VERSION  4/10/88
+
+     Enter input filename:               
+     SEQ1\PEACAB15.PRO              (* IBM-PC DOS protocol *)
+     
+     The following file formats can be read:
+       F:free format    N:NBRF
+     F
+     Reading input file...
+     (* PROSTAT reads in the file.  *)
+
+     Type name for sequence to appear on output:
+     AB96
+      
+     Enter output filename:              
+     PEA\AB96.PST
+
+     (* The output is written to the file as shown below:*)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     PROSTAT      Version  8/30/93
+     AB96                            228 aa
+     Molecular weight:   24300.0
+
+     Nonpolar side chains:
+     Gly(G)               29 (0.127)
+     Ala(A)               22 (0.096)
+     Val(V)               17 (0.075)
+     Leu(L)               23 (0.101)
+     Ile(I)                7 (0.031)
+     Met(M)                4 (0.018)
+     Phe(F)               14 (0.061)
+     Pro(P)               17 (0.075)
+     Neutral polar side chains:
+     Ser(S)               17 (0.075)
+     Thr(T)                8 (0.035)
+     Cys(C)                1 (0.004)
+     Asn(N)                9 (0.039)
+     Gln(Q)                3 (0.013)
+     Tyr(Y)                7 (0.031)
+     Trp(W)                6 (0.026)
+     Charged polar side chains:
+     Asp(D)                9 (0.039)
+     Glu(E)               15 (0.066)
+     His(H)                4 (0.018)
+     Lys(K)               11 (0.048)
+     Arg(R)                5 (0.022)
+     Other:
+     Asx(B)                0 (0.000)
+     Glx(Z)                0 (0.000)
+     Unk(X)                0 (0.000)
+     
+     III. What the Output Means
+
+     1.  The molecular weight is calculated by calculating the amino acid
+     composition of the protein, and adding the products of the molecular
+     weights of the amino acids (minus water) times their mole fraction in
+     the protein.  The molecular weight of water (18) is added to the sum to
+     account for hydration of the N & C termini. Asx and Glx are assigned
+     a molecular weight of 114.5 and 128.5, respectively.  Unknown amino
+     acids (X) are assigned the average molecular weight of 119. 
+     
+     2.  Amino acid composition is listed as both the number of each amino
+     acid in the protein and the mole fraction of each amino acid.

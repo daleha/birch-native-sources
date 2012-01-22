@@ -1,0 +1,313 @@
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   M      M   OOOOO    DDDDDDD   DDDDDDD   EEEEEEEE  FFFFFFFF
+                   MM    MM  OO    O   DD    DD  DD    DD  EE        FF
+                   MMM  MMM  OO    OO  DD    DD  DD    DD  EE        FF
+                   MMMMMMMM  OO    OO  DD    DD  DD    DD  EEEE      FFFF
+                   MM MM MM  OO    OO  DD    DD  DD    DD  EE        FF
+                   MM    MM  OO    OO  DD    DD  DD    DD  EE        FF
+                   MM    MM  OO    OO  DD    DD  DD    DD  EE        FF
+                   MM    MM   O    OO  DD    DD  DD    DD  EE        FF
+                   MM    MM    OOOOO   DDDDDDD   DDDDDDD   EEEEEEEE  FF
+
+                   MODDEF: MODULE DEFINITION
+
+                   BY Thomas D. Schneider
+                   MDC Biology Department
+                   University of Colorado
+                   Copyright (c) 1982
+
+                   1982 JULY 16
+                   VERSION 2.09
+
+                   Thanks to:  J. Haemer and G. Stormo
+
+
+
+
+
+
+
+
+
+
+
+
+
+     RULES FOR MODULE TRANSFERS
+          The module replacement program takes several files:
+             module(Sin: in, Modlib: in, Sout: out, Modcat: inout,
+                    List:out, Output: out)
+
+          Sin:     source program
+          Sout:    source program, modules replaced from Modlib
+          Modlib:  a library of modules
+          Modcat:  an index into Modlib
+          List:    progress of the transfer
+          Output:  messages to the user
+
+
+     1)   It is desirable to construct a library of program modules (Modlib)
+          that may be used by several programs.  Advantages include:
+          a) Modules need to be written only once.
+          b) Programs use a consistent set of program objects (in Pascal these
+             include const, type, var, function and procedure).
+          c) The module source is always visible to the programmer, and
+             therefore can be easily modified.
+
+     2)   A module consists of three parts:  (a small BNF is given)
+             <module> ::= <begin><content><end>
+          The beginning and end are comments that give the module name.  These 
+          must follow a rigid format for speed.  To avoid ambiguity they
+          should be long.   For Pascal,these could be defined as:
+             <begin> ::= (* begin module <module name> *)
+             <end>   ::= (* end module <module name> *)
+             <module name> ::= a string of characters.
+
+     3)   Modules in a source program (Sin) are replaced by modules in Modlib.
+          This operation is performed by copying from the source and from 
+          Modlib to an output file (Sout).  Sin is never modified.
+
+     4)   Module replacement, (as opposed to module insertion) is accomplished
+          by using the begin and end.  This has several advantages:
+          a) A module may be inserted into a program and left there
+             during program development.  If the module is changed (in Modlib)
+             the old module (in Sin) is replaced by the new one (from Modlib).
+             (That could be done by Make in Unix.)
+          b) Since modules are the same in both the program and the library,
+             the order of transfer may be reversed.  This allows modules to be
+             inserted into the library.
+
+     5)   If a module is not found in Modlib, then the contents of
+          the module in Sin are copied to Sout.  That is, no replacement
+          occurs.  This allows one to use several module libraries
+          in succession.
+
+     6)   If Modlib is empty, then instead of simply copying Sin to Sout,
+          Sin is copied to Sout, but the contents of modules in Sin are not
+          copied.  This allows one to "strip" a program in preparation for
+          transport or storeage.
+
+
+     7)   To allow rapid access to modules in Modlib, a catalogue (Modcat)
+          is created whenever Modlib exists but Modcat is empty.  Modcat
+          contains the name, the number of the first line, and the length of
+          each module in Modlib.
+
+     8)   A module in Modlib may contain modules.  If these modules exist
+          at the "top level" in Modlib, then they are recursively found and
+          inserted into Sout.   If they do not exist then their contents are
+          copied to Sout.  This follows the convention for module calls in Sin:
+          if it exists, replace it, otherwise copy the contents.
+
+     9)   The catalogue refers only to the outer level of modules.
+          The inner ones are considered module "calls".
+
+     10)  Module calls have the same form as modules, allowing the two
+          to be interchanged (by switching Sin and Modlib).
+
+     11)  Recursive module calls allow one to construct a series of
+          complex packages, all using the same base modules.  The user
+          need only make one module call to obtain all the modules.
+
+     12)  Recursion may proceed to any depth.
+
+
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          EXAMPLE
+
+     Sin:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+     POTATOE
+     (* BEGIN MODULE 1 *)
+     (* END MODULE 1 *)
+     PINEAPPLE
+     (* BEGIN MODULE C *)
+     THIS WILL BE REPLACED
+     (* END MODULE C *)
+     (* BEGIN MODULE NOTTHERE *)
+     THIS WILL STAY
+     (* END MODULE NOTTHERE *)
+     (* BEGIN MODULE D *)
+     AN ATTEMPT TO PICKUP THE MODULE D INSIDE MODULE 1 OF MODLIB
+     WILL FAIL
+     (* END MODULE D *)
+     END
+
+
+     Modlib::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+     (* BEGIN MODULE A *)
+     APPLE
+     (* END MODULE A *)
+
+     (* BEGIN MODULE B *)
+     BEAR
+     (* END MODULE B *)
+
+     (* BEGIN MODULE 1 *)
+     (* BEGIN MODULE A *)
+     (* END MODULE A *)
+
+     INTERMODULE LINE
+
+     (* BEGIN MODULE B *)
+     (* END MODULE B *)
+
+     (* BEGIN MODULE D *)
+     PRESERVED
+     (* END MODULE D *)
+     (* END MODULE 1 *)
+
+     (* BEGIN MODULE C *)
+     CABBAGE
+     (* END MODULE C *)
+
+
+
+
+
+
+
+          EXAMPLE (CONTINUED)
+
+
+     Sout::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+     POTATOE
+     (* BEGIN MODULE 1 *)
+     (* BEGIN MODULE A *)
+     APPLE
+     (* END MODULE A *)
+
+     INTERMODULE LINE
+
+     (* BEGIN MODULE B *)
+     BEAR
+     (* END MODULE B *)
+
+     (* BEGIN MODULE D *)
+     PRESERVED
+     (* END MODULE D *)
+     (* END MODULE 1 *)
+     PINEAPPLE
+     (* BEGIN MODULE C *)
+     CABBAGE
+     (* END MODULE C *)
+     (* BEGIN MODULE NOTTHERE *)
+     THIS WILL STAY
+     (* END MODULE NOTTHERE *)
+     (* BEGIN MODULE D *)
+     AN ATTEMPT TO PICKUP THE MODULE D INSIDE MODULE 1 OF MODLIB
+     WILL FAIL
+     (* END MODULE D *)
+     END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          IMPLEMENTATION DETAILS OF MODULE REPLACEMENT
+
+
+     1)   <begin> and <end> are placed on their own lines and left justified.
+          These rules simplify the program and improve the speed of
+          the transfers.
+
+     2)   It is suggested that module names contain only characters, numbers
+          and the period (to separate parts of the name).
+
+     3)   Modcat is alphabetized to speed the search.
+
+     4)   The replacement algorithm is:
+          - Copy Source (Sin or Modlib if recursing) to Sout until
+            a <begin> is found.  Pickup the <module name>.
+            Complete copy of <begin> to Sout.
+          - Look in Modcat for <module name> and pickup the line in Modlib that
+            the module begins.
+          - If the module is in Modlib then scan and copy from Modlib until
+            the <end> has been transferred (this is a recursion).
+            Then skip to the <end> of Source without a copy.
+            Continue copy of Source.
+          - If the module is not in Modlib then scan and copy from Source until
+            <end>.  Continue copy of Source.
+
+     5)   Notice that if a replacement occurs, the <begin> will be from the
+          Source while the <end> is from Modlib.
+
+     6)   Module libraries can be easily made into programs.  This allows
+          one to check for syntax errors without doing any transfers.
+
+     7)   It is useful to know the version of a module after it has been
+          transferred.  For this purpose an optional version mechanism is
+          provided.  If the Modlib contains a module named VERSION, then the
+          first line of this module will be transferred to the end of
+          each module (see note 5) as part of the end module comment.
+
+     8)   The first line of VERSION can also define a string constant to be
+          written to Output when Modlib is run as a program (see note 6).
+
+     9)   The VERSION module can not be transferred or stripped out.  This
+          preserves the VERSION of Sin even when a transfer is made in which 
+          both Sin and Modlib contain a VERSION.

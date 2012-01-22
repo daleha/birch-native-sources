@@ -1,0 +1,458 @@
+
+     hom.doc                                               update 10/29/90
+                            SIMILARITY SEARCH PROGRAMS
+
+     I.  Theory      
+          The programs P1HOM, P2HOM, D3HOM and D4HOM perform matrix similarity
+     searches similar to those described by Pustell & Kafatos [1].  Briefly, 
+     the two sequences to be compared are placed on the X and Y axes of a 
+     matrix.  The programs begin the search by comparing the first L-bases or 
+     peptides of SEQY (the sequence on the Y axis) with every group of L-bases 
+     or peptides in SEQX (the sequence on the X axis).  If a match is found 
+     which is as good or better than some predefined minimum value, a 
+     character is printed at the corresponding X/Y position in the graph. The 
+     programs then move down one position in sequence Y and repeat the 
+     comparisons.  This cycle continues until every posible comparison has 
+     been made. Similarities are detected as diagonal lines of characters in the 
+     matrix.  Below is a sample plot, which compares part of the Alu1 Family 
+     consensus sequence [2] with itself. 
+
+
+     D3HOM         Version  3/23/90
+     X-axis: Alu1-Consensus
+     Y-axis: Alu1-Consensus
+     SIMILARITY RANGE:  10      MIN.PERCENT SIMILARITY:  50
+     SCALE FACTOR:    0.95      COMPRESSION:              1
+
+                   185       195       205       215       225       235
+            GGAGGCTGAGGCAGGAGAATCGCTTGAACCCAGGAGGTGGAGGTTGCAGTGAGCCGAGAT
+           GA        .         .         .         .         .         .
+           G A       .         .         .   U     .         .         .
+           A  A      .         .         .    U    .         .         .
+           G   A     .         .         .     S   .         .         .
+        180G....A.......................................................
+           C     A   .         .         .         .         .         .
+           T      A  .         .         .         .         .         .
+           G       A .         .         .         .         .         .
+           A        A.         .         .         .T        .         .
+           G         A         .         .         . V       .         .
+           G         .A        .         .         .         .         .
+           C         . A       .         .         .         .         .
+           A         .  A      .         .         .         .         .
+           G         .   A     .         .         .         .         .
+        190G..............A.............................................
+           A         .     A   .         .         .         .         .
+           G         .      A  .         .         .         .         .
+           A         .       A .         .         .         .         .
+           A         .        A.         .         .         .         .
+           T         .         A         .         .         .         .
+           C         .         .A        .         .         .         .
+           G         .         . A       .         .         .         .
+           C         .         .  A      .         .         .         .
+           T         .         .   A     .         .         .         .
+        200T........................A...................................
+
+          The efficiency of this search algorithm is proportional to the 
+     lengths of SEQX and SEQY (N & M, respectively) times the length of the 
+     subsequences compared (L).  Thus, a search of two sequences 100 bases 
+     long, using subsequences of 11 bases requires L x M x N = 110,000 base
+     comparisons.  A quick inspection of most matrix similarity outputs shows 
+     that the vast majority of the area of the matrix contains either blank 
+     space, which indicates that no local similarities were found, or very 
+     small similarities which have probably occurred at random.  Thus, the 
+     majority of the search time is spent investigating regions of 
+     non-similarity.
+          P1HOM, P2HOM, D3HOM and D4HOM use an algorithm [3] that greatly 
+     speeds up the search.  A brief description of the algorithm for 
+     comparison of two DNA sequences, used in D3HOM, follows.  The first step 
+     involves the construction of a table listing each occurrence of the 64 
+     trinucleotides in SEQX.  The table will contain N-2 numbers representing 
+     the locations of the trinucleotides, divided among 64 classes.  Now the 
+     search begins at the first trinucleotide in SEQY.  Using the table as a 
+     guide, each occurrence of that trinucleotide in SEQX is located, and the 
+     region centered on that position, HOMRANGE nucleotides to the left and 
+     the right, are compared with the corresponding position in SEQY.  If the 
+     match is good enough, a character is printed at the point in the matrix 
+     which corresponds to the centers of the two trinucleotides.  The process 
+     is repeated for each trinucleotide in SEQY.  Since each trinucleotide 
+     occurs on the average only once every 64 bases, the algorithm only makes 
+     N/64 searches for each triplet in Y, rather than N.  Thus, the efficiency 
+     of the algorithm is L x M x N/64.  Likewise, D4HOM uses a 
+     tetranucleotide table, with a search efficiency of L x M x N/256. The 
+     search for similarities between two protein sequences is even faster.  In 
+     P2HOM, a table of dipeptides is used, and since there are 400 possible 
+     dipeptides, the efficiency of the protein comparison is L x M x N/400.  
+     P1HOM, which uses a monopeptide table, is a more thorough but slower 
+     search.  Its efficiency is L x M x N/20. 
+          Whereas the simple L x M x N algorithm is exhaustive (ie. every 
+     possible comparison is made), the new algorithm described herein will 
+     miss some similarities.  This is because the search requires that a 
+     similarity be centered on a perfect match of one or two amino acids (P1HOM 
+     or P2HOM) or three or four nucleotides (D3HOM or D4HOM).  The search 
+     algorithm allows us to generalize about how frequently the programs will 
+     sample a given pair of sequences.  In the case of D3HOM, we expect that a 
+     trinucleotide match will occur once every 64 bases by random chance 
+     alone.  Since regions which share significant similarity must by definition 
+     have a frequency of matches which is greater than random chance can 
+     account for, similar regions will have more frequent matches, and are 
+     consequently more likely to be sampled in a search.  See [3] for a 
+     thorough discussion these and other points. 
+          The power of the matrix similarity approach lies in the fact that 
+     the real work of finding similarities is done not by the computer, but by 
+     the user's brain.  It is the user's ability to recognize diagonal lines 
+     which makes this method work. In the exhaustive approach, the local 
+     similarities which constitute a diagonal are overlapping, and thus often 
+     superfluous.  For example, if one is searching for similarities of 14/20 
+     or better, and a similarity of 15/20 is found at position (x,y) in the 
+     matrix, then the probability that the next similarity (x+1,y+1) will be 
+     good enough is 1.  Hence, the redundancy of the search allows the 
+     luxury of missing some local similarities without losing the overall 
+     picture of the resultant diagonal.  It has been demonstrated
+     mathematically that most significant similarities will be found by this
+     approach [3].
+
+     II. Menus
+
+     The similarity programs begin by asking the user for tne names of files
+     containing sequences to be placed on the X and Y axes of the matrix, and
+     and one for output to be written to. In the case of the X-axis file, the
+     user is also asked whether that sequence represents the opposite strand
+     of the original sequence (see note 6).
+     _____________________________________________________________________
+     D3HOM                      MAIN MENU
+     _____________________________________________________________________
+     X-axis file:       b:aluicon.dna
+     Y-axis file:       b:aluicon.dna
+     Output file:       prn
+     _____________________________________________________________________
+                         1) Read in a new X-axis sequence
+                         2) Read in a new Y-axis sequence
+                         3) Open a new output file
+                         4) Change parameters
+                         5) Compare sequences and write output to screen
+                         6) Compare sequences and write output to file
+     _____________________________________________________________________
+     Type the number of your choice  (0 to quit program)
+     4
+     
+     Choosing option 4 in the main menu brings the user into the parameters
+     menu.  The parameters menu can be thought of as dealing with the 
+     sequence itself, and is thus independent of operating system.  The name
+     and topology are read from the sequence file in the case of GENBANK or
+     BIONET files, or are typed in when the sequence is read, in the case of
+     Free-format files.      
+     
+     X-axis: Alu1-Consensus   Topology:     LINEAR    Length:      303 nt
+     Y-axis: Alu1-Consensus   Topology:     LINEAR    Length:      303 nt
+     _____________________________________________________________________
+            Parameter   Description/Response                 Value
+     _____________________________________________________________________
+             1)STARTX   first nucleotide position in SEQX        1
+             2)FINISHX  last  nucleotide position in SEQX      303
+             3)STARTY   first nucleotide position in SEQY        1
+             4)FINISHY  last  nucleotide position in SEQY      303
+             5)HOMRANGE dist. from central triplet in a match   10
+             6)SCALEFAC scale factor for exponential curve    0.95
+             7)MINPER   minimum percent similarity printed      60
+             8)COMPFACT graph compression factor                10
+             9)KIND     D:DNA            R:RNA                   D
+            10)LINESIZE width of output line (ex.70,120)        70
+     _____________________________________________________________________
+     Type number of parameter you wish to change (0 to continue)
+     0
+ 
+
+     Search begins...
+     (* The output appears on the printer as shown below. *)
+
+     D3HOM         Version 3/23/90
+     X-axis: Alu1-Consensus
+     Y-axis: Alu1-Consensus
+     SIMILARITY RANGE:  10      MIN.PERCENT SIMILARITY:  60
+     SCALE FACTOR:    0.95      COMPRESSION:             10
+
+                   100       200       300
+
+            C        .   QK    .         .         .         .         .
+             A   T   .    I    .         .         .         .         .
+              A      .     HK  .         .         .         .         .
+               A     .      J  .         .         .         .         .
+                A    .       MN. U       .         .         .         .
+             T   A   .         .         .         .         .         .
+                  A  .         .R        .         .         .         .
+                   A .         .S        .         .         .         .
+                    A.         .     L   .         .         .         .
+        100 .........A...............LM.................................
+                     .A        .         .         .         .         .
+                     . A       .       P .         .         .         .
+                     .  A      .        NS         .         .         .
+            Q        .   A     .         .         .         .         .
+            KI       .    A    .         .         .         .         .
+              H      .     A   .         .         .         .         .
+              KJ     .      A  .         .         .         .         .
+                M    .       A .US       .         .         .         .
+                N    .        A. T       .         .         .         .
+        200 ...................A........................................
+                  RS .       U .A        .         .         .         .
+                U    .       ST. A       .         .         .         .
+                     .         .  A      .         .         .         .
+                     .         .   A     .         .         .         .
+                     .         .    A    .         .         .         .
+                    LL         .     A   .         .         .         .
+                     M         .      A  .         .         .         .
+                     . P       .       A .         .         .         .
+                     .  N      .        AE         .         .         .
+        300 ............S...............EAS.............................
+
+
+     III. What the output means
+          Since much has already been written on the theory and applications 
+     of matrix similarity searches, a thorough discussion here would be 
+     redundant, and the reader is strongly urged to read references 1,3 and 4
+     before attempting to use these programs.  In reference 4, Maizel and Lenk 
+     provide a clear and concise discussion of the theory of matrix similarity 
+     searches.  In reference 1, Pustell and Kafatos present the character 
+     matrix format used by P1HOM, P2HOM, etc., with some differences.  These 
+     programs, as in the Pustell package, use characters instead of dots to 
+     designate the positions of local similarities in the matrix.  Each 
+     character represents a small range of similarity as shown in the table 
+     matrix represents a local homology with 100% match.  "P" represents a 
+     local similarity whose score is 70-71% of the score for a perfect match, 
+     using the weighting function described in SCALEFAC (below) and in [1].  
+
+     Char.    %        Char.    %        Char.    %        Char.    %
+     A      100        N    74-75        a    48-49        n    22-23
+     B    98-99        O    72-73        b    46-47        o    20-21
+     C    96-97        P    70-71        c    44-45        p    18-19
+     D    94-95        Q    68-69        d    42-43        q    16-17
+     E    92-93        R    66-67        e    40-41        r    14-15 
+     F    90-91        S    64-65        f    38-39        s    12-13
+     G    88-89        T    62-63        g    36-37        t    10-11
+     H    86-87        U    60-61        h    34-35        u     9- 8
+     I    84-85        V    58-59        i    32-33        v     6- 7
+     J    82-83        W    56-57        j    30-31        w     5
+     K    80-81        X    54-55        k    28-29
+     L    78-79        Y    52-53        l    26-27
+     M    76-77        Z    50-51        m    24-25
+
+          Unlike the Pustell package, no separate programs have been written 
+     for comparisons of opposite strands or for finding inverted repeats.  
+     Instead, these features have been incorporated into both programs.
+
+     IV.  Constants
+          Constant values are defined in the constant definition parts of 
+     the main procedures of D3HOM and P2HOM.  To change them, it is 
+     necessary to change their values in the Pascal text and re-compile.
+
+     MAXSEQ- Maximum length of a DNA,RNA, or protein sequence.  The IBM-PC 
+     defaults for D3HOM and D4HOM are 19000, and in P1HOM and P2HOM, 3000. 
+     MAXWORD- Maximum length of sequence name on printout. (Default: 25) 
+     MAXRANGE- Maximum value of RANGE parameter. (Default: 30)
+     MAXLINE- Maximum width of output graph line.  Default value for
+              LINESIZE.
+
+     V.   Parameters
+     STARTX
+     FINISHX
+     STARTY
+     FINISHY
+     STARTX and FINISHX are the first and last nucleotide or peptide positions 
+     of SEQX to be compared with the part of SEQY beginning at STARTY and 
+     ending at FINISHY.  For DNA sequences, it is necessary to compare both 
+     strands of one sequence with one strand of the other sequence.  For 
+     simplicity, D3HOM and D4HOM only allow SEQX to be reversed, while SEQY 
+     remains constant.  To compare the opposite strand of SEQX with SEQY, use 
+     NUMSEQ to create a file containing the opposite strand (see NUMINFO).  
+     Now, use this file as input, and answer Y when asked whether SEQX is the 
+     inverse strand.  In the printout, the numbering system of the original 
+     strand will be retained.  Remember, however that since the numbering will 
+     be decreasing, FINISHX must be less than STARTX.  Finally, although 
+     D3HOM and D4HOM do not allow START and FINISH values which span the 
+     origin of a circular molecule, similarities which overlap the origin will 
+     still be correctly evaluated, because both "ends" of a circular sequence 
+     are padded with a short stretch of sequence from the other end. 
+
+     HOMRANGE
+     HOMRANGE defines distance on either side of a local similarity which is 
+     used in a comparison.  In D3HOM and P1HOM , the position of a local 
+     similarity is the center of a given trinucleotide or peptide, and the size 
+     of the area compared is L = (2 x HOMRANGE) + 1.  In P2HOM and D4HOM, the 
+     position of a local homology is the leftmost amino acid or nucleotide and 
+     the size of the area compared is L = 2 x HOMRANGE.  The defaults for 
+     HOMRANGE are 10 in the DNA searches and 5 in the protein searches. 
+
+     SCALEFAC
+     SCALEFAC is the scale factor by which the score at a given distance 
+     from the center of a local similarity is multiplied, to the power of the 
+     distance.  The score given to an identity at the n-th position from the 
+     center is
+                                           n
+                SUBSCORE[n] =  v x SCALEFAC
+
+     where v is the value (100) for an identity at the center of the local 
+     similarity.  In D3HOM and P1HOM, the center of a similarity is the center
+     of a triplet or monopeptide, 0 bases or amino acids from the center.  In 
+     P2HOM and D4HOM, both amino acids or bases in the central match are 1 
+     from the center, and both are given a value of 100.  The total score is 
+     the sum of the SUBSCORES at each positon, and the value of the homology 
+     is expressed as a percent of the score that would be obtained if all 
+     positions matched.  The percentage is indicated by the character printed 
+     (see section III).  For example, if SCALEFAC= 0.95 and HOMRANGE=5, then a 
+     match at the central nucleotide receives a subscore of 100, while an
+     identity one base from the center receives a subscore of 95, 2 bases,
+     90.25, and so on.  The maximum possible score (ie., 11/11 matches) would
+     be 959.63... 
+          SCALEFAC has the effect of weighting the central positions in a 
+     local similarity more heavily than the outer ones.  This helps 
+     eliminate some of the redundancy in the output of matrix plots, as well 
+     as some of the background.  A SCALEFAC of 1 weighs matches at all 
+     positions equally, so that the percent printed is the actual percent 
+     identity.
+
+     MINPER
+     MINPER is the minimum percent identity printed on the matrix.  For D3HOM, 
+     MINPER may range between 25 and 100 (default 60), while D4HOM only prints 
+     similarities of 40% or better.  For P1HOM and P2HOM, MINPER may range 
+     between 5 and 100 (default 50). 
+
+     COMPFACT
+     If COMPFACT= 1, the sequences will be printed on the X and Y axes, and 
+     each character position in the graph will represent one nucleotide or 
+     amino acid position.  For higher values of COMPFACT, each character 
+     position in the graph represents COMPFACT positions.  For example, if 
+     COMPFACT = 10 (the default), then each character in the matrix 
+     represents 10 x 10 = 100 comparisons.  The best similarity found at that 
+     point in the graph will always be printed.  Although COMPFACT may be 
+     set as high as 100, it is not recommended to use a value greater than 
+     20, since many similarities will be difficult to distinguish above 
+     background. 
+
+     KIND (D3HOM & D4HOM only)
+     If KIND='D' (the default) the nucleotide sequence will be printed as 
+     DNA. If KIND='R' then it will be printed as RNA.
+
+     LINESIZE
+     Width in characters of one graph line.  For printers with standard 8 
+     1/2 in. wide pages, use 70 (the default).  For printers capable of 
+     handling wide forms, use 100 or 120.  These sizes may be expanded 
+     further on dot-matrix printers capable of using small characters.  See 
+     note 2 below for further discussion. 
+
+     VI. Usage Notes 
+     1.  As with any similarity search, the programs may be used to find 
+         direct repeats and inverted repeats.  Direct repeats within a 
+         sequence may be found by comparing a sequence with itself, as shown 
+         in the self comparisons of the Alu1 Family consensus sequence above.  
+         The "line of identity", which is composed of 'A's, occupies the 
+         main diagonal, indicating that the sequence is identical 
+         with itself.  The off-center diagonals of imperfect similarity
+         show that the Alu1 Family sequence is really a dimer, formed by an 
+         ancient duplication event.  
+              Inverted repeats, which in DNA or RNA sequences are regions  
+         which potentially could form stem and loop structures, are found by 
+         comparing a given strand, written 5'-->3', with the same strand 
+         written  3'-->5'.  NUMSEQ can be used to generate a 3'-->5' strand.  
+         However,  this method of finding potential secondary structures has 
+         its limitations.  For more sophisticated methods, see articles in 
+         [5]. 
+              Very poor similarities, in which the percent identity of local 
+         matches is close to background, can often be visualized as a 
+         line of unconnected local matches lying on a long diagonal.  
+         Frequently, their percentage identity will be consistantly a little 
+         higher than background. 
+
+     2.  When comparing sequences of more than a few hundred bases or amino 
+         acids, one must consider both speed of execution and memory 
+         limitations.  By using high vales of COMPFACT and LINESIZE, it is 
+         possible to fit long stretches of sequece on one output page.  For 
+         example, if COMPFACT=20 and LINESIZE=100, 2000 bases of SEQX may 
+         fit on one page.  If the region between STARTX and FINISHX is 
+         greater than 2000, then that region will be compared with SEQY in 
+         increments of 2000. 
+             
+         The efficiency of the search algorithm used in the programs must be 
+         paid for by an increase in memory used.  If SEQX requires N-bytes of 
+         memory, then the table for SEQX will require approximately 4N-bytes.  
+         In practice, however, this is usually not a problem, since only the 
+         part of the sequence being searched at any given time needs to have a 
+         table.  Thus, if the most positions which will fit on a page are 
+         2000, then the table need only be 8000 bytes.  For computers larger 
+         than the AppleII, the limiting factor becomes the page size.  Since 
+         readability is greatly impaired using COMPFACT values greater than 
+         20, probably no more than 2000 bases should ever be searched at one 
+         time. 
+         
+         There is a trade-off between the sizes of the sequences which can be 
+         stored in memory and the size of the region which may be compared at 
+         one time (ie. on one page).  The programs allocate room for two 
+         sequences of length MAXSEQ-MAXRANGE, regardless of how long the two 
+         sequences actually are.  This sort of storage is referred to as a 
+         static array, and is required by Standard Pascal.  However, the table 
+         used to search SEQX is allocated dynamically, and is thus limited by 
+         the amount of free memory in the heap.  This amount is much smaller 
+         than one might guess. The amount actually allocated depends on the 
+         size of the region of SEQX searched at one time, which, in turn, 
+         depends upon the values of STARTX, FINISHX, COMPFACT, and LINESIZE.  
+         Thus, it is possible to increase MAXSEQ in order to compare longer 
+         sequences, but memory limitations may require that shorter stretches 
+         be compared at one time. 
+
+     3.  When comparing a very long sequence with a short sequence, it is 
+         probably easiest to put the smaller sequence on the X-axis and the 
+         longer sequence on the Y-axis.  Although the time required to 
+         actually make up the table is negligible, it will take less printing 
+         time to do the search in one long page rather than a series of short 
+         pages.  Remember that the efficiency of the search is the same, 
+         regardless of which sequence is on the X-axis. 
+
+     4.  Unknown nucleotides in a DNA or RNA sequence (N's) or unknown 
+         peptides in a protein (X's) are always counted as mismatches in a 
+         similarity comparison.  This is sensible, since, in a comparison of 
+         any two bases or amino acids chosen at random, it is always more 
+         likely that a mismatch will occur, rather than a match.  One 
+         unexpected consequence of this is that the ends of linear 
+         molecules, which are padded with N's or X's to facilitate an 
+         efficient search, will always show imperfect homology, even in a 
+         self comparison.
+
+         Other ambiguous nucleotides (eg. Y, which stands for C or T) can be    
+         read in by D3HOM and D4HOM, but will only count as a match when
+         matching themselves.  For example, Y in sequence X will match Y in
+         sequence Y, but not A or G.  Additionally, no ambiguous nucleotides
+         may appear in the central triplet or tetranucleotide of a match.
+         These rules allow ambiguous nucleotides to serve as place holders
+         without contributing significantly to the overall score of similarity.
+         At the same time, they make it possible to perform similarity searches 
+         between two sequences containing many ambiguities, such as consensus
+         sequences. 
+
+     5.  P1HOM & P2HOM permit the use of STOP (*) as an amino acid.  This 
+         allows one to translate long stretches of DNA into the 
+         corresponding amino acid sequence and compare them without having 
+         to divide them into discrete polypeptides. 
+
+     6.  If both strands of a DNA sequence must be compared, choose one
+         sequence to appear on the X-axis, and generate its opposite strand
+         using NUMSEQ.  (The Y-axis sequence will remain constant.)  Compare 
+         both original strands first, and then use option 1 in the main menu
+         to read in the opposite strand.  When asked whether the sequence 
+         being read is the opposite strand, type Y. Subsequently, numbering on
+         the X-axis will decrease from left to right, to retain the numbering
+         scheme of the original sequence. Note that the Y-axis sequence can not
+         be numbered as an opposite strand.
+
+     VII. References 
+     1.  Pustell,J. and Kafatos, F., "A high speed, high capacity similarity 
+         matrix: zooming through SV40 and polyoma" Nucl. Acids Res. 10:15 
+         (1982) pp4765-4782.
+     2.  Deininger, P.L. et al., "Base Sequence Studies of 300 Nucleotide 
+         Renatured Repeated Human DNA Clones", J.Mol.Biol. 151 (1981) 
+         pp17-33.                          
+     3.  Fristensky, B. "Improving the Efficiency of Dot-Matrix Similarity
+         Searches Through Use of an Oligomer Table", Nucl. Acids Res. 14
+         p597-610 (1986).
+     4.  Maizel, J.V. and Lenk, R.P.,"Enhanced graphic matrix analysis of 
+         nucleic acid and protein sequences", Proc. Natl. Acad. Sci. USA 
+         78:12 (1981) pp7665-7669.
+     5.  "The applications of computers to research on nucleic acids II",
+         Soll,D. and Roberts, R.J. ed., Nucl. Acids Res. 12:1 (1984).

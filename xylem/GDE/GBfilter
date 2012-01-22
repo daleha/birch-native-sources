@@ -1,0 +1,17 @@
+#!/bin/csh
+# GBfilter  6/25/01
+# Synopsis:  GBfilter infile gbfile
+# Description: If infile is GenBank, simply write it to gbfile, else
+# filter it through readseq to generate a GenBank file. It is not
+# possible to filter GenBank files through readseq, because readseq
+# removes most of the annotation.
+
+set infile = $1
+set gbfile = $2
+
+if (`egrep ^LOCUS $infile |wc -l` == 0) then
+    readseq -a -f2 -o=$gbfile $infile 
+else
+    cp $infile $gbfile
+endif
+

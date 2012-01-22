@@ -1,0 +1,30 @@
+
+# Store public p2crc commands local to your system here, so that
+# you can grab a new version of sys.p2crc without losing your changes.
+StructFiles = 1
+#ArgCName = argc
+#ArgVName = argv
+Language            BERK        # Known languages:
+                                #  HP (default; Pascal Workstation version)
+                                #  MODCAL (HP's advanced Pascal)
+                                #  HP-UX (almost same as HP)
+                                #  TURBO (vers 5.0 for IBM PC)
+				            #  OREGON (Oregon Software Pascal-2 V2.1)
+				            #  VAX (VAX/VMS Pascal)
+				            #  MODULA (Modula-2)
+                                #  UCSD (almost same as TURBO)
+                                #  MPW (MPW Pascal 2.0 for the Mac)
+				            #  BERK (SUN Berkeley Pascal)
+
+# Random number functions
+RandRealName                    # no default
+RandIntName       rand          # Name of a Turbo "random()" function; no def
+
+HeaderName        <p2c.h>       # Name of standard p2c header file
+
+# Setting StoreFileNames =1 enables one to rewrite a file that has
+# previously be rewritten, without losing the filename.
+#StoreFileNames         1        # 1=store file names associated with file vars
+                                # 0=let the system record the name
+                                # default=1 in Turbo Pascal, 0 otherwise.
+

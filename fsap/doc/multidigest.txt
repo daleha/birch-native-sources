@@ -1,0 +1,231 @@
+
+     multidigest.txt                                    update  3/29/2006
+                                     MULTIDIGEST
+				     
+     Note: To avoid conflict with the Solaris 10 'digest' command, this program,
+     formerly named 'digest', has been renamed 'multidigest'.
+
+     I. Function- MULTIDIGEST reads in a file which lists restriction sites for one
+     or more enzymes in a given fragment.  The user can ask MULTIDIGEST to 
+     calculate the resultant fragments from multiple digests. Either parital
+     or complete digests may be calculated.
+     
+     II. Program Flow
+     Below is the screen output of a typical interactive session with MULTIDIGEST. 
+     Program output and user responses are listed as they would actually 
+     appear on the screen.  Comments, which are listed here for explanatory 
+     purposes but would not appear in the program, are enclosed in the 
+     symbols (* *). 
+
+     multidigest<ENTER>
+
+     (* program begins *)
+                  MULTIDIGEST       Version 29 Mar 2006
+
+     Enter restriction site filename:
+     AC002329.bachrest
+     Reading restriction site data...
+     AC002329 Topology: LINEAR Length:        76170
+     AatII GACGT^C
+     ApaI GGGCC^C
+     ApaLI G^TGCAC
+     AscI GG^CGCGCC
+     BglI GCCNNNN^NGGC
+     BsePI G^CGCGC
+     etc....
+
+     ________________________________________________________________________________
+     MULTIDIGEST                MAIN MENU
+     ________________________________________________________________________________
+     Input file:        AC002329.bachrest
+     Output file:
+     ________________________________________________________________________________
+                         1) Read in a new input file
+                	 2) Open a new output file
+                	 3) Generate digests (output to screen)
+                	 4) Generate digests (output to file)
+     ________________________________________________________________________________
+     Type the number of your choice  (0 to quit program)
+     3
+     MULTIDIGEST       Version 29 Mar 2006
+     AC002329  Topology:  LINEAR Length:        76170 bp
+                                      # of
+                                      Sites   Frags   Begin            End
+     The names of enzymes with known sites in AC002329
+     will be displayed a screenful at a time.
+     You will be asked to specify enzymes one at a time,
+     to include in this digest.
+     There are           26 enzymes listed
+     Press RETURN to begin.
+     (* User presses RETURN and enzyme names appear on screen.
+        User types numbers of enzymes one at a time and 0 when done.
+        A "+" appears next to enzymes that have been added to the digest.*)  
+
+       1) AatII       2) ApaI        3) ApaLI       4) BglI        5) BsePI
+       6) BstEII      7) Eco47III    8) MluI        9) NaeI       10) NarI
+      11) NruI       12) PasI       13) PmaCI      14) PmeI       15) PshAI
+      16) PspXI      17) PsrI       18) PvuI       19) RsrII      20) SacII
+      21) SalI       22) SanDI      23) SexAI      24) SmaI       25) SnaBI
+      26) StuI
+     Type number of an enzyme to include in this digest
+     or 0 to continue:
+     4
+     BglI      GCCNNNN^NGGC              2
+
+       1) AatII       2) ApaI        3) ApaLI       4)+BglI        5) BsePI
+       6) BstEII      7) Eco47III    8) MluI        9) NaeI       10) NarI
+      11) NruI       12) PasI       13) PmaCI      14) PmeI       15) PshAI
+      16) PspXI      17) PsrI       18) PvuI       19) RsrII      20) SacII
+      21) SalI       22) SanDI      23) SexAI      24) SmaI       25) SnaBI
+      26) StuI
+     Type number of an enzyme to include in this digest
+     or 0 to continue:
+     11
+     NruI      TCG^CGA                   2
+
+       1) AatII       2) ApaI        3) ApaLI       4)+BglI        5) BsePI
+       6) BstEII      7) Eco47III    8) MluI        9) NaeI       10) NarI
+      11)+NruI       12) PasI       13) PmaCI      14) PmeI       15) PshAI
+      16) PspXI      17) PsrI       18) PvuI       19) RsrII      20) SacII
+      21) SalI       22) SanDI      23) SexAI      24) SmaI       25) SnaBI
+      26) StuI
+     Type number of an enzyme to include in this digest
+     or 0 to continue:
+     0
+     
+
+     Type C for complete digest, P for parital:
+     c
+                                             34616   41555NruI       76170
+                                             19849   21706BglI       41554NruI
+                                              9859   11847BglI       21705BglI
+                                              6743    5104NruI       11846BglI
+                                              5103       1            5103NruI
+
+     Type  D to generate a digest, Q to quit
+     d
+     
+     (* The user may repeat the cycle and print new digests by        *)
+     (* by typing D.  Typing Q ends the program.                      *)
+     (* Output can also be sent to a file. An example is shown below: *)
+     
+     MULTIDIGEST       Version 29 Mar 2006
+     AC002329  Topology:  LINEAR Length:        76170 bp
+                                      # of
+                                      Sites   Frags   Begin            End
+     StuI      AGG^CCT                   2
+     SexAI     A^CCWGGT                  4
+                                             43458   18536SexAI      61993SexAI     
+                                             14177   61994SexAI      76170          
+                                              6390    7754StuI       14143SexAI     
+                                              4392   14144SexAI      18535SexAI     
+                                              3997    2048SexAI       6044StuI      
+                                              2047       1            2047SexAI     
+                                              1709    6045StuI        7753StuI      
+
+
+     AatII     GACGT^C                   3
+     PsrI      (7/12)GAACNNNNNNTAC(12/   4
+                                             38291    3664PsrI       41954PsrI      
+                                             12702   41955PsrI       54656AatII     
+                                             10692   65479AatII      76170          
+                                              8412   54657AatII      63068PsrI      
+                                              2410   63069PsrI       65478AatII     
+                                              2237     447PsrI        2683AatII     
+                                               980    2684AatII       3663PsrI      
+                                               446       1             446PsrI       
+
+
+     III. What the Output Means
+     The column "# of Sites" tells how many sites are found for each enzyme.
+     See note 2 below for the equations predicting the numbers of fragments in
+     partial or complete digests.  The column "Frags" lists the fragments 
+     produced by digestion with the given enzymes in descending order of size,
+     as they would appear on a gel. The columns "Begin" and "End" list the
+     positions of cut and the cutting enzyme on the corresponding 5' and 3'
+     ends of each fragment in "Frags". 
+
+     IV. Input file
+     Generally, MULTIDIGEST uses output from BACHREST directly as 
+     input. Files generated by INTREST are no longer supported.
+     Only BACHREST files generated using recognition sites in REBASE
+     format can be read by MULTIDIGEST. Note: The BACHREST output format has
+     been modified with BACHREST Version 3/28/2006. MULTIDIGEST is NOT
+     backward compatible with files produced by earlier versions
+     of BACHREST.
+     
+     However, the user can even use MULTIDIGEST to predict restriction 
+     fragments for molecules whose DNA sequence is not known.  If one knows 
+     the restriction sites for several enzymes, it is possible to create a 
+     datafile in the same format as the BACHREST output. An example
+     is shown below:
+
+
+     -----------------------------------------------------------
+                	  BACHREST   Version  3/27/2006
+
+     ARBLKSP             Topology: CIRCULAR  Length:     2958 bp
+     -----------------------------------------------------------
+     Search parameters:
+	Recognition sequences between    4 and   23 bp
+	Ends: 5' protruding, Blunt, 3' protruding
+	Type: Symmetric, Asymmetric
+	Minimum fragments:     0     Maximum fragments:  6000
+	Maximum fragments to print:    30
+     -----------------------------------------------------------
+
+                                              # of
+     Enzyme          Recognition Sequence     Sites     Sites   Frags   Begin     End
+     --------------------------------------------------------------------------------
+
+     AarI            CACCTGC(4/8)                 0
+
+     AasI            GACNNNN^NNGTC                2
+                                                	  186    1882    1262     185
+                                                	 1262    1076     186    1261
+
+     AciI            CCGC(-3/-1)                 36
+                                                        (Fragments not shown)
+
+
+     In constructing such a file, the following rules apply:
+
+     1.  The first line is a title line and is ignored.
+     2.  The sequence name may be up to 20 non-blank characters
+     3.  All enzymes must include a name, a recognition sequence, a cutting
+         site, and the number of sites found. These data items must all be on
+         the same line, and must be separated by one or more blanks.
+     4.  Restriction enzyme names must be ten or fewer characters. Blanks are
+         not permitted.
+     5.  If the recognition sequence is assymetric, (ie. the inverse 
+         complement is not the same as the original site) a second cutting 
+         site must be included after the first. This number must be enclosed 
+         in parentheses, as in BACHREST output. (Empty parentheses 
+         are permitted if you're too lazy to include a number.) 
+     6.  The positions of the sites found are listed below the enzyme, one 
+         site per line.  The information in the columns "Frags","Begin", and 
+         "End" may be omitted entirely. 
+     7.  A blank line must separate each enzyme listing.
+
+     V. Usage Notes
+     1.  As many enzymes as you wish may be included in a given digest.  In 
+         practice, this is usually not more than three.
+ 
+     2.  The numbers of expected fragments in complete or partial digests of
+         circular or linear molecules with n cutting sites are defined below:
+
+  
+  
+                         circular                         linear
+               -------------------------------------------------------------
+              |                               |                             |
+    complete  |  f   (n) =  n                 |  f   (n) = n + 1            |
+              |   c,c                         |   c,l                       |
+              |                               |                             |
+              |-------------------------------+-----------------------------|
+              |              2                |                          2  |
+    partial   | f   (n) =   n                 |             (n+1) + (n+1)   |
+              |  p,c                          |  f   (n) =  -------------   |
+              |                               |   p,l             2         |
+               -------------------------------------------------------------
+

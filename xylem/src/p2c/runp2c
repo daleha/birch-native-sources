@@ -1,0 +1,24 @@
+#!/bin/csh
+# This script translates all files in the current directory of the form
+# name.p and translates them into c, writing name.c to the DEST directory.
+# If used with an argument, the file named in the argument is translated.
+# eg. runp2c getloc.p      will translate getloc.p into getloc.c.
+
+set DEST = ../../src.c
+
+# set $testset to programs to be tested.
+set NUMARGS = $#argv
+
+if ($NUMARGS == 0) then 
+#   set TESTSET = (splitdb getloc identify getob reform ribosome shuffle\
+#                  findkey fetch features)
+    set TESTSET = (*.p) 
+else
+   set TESTSET = $1
+endif
+
+# test programs one at a time
+foreach PROGRAM ($TESTSET)
+  set name = $PROGRAM:r
+  p2c -c loc.p2crc -o $DEST/$name.c $name.p
+  end

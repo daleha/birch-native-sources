@@ -1,0 +1,208 @@
+INSTALLING FSAP                                 Update 2 April 2006
+
+CONTENTS:
+
+I. BASIC INSTALLATION
+
+     A. The files.
+     B. Compiling programs (if necessary).
+     D. Copying files.
+     E. Setting environment variables and path
+
+II. WHAT IF YOU DON'T WANT TO INSTALL ALL OF FSAP?
+
+III. SPECIAL INSTALLATION NOTES FOR GDE
+
+IV. RE-COMPILING AND MODIFYING FSAP PROGRAMS
+
+V. CLEAN UP
+
+*********************************************
+I  BASIC INSTALLATION
+*********************************************
+
+A. The Files
+------------
+
+1. If you are reading this, you have already successfully
+downloaded, uncompressed and un-tarred fsap.tar.Z. You should now
+have the following files and directories in your "fsap" directory:
+
+drwx------   2 frist    drr         4096 Mar 29 12:40 bin-linux-intel/
+drwx------   2 frist    drr         4096 Mar 29 12:12 bin-solaris-amd64/
+drwx------   2 frist    drr         4096 Apr  2 16:11 bin-solaris-sparc/
+drwx------   3 frist    drr         4096 Dec  6  2003 dat/
+drwx------   2 frist    drr         4096 Apr  2 15:11 doc/
+drwxr-xr-x   2 frist    drr         4096 Apr  2 17:06 GDE/
+-rw-------   1 frist    drr         7041 May  3  1996 INSTALL.txt
+-rw-------   1 frist    drr         3666 Mar 29 10:45 RELEASE.NOTES
+drwx------   4 frist    drr         4096 Mar 29 11:35 src/
+drwx------   2 frist    drr         4096 Apr  2 16:11 src.c/
+drwx------   2 frist    drr         4096 Apr  2 16:35 test/
+
+
+Each of the 3 bin directories has binaries compiled for the three
+supported platforms: Linux-Intel, Solaris-AMD64 and Solaris-Sparc.
+Move the files appropriate for your platform to a bin directory
+that is in your $PATH, or add the appropriate bin directory
+to your $PATH.
+
+B. Compiling the programs (if necessary)
+----------------------------------------
+
+1. PASCAL code (sun4 only)
+- - - - - - - - - - - - -
+On most Sun Sparc systems, you should be able to use the pre-
+compiled binaries, and can skip this section. Should you need to
+recompile, (eg. you wish to change program constants) the directory
+src/pascal_tools contains the tools necessary for recompiling and
+modifying the programs. Modification of the programs is discussed
+later in this document. 
+
+First, copy the Pascal source to src/install:
+
+cd src
+cp *.p install
+
+Next, 
+
+cd install
+compile.csh
+
+to compile the programs using the Sun Pascal compiler.  By default,
+compile.csh will compile all files with the ".p" extension and
+write the executable code to the "bin" directory. Executable code 
+will have library routines loaded at compile time, meaning that
+they should run even on workstations that do not have Pascal
+libraries on line. 
+
+You can modify compile.csh to write binaries to any directory you
+wish, or to load library routines dynamically, if your workstation
+has Pascal libraries. See comments in compile.csh for more
+information.
+
+2. C code (Sun, HP)
+- - - - - - - - - 
+
+C code is provided in the directory src.c. See README for more information.
+Note: So far, this C code has only been tested on Sun4 and HP900 Unix
+systems, and for non-Sun use, you should consider XYLEM to be 
+an application under development. Everything SEEMS to work, but more
+rigorous testing and development is needed to make the C code 
+portable for a wide range of platforms.
+
+C. Copying files
+----------------
+
+Make sure the files in the bin directory are world
+readable/executable:
+
+cd bin
+chmod 755 *
+
+Copy the contents of the "bin" directory to the directory in which
+you wish the executables to reside. For example:
+
+cp  *  /usr/local/bin
+
+
+Copy the contents of the doc directory to the directory in which
+you wish documentation to reside. For example, 
+
+cd ../doc
+cp *.doc /usr/local/doc/fsap
+
+You may wish to set an environment variable in your .cshrc file telling
+where the documentation is. For example, if $doc is set as follows,
+
+setenv doc /usr/local/doc
+
+then '$doc/fsap' would be the directory for FSAP documentation.
+
+
+D. Setting environment variables and path
+-----------------------------------------
+
+The location of the FSAP programs must added to the $path
+environment variable. For example, your .cshrc file might contain
+
+set path = ($path usr/local/bin)
+
+if you had copied the programs to /usr/local/bin (Note: if /usr/local/bin
+is already in your $path, you don't need to do this).
+
+Finally, make sure that 'noclobber' is not set in your .cshrc file. That is,
+comment out of your .cshrc file any line that says
+
+set noclobber
+
+This command prevents the overwriting of already existing files, which is
+necessary for many FSAP programs. To comment it out, simply put a '#' in
+the first column:
+
+#set noclobber
+
+***************************************************
+II. WHAT IF YOU DON'T WANT TO INSTALL ALL OF FSAP?
+***************************************************
+
+All FSAP programs are 'standalone'. You can pick and choose which you
+wish to install.
+
+**********************************************
+III. SPECIAL INSTALLATION NOTES FOR GDE
+*********************************************
+
+While most FSAP programs have have easy-to-use menus for text-only terminals,
+they are even more powerful when used with the Genetic Data
+Environment (GDE) by Steven Smith (available by anonymous FTP at
+golgi.harvard.edu). GDE is essentially a generic user interface
+that programs. Intrinsically, GDE contains a sequence alignment
+editor and a number of other functions. In addition to its
+intrinsic functions, GDE reads in information necessary to call
+other programs from a file called .GDEmenus. For each program added
+to GDE, .GDEmenus contains an entry specifying what should appear
+in a pop-up menu (eg. choice buttons, pull-down "chooser" menus,
+sliders for numerical arguments, or free text), as well as the
+command to be issued by GDE to call the program.  
+
+The following FSAP programs are available for use in GDE:
+FUNNEL
+NUMSEQ
+BACHREST
+P1HOM
+P2HOM
+D3HOM
+D4HOM
+TESTCODE
+
+While these programs can not be run using command line options, shell
+scripts have been written that, given the values of parameters from GDE,
+can generate the user responses necessary for running these interactive
+programs, For example, the flow of information to run NUMSEQ is as follows:
+
+GDE numseq menu --> numseq.csh --> numseq --> textedit
+
+Assuming that both GDE and FSAP
+are already running on your system, getting GDE to call FSAP programs
+requires only two steps: 1) adding the menu items found in
+xylem/GDE/FSAP.GDEmenus to the .GDEmenus file 2) Copying the shell
+scripts to the bin directory where they will reside (eg. /usr/local/bin).
+More specific instructions can be found in fsap/GDE.
+
+*********************************************
+IV. RE-COMPILING AND MODIFYING FSAP PROGRAMS
+*********************************************
+
+See src/README.
+
+*************
+V. Clean up
+*************
+
+Assuming that you have copied executables into a centrally-
+located 'bin' directory (eg. /usr/local/bin) and documentation
+into a centrally-located 'doc' directory (eg. $doc/fsap) you
+can delete the entire fsap directory.  If you are using FSAP with GDE,
+you need to install the files from the 'GDE' directory as described above
+before deleting this directory. 

@@ -1,0 +1,45 @@
+PROT2NUC       Version  8/10/94
+
+     IUPAC-IUP AMINO ACID SYMBOLS
+     [J. Biol. Chem. 243, 3557-3559 (1968)]
+
+          Phe         F          Leu         L          Ile         I
+          Met         M          Val         V          Ser         S
+          Pro         P          Thr         T          Ala         A
+          Tyr         Y          His         H          Gln         Q
+          Asn         N          Lys         K          Asp         D
+          Glu         E          Cys         C          Trp         W
+          Arg         R          Gly         G          STOP        *
+          Asx         B          Glx         Z          UNKNOWN     X
+
+
+     IUPAC-IUB SYMBOLS FOR NUCLEOTIDE NOMENCLATURE
+     [Cornish-Bowden (1985) Nucl. Acids Res. 13: 3021-3030.]
+
+     Symbol         Meaning              | Symbol         Meaning
+     ------------------------------------+---------------------------------
+     G              Guanine              | k              G or T
+     A              Adenine              | s              G or C
+     C              Cytosine             | w              A or T
+     T              Thymine              | h              A or C or T
+     U              Uracil               | b              G or T or C
+     r              Purine (A or G)      | v              G or C or A
+     y              Pyrimidine (C or T)  | d              G or T or A
+     m              A or C               | n              G or A or T or C
+
+pI39
+              5             10             15             20             25
+M  E  K  K  S  L  A  A  L  S  F  L  L  L  L  V  L  F  V  A  Q  E  I  V  V  
+ATGGArAArAArTCnCTnGCnGCnCTnTCnTTyCTnCTnCTnCTnGTnCTnTTyGTnGCnCArGArAThGTnGTn
+            AGyTTr      TTrAGy   TTrTTrTTrTTr   TTr                        
+
+             30             35             40             45             50
+T  E  A  N  T  C  E  H  L  A  D  T  Y  R  G  V  C  F  T  N  A  S  C  D  D  
+ACnGArGCnAAyACnTGyGArCAyCTnGCnGAyACnTAyCGnGGnGTnTGyTTyACnAAyGCnTCnTGyGAyGAy
+                        TTr            AGr                     AGy         
+
+             55             60             65             70
+H  C  K  N  K  A  H  L  I  S  G  T  C  H  D  W  K  C  F  C  T  Q  N  C  
+CAyTGyAArAAyAArGCnCAyCTnAThTCnGGnACnTGyCAyGAyTGGAArTGyTTyTGyACnCArAAyTGy
+                     TTr   AGy                                          
+

@@ -1,0 +1,211 @@
+# ----------------------------------------------------------------------
+# This file is called by .cshrc to initialize environment variables
+# and set up the path.
+
+# Platform-specific syntax is chosen based on XYLEM_PLATFORM.
+# (default = sun)
+if (-e /usr/ucb/hostname) then
+   set HOSTNAME = `/usr/ucb/hostname`
+else
+   set HOSTNAME = `hostname`
+endif
+
+switch ($HOSTNAME)
+#  case polaris:
+#    set XYLEM_PLATFORM = AIX 
+#    breaksw
+  case regulus:
+    set XYLEM_PLATFORM = AIX 
+    breaksw
+#  case deneb:
+#    set XYLEM_PLATFORM = HP 
+#    breaksw
+  default:
+    set XYLEM_PLATFORM = sun 
+    breaksw
+endsw 
+
+# On machines with multiple CPUs, threaded versions of fasta programs
+# are available. All end with _t. $THREADED is added to fasta program
+# names in .GDEmenus. 
+# Note that setenv, and not set, must be used, to export THREADED
+# so that the Bourne shell can use it.
+if ($HOSTNAME == castor | $HOSTNAME == merak    | $HOSTNAME == mira |\
+    $HOSTNAME == pollux | $HOSTNAME ==  antares | $HOSTNAME == toliman | \
+    $HOSTNAME == hadar  | $HOSTNAME == goad     | $HOSTNAME == polaris) then
+   setenv THREADED _t
+   alias fasta3 fasta3_t
+   alias fastx3 fastx3_t
+   alias fasty3 fasty3_t
+   alias tfasta3 tfasta3_t
+   alias tfastx3 tfastx3_t
+   alias tfasty3 tfasty3_t
+   alias ssearch3 ssearch3_t
+else
+   setenv THREADED 
+endif
+
+#useful environment variables for sequence work
+# both upper and lowercase equivalents are permitted
+setenv DB      /home/psgendb
+setenv db      $DB
+setenv DATA    $DB/dat
+setenv data    $DATA
+setenv DAT     $DATA
+setenv dat     $DATA
+setenv GENBANK $DB/GenBank
+setenv GENPEPT $DB/GenPept
+setenv genbank $GENBANK
+setenv GB      $GENBANK
+setenv gb      $GENBANK
+setenv GP      $GENPEPT
+setenv gp      $GENPEPT
+setenv LIMB    $DB/LiMB
+setenv limb    $LIMB
+setenv DOC     $DB/doc
+setenv doc     $DOC
+setenv VEC     $DB/vector
+setenv vec     $VEC
+setenv PIR     $DB/PIR
+setenv pir     $PIR
+setenv RE      $db/REBASE
+setenv FASTLIBS $DATA/fasta/fastgbs
+
+# include bin directory in path
+#set path = ($path $db/bin)
+
+# Platform-specific setup commands
+switch ($XYLEM_PLATFORM)
+  case "sun":
+    set psgendbpath =  $db/bin
+    breaksw
+  case "AIX":
+    set psgendbpath =  $db/bin/AIXbin
+    breaksw
+  case "HP":
+    set psgendbpath =  $db/bin/HPbin
+    breaksw
+  default:
+    set psgendbpath =  $db/bin
+    breaksw
+endsw
+
+set found = false
+foreach name ($path)
+  if ($name == $psgendbpath) then
+     set found = true 
+  endif
+end
+if ($found == false) then
+   set path = ($psgendbpath $path)
+endif
+
+
+# Library path - 
+#  /usr/dt/lib may be needed by IMAGE
+#  /usr/local/qt/lib is needed by dapple.
+#setenv LD_LIBRARY_PATH '/usr/lib:/usr/lib/X11:/usr/openwin/lib:/usr/dt/lib'
+if ${?LD_LIBRARY_PATH} then
+   setenv LD_LIBRARY_PATH $LD_LIBRARY_PATH\:/usr/lib\:/usr/lib/X11\:/usr/openwin/lib\:/usr/dt/lib\:/usr/local/qt/lib
+else
+   setenv LD_LIBRARY_PATH '/usr/lib:/usr/lib/X11:/usr/openwin/lib:/usr/dt/lib:/usr/local/qt/lib'
+endif
+
+
+# Environment variables needed by BOXSHADE
+setenv BOXDIR $dat/boxshade
+
+# Environment variables for DNA-GUI
+setenv XAPPLRESDIR $db/XAPPLRESDIR
+
+# Environment variables specific for MBCRR package
+setenv MBCRR   $DB/MBCRR-Package
+setenv mbcrr   $MBCRR
+setenv PIMA_HOME $dat/pima
+setenv PLSEARCH_HOME  $MBCRR/plsearch-4.2
+
+# Environment variables for GDE
+setenv GDE_HELP_DIR $dat/GDE/GDEHELP
+setenv gde $GDE_HELP_DIR
+setenv GDE_PSVIEW ghostview
+
+# Signal_Scan
+setenv SIGNAL_HOME $dat/sigscan
+
+#VISA
+setenv HELPPATH $doc/visa
+
+#ACEDB
+setenv ACEDB $db/acedb
+
+#NCBI
+#setenv NCBI $db/entrez
+setenv NCBI $db/ncbi
+alias entrez Nentrez
+alias clever nclever
+
+
+# noclobber must be off so that files can be overwritten
+unset noclobber
+
+# Printer variables
+setenv PSPRINT ccp
+
+# Environment variables for MAPMAKER, GENEHUNTER
+setenv MAPM_LIB $DAT/mapmaker
+setenv GH_DIR $DAT/genehunter
+#setenv GS_LIB $MAPM_LIB/ghostscript
+
+# Environment variables for GeneParser
+setenv GP_HOME $dat/geneparser
+
+# Environment variables for tacg
+setenv TACGLIB $dat/tacg
+
+# Environment variables for treetool
+# The setenv statement below is supposed to tell treetool where
+# to find fonts, but it simply doesn't work. The user must have
+# a .font_map file in their $home directory.
+#setenv TREETOOL_FONTS $dat/treetool/font_map
+alias treetool 'if (! -e $home/.font_map) ln -s $dat/treetool/font_map $home/.font_map; $db/bin/treetool'
+
+
+# Environment variables for Image
+setenv IMTOP_DIR '.'    # defaults to current directory
+setenv IMHELP_DIR $doc/Image
+setenv IMTRANSFER_CMD imtransfer
+setenv IMSHELL_CMD /bin/csh
+setenv IMCONVERT_CMD im3conv
+#setenv FPCTOP_DIR 
+
+# Environment variables for primer3
+setenv PRIMER_BIN $db/bin
+
+# Environment variables for XLandscape
+setenv XENVIRONMENT $db/dat/XLandscape/XLand
+
+# ----------------------------------------------------------------------
+# force prompt to display durrent working directory
+#    set prompt="{`hostname`:$cwd}"
+#    alias cd            'cd \!*; set prompt="{`hostname`:$cwd"}'
+#    alias popd          'popd \!*; set prompt="{`hostname`:$cwd"}'
+#   alias pushd         'pushd \!*; set prompt="{`hostname`:$cwd"}'
+# ----------------------------------------------------------------------
+
+# ----------------------------------------------------------------------
+# force prompt to display durrent working directory
+    set prompt="{$HOSTNAME":"$cwd"}
+    alias cd            'cd \!*; set prompt="{$HOSTNAME":"$cwd"}'
+    alias popd          'popd \!*; set prompt="{$HOSTNAME":"$cwd"}'
+    alias pushd         'pushd \!*; set prompt="{$HOSTNAME":"$cwd"}'
+# ----------------------------------------------------------------------
+
+# fsaptest will allow the user to use a test version of FSAP
+#alias fsaptest $db/admin/fsaptest 
+
+# For ospX users, make sure ~/X11/lib/app-defaults/Xosp exists
+alias ospX '$db/admin/checkX11; $db/bin/ospX'
+
+# record usage of specific programs
+alias gde  'echo `whoami` `date` >> $db/admin/gde.log; $db/bin/gde'
+#alias fasta  'echo `whoami` `date` >> $db/admin/fasta.log; $db/bin/fasta'

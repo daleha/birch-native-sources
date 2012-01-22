@@ -1,0 +1,25 @@
+                      sgc1 - mamalian mitochondrial genetic code
+
+                                 second position
+          first position  -------------------------------    third position
+          (5' end)        u         c         a         g    (3' end) 
+          -----------------------------------------------------------------
+          u               F         S         Y         C    u
+                          F         S         Y         C    c
+                          L         S         *         W    a
+                          L         S         *         W    g
+          -----------------------------------------------------------------
+          c               L         P         H         R    u
+                          L         P         H         R    c
+                          L         P         Q         R    a
+                          L         P         Q         R    g
+          -----------------------------------------------------------------
+          a               I         T         N         S    u
+                          I         T         N         S    c
+                          M         T         K         *    a
+                          M         T         K         *    g
+          -----------------------------------------------------------------
+          g               V         A         D         G    u
+                          V         A         D         G    c
+                          V         A         E         G    a
+                          V         A         E         G    g

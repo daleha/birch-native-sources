@@ -1,0 +1,16 @@
+INTREST   Version  8/14/2001
+PSDRR1  Configuration:  LINEAR  Length:          734 bp
+                                           # of
+                                  Cut     Sites Sites   Frags   Begin     End
+EcoRI     GAATTC                   1          0
+                                                          734       1     734
+
+AccI      GTMKAC                   2          2
+                                                  575     574       1     574
+                                                  686     111     575     685
+                                                           49     686     734
+
+BspMI     ACCTGC                  10 ( 14)    1
+                                                  119     616     119     734
+                                                          118       1     118
+

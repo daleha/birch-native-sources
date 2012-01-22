@@ -1,0 +1,23 @@
+;---------------------------------------------------------------------------
+;                    FINDKEY/GDE  Keyword File Instructions
+; 
+; 1. Type in one or more keywords below,
+;                    or
+;    Place cursor at end of this file and choose 'Include File' in the FILE
+;    menu to read in a file of keywords.
+;
+; 2. Choose 'Save Current File' in the File menu
+; 3. Quit this window
+;
+; FINDKEY will then perform the keyword search. YOU DON'T NEED TO EDIT
+; OUT THESE COMMENT LINES.
+;
+; NOTE: Put each keyword on a separate line
+; SAMPLE KEYWORD FILE:
+;
+; maize
+; corn
+; Z.mays
+; Zea
+;---------------------------------------------------------------------------
+

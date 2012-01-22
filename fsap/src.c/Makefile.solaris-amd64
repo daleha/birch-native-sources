@@ -1,0 +1,87 @@
+#This Makefile works with Sun cc and gcc
+
+#sun (bsd)
+BIN = ../bin-solaris-amd64
+INCLIB = .
+LDLIB = .
+LIBOBJS = p2clib.o
+#CC= gcc
+#CC= xlc
+CC= cc
+CFLAGS= -O  -L$(LDLIB) -lp2c -lm -I$(INCLIB)
+#CFLAGS= -mi386 -O  -L$(LDLIB) -lp2c -lm -I$(INCLIB)
+LFLAGS=  -c
+
+PROGS= bachrest d3hom d4hom multidigest funnel gel intrest numseq\
+       p1hom p2hom prostat testcode 
+
+all : libp2c.a $(PROGS)
+
+clean : 
+	rm libp2c.a *.o $(PROGS)
+
+install : 
+	mv $(PROGS) $(BIN)
+
+# Making the p2c runtime library
+libp2c.a: $(LIBOBJS)
+	ar r libp2c.a $(LIBOBJS); ranlib libp2c.a
+
+p2clib.o: p2clib.c
+	$(CC) $(LFLAGS)  p2clib.c
+
+#libp2c.a: libp2c.a
+#	ranlib libp2c.a
+
+# Making the programs
+bachrest :   
+	$(CC) bachrest.c $(CFLAGS)  -o bachrest 
+
+comp :   
+	$(CC) comp.c $(CFLAGS) -o comp
+
+d3hom :   
+	$(CC) d3hom.c $(CFLAGS)  -o d3hom
+
+d4hom :   
+	$(CC) d4hom.c $(CFLAGS) -o d4hom 
+
+multidigest :   
+	$(CC) multidigest.c $(CFLAGS) -o multidigest 
+
+funnel :   
+	$(CC) funnel.c $(CFLAGS) -o funnel 
+
+gel :   
+	$(CC) gel.c $(CFLAGS) -o gel 
+
+intrest :   
+	$(CC) intrest.c $(CFLAGS) -o intrest 
+
+map :   
+	$(CC) map.c $(CFLAGS) -o map 
+
+numseq :   
+	$(CC) numseq.c $(CFLAGS) -o numseq 
+
+p1hom :   
+	$(CC) p1hom.c $(CFLAGS) -o p1hom 
+
+p2hom :   
+	$(CC) p2hom.c $(CFLAGS) -o p2hom 
+
+prostat :   
+	$(CC) prostat.c $(CFLAGS) -o prostat 
+
+modlib :   
+	$(CC) modlib.c $(CFLAGS) -o modlib 
+
+testcode :   
+	$(CC) testcode.c $(CFLAGS) -o testcode 
+
+testreal :   
+	$(CC) testreal.c $(CFLAGS) -o testreal 
+
+lineplot :   
+	$(CC) lineplot.c $(CFLAGS) -o lineplot 
+

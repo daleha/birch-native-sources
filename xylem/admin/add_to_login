@@ -1,0 +1,6 @@
+##################################################
+# login.source is a file that contains setup commands 
+# for molecular biology users. The source command
+# causes it to be read and executed at login. 
+##################################################
+source ~psgendb/admin/login.source

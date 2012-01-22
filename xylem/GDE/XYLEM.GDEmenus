@@ -1,0 +1,511 @@
+#  - - - - - - - - - - - XYLEM items ( 5/10/02) - - - - - - - - - - - - -
+#                   by Brian Fristensky, Univ. of Manitoba 
+#                          frist@cc.umanitoba.ca
+#
+#   INSTALLATION NOTES:
+#   1. Create a directory called $GDE_HELP_DIR/xylem
+#      and copy the following files to this directory:
+#              findkey.doc
+#              fetch.doc
+#              features.doc
+#
+#      Note: If you already have a directory for XYLEM documentation,
+#      just create a symbolic link to that directory.
+#
+#   2. Create a directory called $GDE_HELP_DIR/xylem and copy the following
+#      files to this directory:
+#               acc.template
+#               feafile.template
+#               keyfile.template
+#               namefile.template
+#               names.template
+#
+#       These dummy files are read into textedit windows by the GDE items
+#       below. They contain instructions for the user to enter data.
+#       For example, keyfile.template contains instructions telling the
+#       user how to enter keywords for use with FINDKEY.
+#
+#   3. Copy the file 'GBfilter' to your bin directory. This is a shell
+#      script used by FETCH.
+#
+#   4. Insert the following items in .GDEmenus. Comment lines indicate
+#      suggested menus for insertion of various menu items.
+#
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+
+###########################  FILE MENU ##################################
+#------------ SPLITDB ( 5/10/02) ---------------
+item:SPLITDB - GenBank/PIR to XYLEM dataset
+itemlabel:SPLITDB - GenBank/PIR to XYLEM dataset
+itemmethod:splitdb $DBTYPE $SPECIESINFO $COMPRESSION $FILENAME $DBNAME.ano $DBNAME.wrp $DBNAME.ind
+itemhelp:xylem/splitdb.asc
+
+arg:FILENAME
+arglabel:GenBank/PIR file
+#argtype:text
+argtype:file_chooser
+
+arg:DBTYPE
+argtype:chooser
+arglabel:Input file type
+argchoice:GenBank (.gen):
+argchoice:PIR (.pir):-p
+argvalue:0
+
+arg:DBNAME
+arglabel:Name for XYLEM-format GenBank Dataset
+argtype:text
+argtext:dataset
+
+arg:SPECIESINFO
+argtype:chooser
+arglabel:Include species name in index (.ind)? (GenBank only)
+argchoice:Yes:-t
+argchoice:No:
+argvalue:0
+
+arg:COMPRESSION
+argtype:chooser
+arglabel:Compress leading blanks in annotation (.ano)?
+argchoice:Yes:-c
+argchoice:No:
+argvalue:1
+
+out:out1
+outformat:genbank
+
+
+
+#------------ Open XYLEM Dataset (GenBank) ( 9/ 6/94) ---------------
+item:Open_XYLEM (GenBank)
+itemlabel:Open XYLEM Dataset (GenBank)
+itemmethod:getloc $DBNAME.ind $DBNAME.ano $DBNAME.wrp $DBNAME.ind out1
+
+arg:DBNAME
+arglabel:XYLEM-format GenBank Dataset
+argtype:text
+
+out:out1
+outformat:genbank
+
+#-------------- Open XYLEM Database (PIR) ( 9/ 6/94) --------------
+item:Open_XYLEM (PIR)
+itemlabel:Open XYLEM Dataset (GenBank)
+itemmethod:getloc -p $DBNAME.ind $DBNAME.ano $DBNAME.wrp $DBNAME.ind out1.pir; readseq -a -f2 out1.pir > out1
+
+arg:DBNAME
+arglabel:XYLEM-format PIR Dataset
+argtype:text
+#argtype:file_chooser
+
+out:out1
+outformat:genbank
+
+
+#################################    PROTEIN   ################################
+#--------------- PROT2NUC - Reverse Translation ( 8/10/94) -----------------
+item:PROT2NUC - reverse translation
+itemmethod: sed "s/[#%]/>/" <in1 | prot2nuc  -l$LINLEN -g$GROUP > in1.out; (textedit in1.out; rm in1*)&
+itemhelp: xylem/prot2nuc.doc
+
+arg:LINLEN
+arglabel:CODONS PER LINE
+argtype:slider
+argmin:5
+argmax:100
+argvalue:25
+
+arg:GROUP
+arglabel:NUMBERING INTERVAL (amino acids/codons)
+argtype:slider
+argmin:5
+argmax:100
+argvalue:5
+
+in:in1
+informat:flat
+
+########################### DATABASE MENU ###############################
+#------------------- FINDKEY  (11/14/99)-----------------------
+item:FINDKEY - Keyword Search
+itemmethod: $KEYWORDS; (findkey $DATABASE in1.kw in1.nam in1.fnd; rm in1.kw; (textedit in1.fnd; rm in1.fnd)& (textedit in1.nam -Ws 150 628; rm in1.nam)&  )&
+itemhelp:xylem/findkey.asc
+
+arg:KEYWORDS
+arglabel:KEYWORDS
+argtype:chooser
+argchoice:Single keyword:echo $KEY > in1.kw
+argchoice:Create list of keywords:cat $GDE_HELP_DIR/xylem/GDE/keyfile.template > in1.tmp; textedit in1.tmp; egrep -v -e \; in1.tmp >in1.kw;rm in1.tmp*
+argvalue:0
+
+arg:KEY
+arglabel:Single keyword
+argtype:text
+
+arg:DATABASE
+arglabel:DATABASE
+argtype:choice_menu
+argchoice:PIR:-p
+argchoice:PIR Dataset:-P $DBFILE
+argchoice:GB bacterial:-b
+argchoice:GB mamalian:-m
+argchoice:GB phage:-g
+argchoice:GB primate:-r
+argchoice:GB rodent:-d
+argchoice:GB unannotated:-u
+argchoice:GB vertebrate:-t
+argchoice:GB invertebrate:-i
+argchoice:GB plant:-l
+# As of GB114.0 RNA division is deleted from GenBank
+#argchoice:GB rna:-n
+argchoice:GB synthetic:-s
+argchoice:GB viral:-a
+argchoice:GB patented:-x
+argchoice:GB Seq. Tagged Sites:-z
+argchoice:GB expressed seq. tag:-e
+argchoice:GB Genome Survey Seq.:-S
+argchoice:GB High Throughput Genomic:-h
+argchoice:GenBank Dataset:-G $DBFILE
+argchoice:VecBase:-v
+argvalue:0
+
+arg:DBFILE
+arglabel:Dataset name
+argtype:text
+
+in:in1
+informat:flat
+
+#------------------- FETCH ( 2/ 7/94) --------------------------
+# Note: This menu requires that the shell script 'GBfilter' be
+# in your bin directory.
+item:FETCH
+itemmethod: $NAMES; (fetch $WHATTOGET $DATABASE in1.nam in1.tmp; rm in1.nam; $WHERE) &
+itemhelp:xylem/fetch.doc
+
+arg:NAMES
+arglabel:NAMES/ACCESSION #'S
+argtype:chooser
+argchoice:Single name/acc:echo $NAMEFILE > in1.nam
+argchoice:Create list of names/acc#'s:cat $GDE_HELP_DIR/xylem/GDE/namefile.template > in1.tmpname; textedit in1.tmpname; egrep -v -e \; in1.tmpname >in1.nam;rm in1.tmpname* 
+argchoice:File of Names/Acc.#'s:cat $NAMEFILE >in1.nam
+argvalue:0
+
+arg:NAMEFILE
+arglabel:Single name, accession # or file of names/acc. #'s
+argtype:text
+
+arg:WHATTOGET
+arglabel:WHAT TO GET
+argtype:chooser
+argchoice:annotation:-a
+argchoice:sequence:-s
+argchoice:both:-b
+argvalue:2
+
+arg:DATABASE
+arglabel:DATABASE
+argtype:chooser
+argchoice:GenBank:-g
+argchoice:GenBank Dataset:-G $DBFILE
+argchoice:PIR:-p
+argchoice:PIR Dataset:-P $DBFILE
+argchoice:VecBase:-v
+argvalue:0
+
+arg:DBFILE
+arglabel:Dataset
+argtype:text
+
+arg:WHERE
+arglabel:WHERE TO SEND OUTPUT
+argtype:chooser
+# If GenBank file, read directly, otherwise, convert to GenBank.
+argchoice:GDE:(GBfilter in1.tmp in1.gen; gde in1.gen; rm in1.*)&
+argchoice:Textedit window:(textedit in1.tmp;rm in1.tmp) &
+argchoice:Output file:mv in1.tmp $OUTFILE; echo ' Fetch completed'
+argchoice:GenBank Dataset:splitdb -g in1.tmp $OUTFILE.ano $OUTFILE.wrp $OUTFILE.ind; rm in1.*; echo ' Fetch completed'
+argchoice:PIR Dataset:splitdb -p in1.tmp $OUTFILE.ano $OUTFILE.wrp $OUTFILE.ind; rm in1.*; echo ' Fetch completed'
+argvalue:0
+
+arg:OUTFILE
+arglabel:Output file or Dataset name
+argtype:text
+
+in:in1
+informat:genbank
+
+out:OUTPUT
+outformat:genbank
+
+#----------------  FEATURES - by feature key ( 3/14/94)  -------------------
+item:FEATURES - Extract by feature keys
+# sed corrects errors in GDE-generated genbank output
+itemmethod: sed -e "s/^LOCUS */LOCUS       /" -e "s/^ ACCESSION/ACCESSION /" -e "/^$/d"  in1 > in1.gen; $FEALIST; ($FCOMMAND -F in1.feafile $DATABASE; rm in1.feafile in1.efile in1.gen; $WHERE) & 
+itemhelp:xylem/features.doc
+
+arg:FEALIST
+arglabel:FEATURES TO EXTRACT
+argtype:chooser
+argchoice:Single feature:echo $FEAKEY > in1.feafile
+argchoice:Create list of features:cat $GDE_HELP_DIR/xylem/GDE/feafile.template > in1.tmpfeafile; textedit in1.tmpfeafile; egrep -v -e \; in1.tmpfeafile >in1.feafile; rm in1.tmpfeafile 
+argvalue:0
+
+arg:FEAKEY
+arglabel:Single feature key
+argtype:choice_list
+argchoice:allele:allele
+argchoice:attenuator:attenuator
+argchoice:binding:binding
+argchoice:CAAT_signal:CAAT_signal
+argchoice:CDS:CDS
+argchoice:chromosome:chromosome
+argchoice:conflict:conflict
+argchoice:contig:contig
+argchoice:C_region:C_region
+argchoice:D_loop:D_loop
+argchoice:D_region:D_region
+argchoice:D_segment:D_segment
+argchoice:enhancer:enhancer
+argchoice:exon:exon
+argchoice:GC_signal:GC_signal
+argchoice:iDNA:iDNA
+argchoice:intron:intron
+argchoice:J_region:J_region
+argchoice:J_segment:J_segment
+argchoice:LTR:LTR
+argchoice:mat_peptide:mat_peptide
+argchoice:misc_binding:misc_binding
+argchoice:misc_difference:misc_difference
+argchoice:misc_feature:misc_feature
+argchoice:misc_recomb:misc_recomb
+argchoice:misc_RNA:misc_RNA
+argchoice:misc_signal:misc_signal
+argchoice:misc_structure:misc_structure
+argchoice:modified_base:modified_base
+argchoice:mRNA:mRNA
+argchoice:mutation:mutation
+argchoice:N_region:N_region
+argchoice:old_sequence:old_sequence
+argchoice:polyA_signal:polyA_signal
+argchoice:polyA_site:polyA_site
+argchoice:precursor_RNA:precursor_RNA
+argchoice:primer_bind:primer_bind
+argchoice:prim_transcript:prim_transcript
+argchoice:promoter:promoter
+argchoice:protein_bind:protein_bind
+argchoice:RBS:RBS
+argchoice:repeat_region:repeat_region
+argchoice:repeat_unit:repeat_unit
+argchoice:rep_origin:rep_origin
+argchoice:rRNA:rRNA
+argchoice:satellite:satellite
+argchoice:scRNA:scRNA
+argchoice:sig_peptide:sig_peptide
+argchoice:snRNA:snRNA
+argchoice:source:source
+argchoice:S_region:S_region
+argchoice:stem_loop:stem_loop
+argchoice:STS:STS
+argchoice:TATA_signal:TATA_signal
+argchoice:terminator:terminator
+argchoice:transit_peptide:transit_peptide
+argchoice:tRNA:tRNA
+argchoice:unsure:unsure
+argchoice:variation:variation
+argchoice:virion:virion
+argchoice:V_region:V_region
+argchoice:V_segment:V_segment
+argchoice:3'clip:3\'clip
+argchoice:3'UTR:3\'UTR
+argchoice:5'UTR:5\'UTR
+argchoice:5'clip:5\'clip
+argchoice:-10_signal:-10_signal
+argchoice:-35 signal:-35 signal
+argvalue:5
+
+arg:FCOMMAND
+arglabel:NAMES/ACCESSION #'S OF ENTRIES
+argtype:choice_menu
+argchoice:Single name:echo $EFILE > in1.efile; features -N in1.efile
+argchoice:Create list of names:cat $GDE_HELP_DIR/xylem/GDE/names.template > in1.tmpefile; textedit in1.tmpefile; egrep -v -e \; in1.tmpefile >in1.efile; rm in1.tmpefile; features -N in1.efile
+argchoice:File of names:cat $EFILE >in1.efile; features -N in1.efile
+argchoice:Single Acc#:echo $EFILE > in1.efile; features -A in1.efile
+argchoice:Create list of Acc#s:cat $GDE_HELP_DIR/xylem/GDE/acc.template > in1.tmpefile; textedit in1.tmpefile; egrep -v -e \; in1.tmpefile >in1.efile; rm in1.tmpefile; features -A in1.efile
+argchoice:File of Acc#s:cat $EFILE >in1.efile; features -A in1.efile
+argvalue:0
+
+arg:EFILE
+arglabel:Name, Accession # or filename
+argtype:text
+
+arg:DATABASE
+arglabel:DATABASE
+argtype:chooser
+argchoice:GenBank:-g
+argchoice:GenBank Dataset:-u $DBFILE
+argchoice:Selected sequences:-U in1.gen
+argvalue:0
+
+arg:DBFILE
+arglabel:Dataset name
+argtype:text
+
+arg:WHERE
+arglabel:WHERE TO SEND OUTPUT
+argtype:chooser
+argchoice:GDE:readseq -a -f2 in1.out >in1.result; (gde in1.result;rm in1.*)&
+argchoice:Textedit windows:(textedit in1.msg -Ws 450 350;rm in1.msg)& (textedit in1.exp -Ws 350 350; rm in1.exp) & (textedit in1.out -Ws 400 350;rm in1.out)&  
+argchoice:Output file:mv in1.msg $OUTNAME.msg; mv in1.out $OUTNAME.out; mv in1.exp $OUTNAME.exp; echo 'Features completed'
+argvalue:0
+
+arg:OUTNAME
+arglabel:Output file name
+argtype:text
+
+in:in1
+informat:genbank
+
+out:RESULT
+outformat:genbank
+
+#--------------------  FEATURES - by expression ( 3/14/94)---------------------
+item:FEATURES - Extract using expressions
+itemmethod: $CHOOSEEXP; sed -e "s/^LOCUS */LOCUS       /" -e "s/^ ACCESSION/ACCESSION /" -e "/^$/d"  in1 > in1.gen; (features -E in1.efile $DATABASE; rm in1.gen in1.efile; $WHERE)& 
+itemhelp:xylem/features.doc
+
+arg:CHOOSEEXP
+arglabel:EXPRESSION(S)
+argtype:chooser
+argchoice:Single expression:echo '$EXPRESSION'|cut -f1 -d":" > in1.accfile; echo \>`cat in1.accfile` >in1.efile; echo '@$EXPRESSION' >> in1.efile; rm in1.accfile
+argchoice:Expression file:cat $EFILE >in1.efile
+argchoice:Create list of expressions:cat $GDE_HELP_DIR/xylem/GDE/expfile.template > in1.tmpexpfile; textedit in1.tmpexpfile; egrep -v -e \; in1.tmpexpfile >in1.efile; rm in1.tmpexpfile 
+argvalue:0
+
+arg:EXPRESSION
+arglabel:Feature expression
+argtype:text
+
+arg:EFILE
+arglabel:Expression file
+argtype:text
+
+arg:DATABASE
+arglabel:DATABASE
+argtype:chooser
+argchoice:GenBank:-g
+argchoice:GenBank Dataset:-u $DBFILE
+argchoice:Selected sequences:-u in1.gen
+argvalue:0
+
+arg:DBFILE
+arglabel:Dataset name
+argtype:text
+
+arg:WHERE
+arglabel:WHERE TO SENT OUTPUT
+argtype:chooser
+argchoice:GDE:readseq -a -f2 in1.out >in1.result; (gde in1.result;rm in1.*)&
+argchoice:Textedit windows:(textedit in1.msg -Ws 450 350;rm in1.msg)& (textedit in1.out -Ws 400 350;rm in1.out)&
+argchoice:Output file:mv in1.msg $OUTNAME.msg; mv in1.out $OUTNAME.out;echo 'Features completed'
+argvalue:0
+
+arg:OUTNAME
+arglabel:Output file name
+argtype:text
+
+in:in1
+informat:genbank
+
+out:RESULT
+outformat:genbank
+
+######################## ALIGNMENT MENU ###############################
+#--------------- REFORM - print multiple alignment (2/ 2/95) -----------------
+item:REFORM - print mult. align.
+#Note: do not use flat or gde .
+itemmethod:(cat in1 |readseq -pipe -a -f8 | reform $TYPE -fp $GAPS $CAPS $DOTS -l$LINESIZE -s$START > in1.out; textedit in1.out;rm in1*) &
+itemhelp: xylem/reform.doc
+
+arg:TYPE
+argtype:chooser
+arglabel:Type:
+argchoice:Protein:
+argchoice:Nucleic acid:-n
+argvalue:0
+
+arg:GAPS
+argtype:chooser
+arglabel:Print gaps as
+argchoice:Dashes:-g
+argchoice:Spaces:
+argvalue:0
+
+arg:CAPS
+argtype:chooser
+arglabel:Capitalize conserved sites in consensus seq.
+argchoice:Yes:-c
+argchoice:No:
+argvalue:0
+
+arg:DOTS
+argtype:chooser
+arglabel:Print conserved sites in alignment as dots
+argchoice:Yes:-p
+argchoice:No:
+argvalue:0
+ 
+arg:LINESIZE
+arglabel:# residues per line
+argtype:slider
+argmin:40
+argmax:150
+argvalue:70
+
+arg:START
+arglabel:Begin numbering at
+argtype:slider
+argmin:-500000
+argmax:500000
+argvalue:1
+
+in:in1
+#informat:flat
+informat:genbank
+insave:
+
+
+############################## SIMILARITY MENU ############################
+#--------------- SHUFFLE - randomize sequences (11/10/93) -----------------
+item:SHUFFLE - randomize sequences
+itemmethod: sed "s/[#%]/>/" <in1 >in1.tmp; shuffle -s$SEED -w$WINDOW -o$OVERLAP <in1.tmp |tail +3> in1.shuf; readseq -a -f2 in1.shuf >out1; rm in1*
+itemhelp: xylem/shuffle.doc
+
+arg:SEED
+arglabel:RANDOM SEED
+argtype:slider
+argmin:1
+argmax:32767
+argvalue:7777
+
+arg:WINDOW
+arglabel:WINDOW
+argtype:slider
+argmin:5
+argmax:500000
+argvalue:10
+
+arg:OVERLAP
+arglabel:OVERLAP BETWEEN ADJACENT WINDOWS
+argtype:slider
+argmin:0
+argmax:100
+argvalue:0
+
+in:in1
+informat:flat
+
+out:out1
+outformat:genbank
+
+

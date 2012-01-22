@@ -1,0 +1,56 @@
+The code in this directory has been tested on the following systems:
+      SunOS     cc   and gcc
+      IBM AIX   xlc  and gcc
+
+You are free to try to adapt it to your own system. If you are
+successful, please send me a detailed description of what 
+you have done for adaptation.
+
+The code in this directory has been created using p2c version 1.21.
+
+1. Choose the appropriate makefile
+----------------------------------
+Simply copy one of the platform-specific makefiles
+to Makefile. For example, if you are on a Linux
+Intel system, 
+
+cp Makefile.linux-intel Makefile
+
+
+2. Prepare files for compilation (probably not necessary). 
+-----------------------------------------------------------
+   HP/UX system 
+
+         cp p2c.h.HP p2c.h
+
+
+   GNU gcc compiler (Sun and IBM AIX)
+
+         cp p2c.h.gcc p2c.h
+
+         Edit Makefile to change the CC variable from 'cc' to 'gcc'.
+
+   IBM AIX systems with the xlc compiler:
+
+         Edit Makefile to change the CC variable from 'cc' to 'xlc'.
+
+3. Compile the programs
+-----------------------
+
+    make 
+
+4. Copy executable code to the 'bin' directory:
+-----------------------------------------------
+    make install
+
+5. Clean up temporary files
+---------------------------
+
+    make clean
+
+6. Compiling for multiple platforms
+-----------------------------------
+
+If you need to compile for more than one platform,
+run 'make clean', and then recompile for the next
+platform.

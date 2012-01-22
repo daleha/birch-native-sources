@@ -1,0 +1,155 @@
+LOCUS       PEADRRA       728 bp ss-mRNA            PLN       15-MAR-1989
+DEFINITION  Pea (P.sativum) disease resistance response protein (PI176) mRNA,
+            complete cds.
+ACCESSION   M18249
+KEYWORDS    disease resistance response protein.
+SOURCE      Pea (P.sativum, cultivar Alaska) pea pod, cDNA to mRNA.
+  ORGANISM  Pisum sativum
+            Eukaryota; Plantae; Embryobionta; Magnoliophyta; Magnoliopsida;
+            Rosidae; Fabales; Fabaceae.
+REFERENCE   1  (bases 1 to 728)
+  AUTHORS   Fristensky,B., Horovitz,D. and Hadwiger,L.A.
+  TITLE     cDNA sequences for pea disease resistance response genes
+  JOURNAL   Plant Mol. Biol. 11, 713-715 (1988)
+  STANDARD  full automatic
+COMMENT     Draft entry and computer-readable sequence for [1] kindly provided
+            by B.Fristensky, 25-JAN-1988.
+FEATURES             Location/Qualifiers
+     mRNA            1..728
+                     /note="pI176 mRNA"
+     CDS             66..545
+                     /note="disease resistance response protein"
+                     /codon_start=1
+                     /translation="MGVFNVEDEITSVVAPAILYKALVTDADTLTPKVIDAIKSIEIV
+                     EGNGGAGTIKKLTFVEDGETKHVLHKVELVDVANLAYNYSIVGGVGFPDTVEKISFEA
+                     KLSAGPNGGSIAKLSVKYYTKGDAAAPTEEQLKSDKAKGDGLFKALERYCLAHPDYN"
+BASE COUNT      217 a    132 c    143 g    236 t
+ORIGIN      Unreported.
+        1 tacacaacta ggcaagcaat ttcttagttc tttctcacac tttagcaata taaaacaata
+       61 tcatcatggg tgtttttaat gttgaagatg aaatcacttc tgttgtagca cctgctatac
+      121 tctacaaagc tctagttaca gatgctgaca ctcttactcc aaaggttatt gatgccatca
+      181 aaagtatcga aattgttgaa ggaaacggag gtgctggaac catcaagaaa ctcactttcg
+      241 ttgaagatgg tgaaaccaaa catgtgttgc acaaagtgga gttagtagat gttgctaact
+      301 tggcttacaa ctatagcata gttggtggtg ttggatttcc agacacagtt gagaagatct
+      361 catttgaggc taaactgtct gcaggaccaa atggaggatc cattgcaaag ctgagtgtga
+      421 aatattacac aaaaggtgat gctgctgctc ctactgaaga gcaactcaag agtgacaaag
+      481 ctaagggtga tggtcttttc aaggctcttg agcgttactg tttggctcat cctgattaca
+      541 actaaactat ataatcatca acaagtgtgt gttgttatgt atactatata atcatcatgt
+      601 gtgcttaatt tggctgccaa tgtaatcccc ctgttttgtt ttttcccttt cccttttctt
+      661 tgtggactaa aagtgtgaga ttgtaagtca tgtatacctc tccttcaata aattataatc
+      721 atttatat
+//
+LOCUS       PEADRRB       594 bp ss-mRNA            PLN       15-MAR-1989
+DEFINITION  Pea (P.sativum) disease resistance response protein (PI206) mRNA,
+            3. end.
+ACCESSION   M18250
+KEYWORDS    disease resistance response protein.
+SOURCE      Pea (P.sativum, cultivar Alaska) pea pod, cDNA to mRNA.
+  ORGANISM  Pisum sativum
+            Eukaryota; Plantae; Embryobionta; Magnoliophyta; Magnoliopsida;
+            Rosidae; Fabales; Fabaceae.
+REFERENCE   1  (bases 1 to 594)
+  AUTHORS   Fristensky,B., Horovitz,D. and Hadwiger,L.A.
+  TITLE     cDNA sequences for pea disease resistance response genes
+  JOURNAL   Plant Mol. Biol. 11, 713-715 (1988)
+  STANDARD  full automatic
+COMMENT     Draft entry and computer-readable sequence for [1] kindly provided
+            by B.Fristensky, 25-JAN-1988.
+FEATURES             Location/Qualifiers
+     mRNA            <1..594
+                     /note="pI206 mRNA"
+     CDS             <1..528
+                     /note="disease resistance response protein"
+                     /codon_start=1
+                     /translation="VFVMLFALSSAIPNKRKPYKPCKNLVFYFHDILYNGKNAANATS
+                     AIVAAPEGVSLTKLAPQSHFGNIIVFDDPITLSHSLSSKQVGRAQGFYIYDTKNTYTS
+                     WLSFTFVLNSTHHQGTITFAGADPIVAKTRDISVTGGTGDFFMHRGIATITTDAFEGE
+                     AYFRLGVYIKFFECW"
+BASE COUNT      187 a    106 c    100 g    201 t
+ORIGIN      Unreported.
+        1 gtttttgtga tgttgtttgc tttaagttca gcaattccaa acaagagaaa gccatataaa
+       61 ccatgcaaaa acctagtctt ttattttcat gacatacttt acaatggaaa gaatgcagca
+      121 aatgcaacat cagcaatagt agcagctcca gaaggtgtta gtttaactaa attggcacct
+      181 caatcccact ttggtaacat aatagttttt gatgacccta tcacattaag ccatagcctt
+      241 tcttcaaaac aagttggaag agcacaaggg ttttatattt atgataccaa aaacacatac
+      301 acttcttggc ttagtttcac ttttgttctt aatagcactc atcatcaagg aaccattact
+      361 tttgctggag ctgacccaat tgtcgccaaa actagagata tttctgtcac tggtggtact
+      421 ggagatttct ttatgcatag aggaattgct actattacca ctgatgcctt tgaaggcgag
+      481 gcttattttc gacttggtgt ttatatcaag ttctttgagt gttggtaact atcaaattaa
+      541 gtactactta ctataataaa agcaattaaa tttgaagtta aattattgtt gtct
+//
+LOCUS       PEADRRG      2290 bp ds-DNA             PLN       30-JUN-1992
+DEFINITION  Pea disease resistance response protein (DRRG49-c) gene, complete
+            cds.
+ACCESSION   J03680
+KEYWORDS    disease resistance response protein.
+SOURCE      Pea DNA.
+  ORGANISM  Pisum sativum
+            Eukaryota; Plantae; Embryobionta; Magnoliophyta; Magnoliopsida;
+            Rosidae; Fabales; Fabaceae.
+REFERENCE   1  (bases 1 to 2290)
+  AUTHORS   Chiang,C.C. and Hadwiger,L.A.
+  TITLE     Cloning and characterization of a disease resistance response gene
+            in pea inducible by Fusarium solani
+  JOURNAL   Mol. Plant Microb. Interact. 3, 78-85 (1990)
+  STANDARD  full automatic
+COMMENT     Draft entry and printed sequence for [Mol. Plant Microb. Interact.
+            (1990) In press] kindly submitted by
+            C.C.Chiang, 24-JAN-1990.
+FEATURES             Location/Qualifiers
+     exon            <1151..1331
+                     /number=1
+                     /note="disease resistance response protein (DRRG49-c)"
+     intron          1332..1419
+                     /note="DRRG49-c intron"
+     exon            1420..>1715
+                     /number=2
+                     /note="disease resistance response protein"
+     CDS             join(1151..1331,1420..1715)
+                     /note="disease resistance response protein (DRRG49-c)"
+                     /codon_start=1
+                     /translation="MGVFNFEEEATSIVAPATLHKALVTDADILTPKVIDAIKSIEIV
+                     EGNGGPGTIKKLTFVEDGETKYVLHKVELVDDANWANNYSIVGGVGLPDTVEKISFEA
+                     KLSAGPNGGSIAKLSVKYYTKGDAIPSEEEIKNGKAKGEGIFKALEGYCVANPDYN"
+BASE COUNT      797 a    369 c    357 g    767 t
+ORIGIN
+        1 gtcgacacat atgtaaacag gtcggcctat agtaaatcta ataaatcctc aagatatatg
+       61 taactactaa tcttgatgtc aacatttctc cacacatctt gatttgactc accagtcttg
+      121 ttaccctagt gaagaaatca acgatgcttt caccttcttg ttcctcactc gttactagag
+      181 tgattcaacc acaccttgat tggaaaatgg tttcacctca caatgatttg aaaagaaaag
+      241 aattatgtga aagtgaattg agaaagataa gagaaattag gatttaggga gaaagagaag
+      301 aagattgatc aaattctgca gattttctct ttgtgtttta ttccaactga acttccattc
+      361 tttttaacta ctttacaaca gtaagttacc tcgctattta tagatgatat tacttacaca
+      421 cctagtaatc tcgaactaat tcaactaata aatactaatt tttaactttg acgaggttaa
+      481 ctccttcgac aactacttac ttcaattgtt taagactata ttcgactatt aatttatcga
+      541 atacattcga ctttgacttt attgaatctt acatacatgc ttaacacaaa taattacata
+      601 tttaactttt ttttttctcc atctctcttt actatattaa ataatgtgaa ataatataaa
+      661 tactgtttaa catgttttat ttcaatatcc caatactgac ctcaaactca aaatttagaa
+      721 gaaaaaagaa ctagcaacaa cataatttgt atgaatagac gtaacctagt ttttcacaaa
+      781 ataaccagtt aaatttaact gtttatatat ttaagtgata atcatttatc tcggattctt
+      841 tactcgacac aaatgagtta agatgagtat atgttagttt tggtaaaaaa tgtataattt
+      901 agttagatat atgtttaatt tgagtaggat atgttggcac gcacgaacca aatacgtata
+      961 ggaacgtgga taaaaataat actattgacc aaatgcatat cagaacgtga atacaaaatg
+     1021 gtccagcgac ttggtattaa tagctataca atgcatcttc atttcttata aatagaactt
+     1081 caactccact cgtaaatcac acagctaggc aagcaccttc ttatttatag cattataaat
+     1141 catcattatc atgggtgttt tcaattttga ggaagaagcc acttccattg tagctcctgc
+     1201 tacacttcac aaagctctgg ttacagatgc tgacattctt actccaaagg ttattgatgc
+     1261 catcaaaagt attgaaattg ttgaaggaaa cggtggcccc ggaaccatca agaaactcac
+     1321 tttcgttgaa ggtcagtatt agaatattct tttcatgata tatcattatt actagtatta
+     1381 ttgtttatga ttgtgaaatg aatcaattgt gtgttgcaga cggtgaaacc aagtatgtgt
+     1441 tacacaaagt ggagttagta gatgatgcta actgggcaaa caactacagc atagttggag
+     1501 gtgttggact tccggacaca gttgagaaga tctcgtttga ggctaaattg tctgcaggac
+     1561 caaatggagg atccattgca aagctgagtg tgaaatatta taccaaaggt gatgctattc
+     1621 ctagtgaaga ggaaatcaag aatggcaaag ccaaaggtga aggtattttc aaggctcttg
+     1681 aaggttactg tgtggctaat cctgattaca actaaaaaat ttaattaagt gagtgcttgt
+     1741 tttattatgg tgtgttatga cacattttat tgcatctgtc ggcttaattt gttttcttat
+     1801 ttttctttct tttccctttc ctattgttga ggaagtgtga gtttgagatt gtaagtcatg
+     1861 tttgtaccac gttttaagaa attataataa tacgtatgtt cttttttata tatttttttt
+     1921 tctctagaaa atattgttac taaaacaaaa ttgttactaa aaaacattta aaatattggt
+     1981 agggatttga taccaccaat gtaaaccatt gaaatgaaga tccaaaacgt gactactttg
+     2041 attgttttgg taataaaata aaaaatttca atcacaccaa aaaaatttaa tttgtatata
+     2101 actaaaataa ataatcttct acagaacaat aacaagataa aatacaaaaa aacacaataa
+     2161 tttgtgtact cagttcgatc aaaaaaatct actctaaagg taagaaaaac tctgagtcat
+     2221 tatacttcct attgtgggcc gaccaaagtc aatccaagag tccaaccaga gtcagaccaa
+     2281 tcaaggatcc
+//

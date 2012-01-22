@@ -1,0 +1,98 @@
+
+      FIL.PY                                                 13 May 2002 
+
+
+      NAME
+           fil.py - create a set of world-readable .fil files for use by fasta.
+      
+      SYNOPSIS
+           python fil.py [-e extension]
+          
+      
+      DESCRIPTION
+           The GenBank flat file database is divided into divisions
+           (eg. PLN=plant, PRI=primate, EST=est). A full list of divisions
+           in included in the file gbrel.txt, accompanying each GenBank
+           release. Each division is stored one or more files, depending
+           on the size of the division. If only one file is needed,
+           the files take the form gb<div>.seq. For example, the unannotated
+           division of GenBank takes the form gbuna.seq. Where 2 or more
+           files are present for a division, a number is appended to the
+           name. For example, the EST division consists of gbest1.seq,
+           gbest2.seq, gbest3.seq... 
+           
+           The fasta programs of Bill Pearson read the names of these files
+           during database searches. For example, to search the bacterial
+           division of GenBank, the file gbbct.fil would be read, which
+           contains:
+           
+           </home/psgendb/GenBank
+           gbbct1.wrp 0
+           gbbct2.wrp 0
+           gbbct3.wrp 0
+           gbbct4.wrp 0
+           gbbct5.wrp 0
+           
+           (For use with the XYLEM package, the .wrp extension is
+           used for esquence files, rather than .seq)
+           
+           The problem is that as the database increases in size,
+           the number of divisions increase, and the .fil files
+           must be changed each time. To automate the creation
+           of these files, fil.py reads a the file 'filnum'. An
+           example would be:
+           
+           est 161
+           gss 51
+           htg 33
+           htc 1 
+           pri 19
+           pln 5
+           bct 5
+           inv 5 
+           rod 3
+           sts 2
+           vrl 3
+           vrt 1
+           mam 1
+           pat 4 
+           syn 1
+           phg 1
+           una 1
+ 
+           Thus, the est.fil would contain a list of 161 file names
+           for the EST division, gss.fil would contain a list of
+           51 filenames for the GSS division etc. In addition to
+           the individual division files, 'genbank.fil' contains
+           a list of all files in all divisions. The FASTA programs
+           read the file 'fastgbs', which contains the names of
+           all .fil files. 
+           
+           To summarize, fil.py reads filnum, and creates all the
+           corresponding .fil files containing the appropriate filenames.
+           The POSIX file mode is changed to 0644 (ie. world-readable)
+           for all .fil files.
+           
+      OPTIONS
+           -e  By default, the filename extension 'wrp' is used
+               for sequence filenames. Another extension can
+               be specified with the -e option. For example,
+               "-e fsa" would create filenames such as
+               "gbmam.fsa".
+           
+      SEE ALSO
+            fasta
+            
+
+     AUTHOR
+       Dr. Brian Fristensky
+       Dept. of Plant Science
+       University of Manitoba
+       Winnipeg, MB  Canada  R3T 2N2
+       Phone: 204-474-6085
+       FAX: 204-474-7528
+       frist@cc.umanitoba.ca
+
+     REFERENCE
+       Fristensky, B. (1993) Feature expressions: creating and manipulating
+       sequence datasets. Nucleic Acids Research 21:5997-6003.

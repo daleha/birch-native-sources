@@ -1,0 +1,297 @@
+
+     testcode.doc                                           update 10/29/90
+
+     I. Function 
+          Reads in a DNA or RNA sequence and evaluates open reading frames 
+     for liklihood of coding for protein, using the TESTCODE algorithm 
+     found in: Fickett, J., "Recognition of protein coding regions in DNA 
+     sequences", Nucl.Acids Res., 10 No.17 (1982) p5303-5318.  Briefly, 
+     TESTCODE determines the degree to which base composition and 
+     distribution of nucleotide frequencies in positions 1, 2, or 3 of 
+     codons deviates from that predicted by random chance.  No prior 
+     knowledge of codon strategy is required.  If there is a codon 
+     preference of any kind, TESTCODE will detect this as a deviation from 
+     randomness. 
+     
+          IT IS IMPORTANT TO READ THE PAPER BEFORE USING THIS PROGRAM
+
+     II. Menus
+     TESTCODE begins by asking the user for the name of a file containing the
+     sequence (Input file) and for writing the sequence to (output file).
+     After these files have been opened, the user is placed in the main menu.
+     It is best to conceptualize of the main menu as performing those tasks in
+     which TESTCODE communicates with the operating system, such as opening and
+     closing files, or writing output.  The status lines tell the current
+     filenames (which are peculiar to the operating system, in this case,
+     UNIX).  Option 3 also allows the user to enter a title to be printed
+     on the output.        
+     
+     _____________________________________________________________________
+     TESTCODE                   MAIN MENU
+     _____________________________________________________________________
+     Input file:        humhbb.dna
+     Output file:       humhbb.tes
+     Title:             Human Beta Globin
+     _____________________________________________________________________
+                         1) Read in a new sequence
+                         2) Open a new output file
+                         3) Type in a title line for output
+                         4) Change parameters
+                         5) Search sequence (output to screen)
+                         6) Search sequence (output to file)
+     _____________________________________________________________________
+     Type the number of your choice  (0 to quit program)
+     4
+     
+     Choosing option 4 in the main menu brings the user into the parameters
+     menu.  The parameters menu can be thought of as dealing with the 
+     sequence itself, and is thus independent of operating system.  The
+     name and topology are read from the sequence file in the case of GENBANK
+     or BIONET files, or are typed in when the sequence is read, in the case
+     of Free-format files.  Using the defaults in the menu below, TESTCODE
+     will print scan the entire sequence and produce graphic output.
+     
+     
+     
+     Name: HUMHBB             Topology:     LINEAR    Length:     2165 nt
+     _____________________________________________________________________
+            Parameter   Description/Response                 Value
+     _____________________________________________________________________
+              1)START    first nucleotide evaluated               1
+              2)FINISH   last  nucleotide evaluated            2165
+              3)WHICH    I: input strand  O: opposite strand      I
+              4)FORMAT   T:tabular output G:graphic output        G
+              5)WINDOW   #codons in search window                67
+              6)SKIP     #codons to skip for each window         10
+   _____________________________________________________________________
+     Type number of parameter you wish to change (0 to continue)
+     0
+       
+          The output is sent to the printer as shown below.  At regular 
+     intervals in the sequence, the value of the TESTCODE indicator is 
+     calculated for a 67 codon search window.  The value is printed in the 
+     histogram, and the program moves 20 codons to the right to perform the 
+     calculation again.  In the beta globin gene, there are three exons, 
+     located at positions 267-359, 490-711, and 1562-1690.  These appear as 
+     peaks on the graph.  See section V for a more thorough discussion of 
+     the output. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          Human Beta Globin
+
+          TESTCODE          Version   7/13/90
+
+          WINDOW=   67          SKIP=   20
+
+                         NON-CODING            NO OPINION     CODING
+
+       0.0       0.2       0.4       0.6       0.8       1.0       1.2       1.4
+          ---------+---------+---------+---------+---------+---------+---------+
+       97|====================                |         |                       
+      157|==========================          |         |                       
+      217|=============================       |         |                       
+      277|===========================================   |                       
+      337|================================================                      
+      397|================================    |         |                       
+      457|================================    |         |                       
+      517|============================================= |                       
+      577|======================================================                
+      637|====================================================                  
+      697|======================================        |                       
+      757|=====================================         |                       
+      817|=======================================       |                       
+      877|=====================================         |                       
+      937|===============================     |         |                       
+      997|=============================       |         |                       
+     1057|========================            |         |                       
+     1117|==================                  |         |                       
+     1177|==================================  |         |                       
+     1237|===============================     |         |                       
+     1297|===========================         |         |                       
+     1357|=========================           |         |                       
+     1417|==================                  |         |                       
+     1477|============================================  |                       
+     1537|===========================================   |                       
+     1597|=====================================================                 
+     1657|==================================================                    
+     1717|=========================================     |                       
+     1777|=======================             |         |                       
+     1837|===================                 |         |                       
+     1897|=====================               |         |                       
+     1957|===========================         |         |                       
+     2017|=========================================     |                       
+
+     (* An example of tabular output is shown below using exon II.
+        START=490, FINISH=711, and FORMAT=T. *)
+
+
+
+
+
+
+
+
+               Human Beta Globin Exon II
+     Open reading frame from            490 to            711
+                        T         C         A         G
+     Pos.Freq.
+              1        11        19        18        26
+              2        23        15        24        12
+              3        22        24         2        26
+     ------------------------------------------------------------
+     Cont.Param      0.25      0.26      0.20      0.29
+     Posn.Param      1.92      1.50      8.00      2.00
+     TESTCODE indicator:  1.277600000E+00
+     Probability of coding:  1.000000000E+00
+     Prediction: 
+     CODING
+     
+
+     III. Constants 
+     Constants defined in the constant definition part of the main 
+     procedure of TESTCODE.  To change them, it is necessary to change 
+     their values in the Pascal text and re-compile. 
+     
+     MAXSEQ 
+     The maximum number of nucleotides in a DNA or RNA sequence. Set to 32700 
+     by default. 
+
+     MINCODONS
+     The minimum number of codons permitted for an evaluation. Set to 30 by 
+     default. 
+
+     MAXLINE
+     The maximum length of a variable of the type LINE, used here only for 
+     the title to be printed on output.  Set by default to 80. 
+
+     LINESIZE
+     Maximum length of a graph line. Set by default to 70.
+
+     IV. Parameters
+     START
+     FINISH
+     START and FINISH are, respectively, the first and last nucleotides of 
+     the input strand to be printed. START may be greater than FINISH, but 
+     neither parameter may be less than 1 or greater than the length of the 
+     sequence. 
+
+     WHICH
+     WHICH is set by default to 'I', for the input strand.  Setting WHICH to 
+     'O' will cause TESTCODE to process the opposite, ie. complementary 
+     strand in the opposite direction.  Thus, TESTCODE always works 5'--->3'.  
+     This perfectly sensible rule leads to some subtle results in the 
+     interpretation of how the sequence is to be processed. (see NUMSEQ 
+     documentation) 
+
+     FORMAT
+     Indicates type of output.  FORMAT=G, which specifies graphic output, 
+     is the default.  FORMAT=T specifies tabular output.  In this case, the 
+     search window used is delimited by START and FINISH.  SKIP is 
+     irrelevant, since only one evaluation will be done.
+
+     WINDOW (GRAPHIC OUTPUT ONLY)
+     Size of the region (AS MEASURED IN CODONS) evaluated by TESTCODE at 
+     each position in the graph.
+
+     SKIP (GRAPHIC OUTPUT ONLY)
+     Number of CODONS skipped between each calculation of the TESTCODE 
+     indicator.
+
+     V. What the output means
+
+     GRAPHIC OUTPUT
+     TESTCODE produces a plot of the TESTCODE indicator versus position in 
+     the sequence.  On the X-axis is plotted the value of the dimensionless
+     TESTCODE indicator, while on the Y axis is the position (in 
+     nucleotides) of the center of each window evaluated by program.  The 
+     plot itself is in the form of a histogram.  Note that the X-axis has 
+     been divided into three regions, NON-CODING, NO OPINION, and CODING, 
+     as described in the Fickett article.  
+
+     In the example shown above, the TESTCODE indicator is evaluated for a 
+     67 codon WINDOW at 20 codon intervals along the entire length of the 
+     Human Beta Globin gene.  Introns I, II, and III appear as peaks in the 
+     graph, whose limits can be roughly defined by the first NON-CODING 
+     window on either side of each peak.  At best, TESTCODE gives a rough 
+     approximation of exon/intron boundaries, which must be precisely 
+     assigned by other means. 
+     
+     TABULAR OUTPUT
+     For each evaluation done, a table is printed, showing the frequencies 
+     at which T,C,A, & G are used at positions 1,2, & 3 in all codons in 
+     the region evaluated.  The sum of nucleotide usage at 
+     positions 1,2 & 3 yeilds the absolute T,C,A, or G content of the 
+     region. Dividing the absolute content by the distance searched yeilds 
+     the relative content, or Content Parameter, shown in the table.  The 
+     position parameters for the four nucleotides are computed as described 
+     by Fickett. Finally, the TESTCODE indicator, its respetive probability 
+     of coding, and the coding prediction, are printed. 
+     
+     The user should be aware that TESTCODE IS PREDICTIVE, NOT DEFINITIVE. 
+     The TESTCODE indicator can only suggest whether a region is probably 
+     coding or non-coding.  The actual nature of the region in question 
+     must be verified experimentally. 
+     
+     VI. Usage Notes 
+     1.   TESTCODE assumes that the region it is searching is an open reading 
+     frame, and makes no attempt to detect stop codons.  It is up to the user 
+     to find open reading frames using a program such as NUMSEQ. 
+
+     2.   TESTCODE gives the same result regardless of which strand is 
+     evaluated.  This is good in that you only have to search one strand, 
+     but bad, because it doesn't distinguish between two genes on opposite 
+     strands of the same stretch of DNA.
+
+     3.   TESTCODE can not determine which register of a protein coding 
+     sequence actually codes.  This is usually not a problem, since protein 
+     coding sequences usually have open reading frames in one register 
+     only.  This aspect of TESTCODE is good, since it means that you don't 
+     have to worry about searching in three different reading frames.  All 
+     that TESTCODE needs is a consistent register to evaluate the degree to 
+     which the usage of nucleotides in positions 1, 2, or 3 are non-random.
+     However, this does require that the sequence be error-free, at least 
+     to the extent that no frameshifts are introduced.
+
+     4.   The resolution of TESTCODE is coarse at best.  Since TESTCODE is 
+     a statistical method, it must have an adequate sample size (ie. 
+     WINDOW) in order to accurately predict the probability of coding in a 
+     given region.  Use of too small a WINDOW will result in a background 
+     of high scores, owing to local fluctuations in nucleotide usage.  Use 
+     of too high a WINDOW will cut down the resolution of the TESTCODE 
+     scan.  In practice, a WINDOW of 67 codons (the minimum value 
+     recommended by Fickett) gives somewhat precise determinations of exon 
+     boundaries when used with a fairly small SKIP value (eg. 5 or 10).
+
+     When an exon is smaller than the WINDOW size, (eg. Exons I and III in 
+     beta globin), the exon will probably still be detected as a peak, but 
+     it may not yield a TESTCODE indicator in the CODING range. 

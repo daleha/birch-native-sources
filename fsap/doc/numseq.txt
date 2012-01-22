@@ -1,0 +1,295 @@
+
+     numseq.doc                                          update 10/27/90
+                                     NUMSEQ
+
+     I. Function: Reads in a DNA or RNA sequence and writes one or both 
+        strands in either orientation in a numbered format specified by the 
+        user. The amino acid sequence may also be printed in one or all 
+        reading frames, using any genetic code.
+
+     NUMSEQ is a powerful general-purpose sequence display program. By
+     setting a variety of display parameters, the user can control which
+     parts of the sequence are printed, the numbering scheme, the case of
+     the nucleotides printed, the strand(s) printed, and the width of the
+     lines printed. A number of translation options control the display of
+     amino acid seuqences. By virtue of the ability to read in and write
+     parts of different sequences in a serial fashion, NUMSEQ can perform
+     simulated cloning experiments.
+    
+     II. Menus 
+
+     NUMSEQ begins by asking the user for the name of a file containing the
+     sequence (Input file) and for writing the sequence to (output file).
+     After these files have been opened, the user is placed in the main menu.
+     It is best to conceptualize of the main menu as performing those tasks in
+     which NUMSEQ communicates with the operating system, such as opening and
+     closing files, or writing output.  The status lines tell the current
+     filenames (which are peculiar to the operating system, in this case,
+     UNIX).  Note that alternative genetic codes can be read in for use in
+     sequence translation (see Note 2). The main menu below is taken from a
+     run in which the Marchantia polymorpha (liverwort) chloroplast genome 
+     has been read from a GenBank file, and the Arg-tRNA-acg transcript will
+     be stored in a file. 
+      
+     _____________________________________________________________________
+     NUMSEQ                     MAIN MENU
+     _____________________________________________________________________
+     Input file:        /usr2/genbank/mpocpcg.gen
+     Output file:       mpoarg.trna
+     Genetic code file: 
+     _____________________________________________________________________
+                         1) Read in a new sequence
+                         2) Open a new output file
+                         3) Read in an alternative genetic code
+                         4) Change parameters
+                         5) Write output to screen
+                         6) Write output to file
+     _____________________________________________________________________
+     Type the number of your choice  (0 to quit program)
+     4
+     
+     Choosing option 4 in the main menu brings the user into the parameters
+     menu.  The parameters menu can be thought of as dealing with the 
+     sequence itself, and is thus independent of operating system. (In 
+     practice, however, NUMSEQ can only hold sequences this large on 32-bit
+     computers ie. not on IBM-PC's).  The name and topology are read from the
+     sequence file in the case of GENBANK or BIONET files, or are typed in
+     when the sequence is read, in the case of Free-format files.      
+     
+     Name: MPOCPCG            Topology:   CIRCULAR    Length:   121024 nt
+     _____________________________________________________________________
+            Parameter   Description/Response                 Value
+     _____________________________________________________________________
+             1)START    first nucleotide printed            112638
+             2)FINISH   last  nucleotide printed            112565
+             3)NUCCASE  U:(A,G,C,T...), l:(a,g,c,t...)           U
+             4)STARTNO  number of starting nucleotide            1
+             5)GROUP    number every GROUP nucleotides          10
+             6)GPL      number of GROUPs printed per line        6
+             7)WHICH    I: input strand  O: opposite strand      O
+             8)STRANDS  1: one  strand,  2:both strands          1
+             9)KIND     R:RNA            D:DNA                   R
+            10)NUMBERS  Number  the sequence    (Y or N)         Y
+            11)NUCS     Print nucleotide seq.   (Y or N)         Y
+            12)PEPTIDES Print amino acid seq.   (Y or N)         N
+            13)FRAMES   1 for this frame, 3 for 3 frames         1
+            14)FORM     L:3 letter amino acid, S: 1 letter       L
+     _____________________________________________________________________
+     Type number of parameter you wish to change (0 to continue)
+     0
+     
+     In the example shown above, the Arginine (acg) tRNA is being written
+     to the output in six groups of 10 nucleotides per line.  Since this
+     gene is transcribed from the opposite strand, FINISH is less than 
+     START, and WHICH='O'.  In order to print the sequence as RNA, KIND has
+     been set to 'R'.  When the sequence is written to the output file using 
+     option six, the user is prompted for a title line to begin the file.
+     In this case, the title line was begun with a semicolon, and would 
+     be ignored as a comment line if mpoarg.trna was later read in as a
+     free-format file.  The output is shown below:
+     
+     ; Arg-tRNA-acg
+         112629     112619     112609     112599     112589     112579  
+     GGGUUUGUAG CUCAGAGGAU UAGAGCACGU GGCUACGAAC CACGGUGUCG GGGGUUCGAA  
+
+         112569
+     UCCCUCCUUG CCCA
+
+ 
+
+     III. Constants
+     MAXSEQ and MAXLINE are defined in the constant definition part of the
+     main procedure of NUMSEQ.  To change them, it is necessary to change their
+     values in the Pascal text and re-compile.
+
+     MAXSEQ
+     The maximum number of nucleotides in a DNA or RNA sequence. Set to
+     32700 by default. (*IBM-PC*)
+
+     MAXLINE
+     The maximum length of a variable of the type LINE, used here only for
+     the title to be printed on output, and the width of horizontal lines
+     written as parts of the menus.  Set by default to 80.
+
+     IV. Parameters
+
+     START
+     FINISH
+     START and FINISH are, respectively, the first and last nucleotides of 
+     the input strand to be printed. START may be greater than FINISH, but 
+     neither parameter may be less than 1 or greater than the length of the 
+     sequence.  NUMSEQ always works 5'--->3'.  When START>FINISH, NUMSEQ 
+     processes nucleotides from position START to the end of the sequence in 
+     linear molecules and from position START through the end and then 
+     continuing through the beginning of the sequence to position FINISH in 
+     circular molecules.  Thus in the case of the circular plasmid pBR322 
+     (4363 nucleotides long), if we ask NUMSEQ to print nucleotides using 
+     START=4000 and FINISH=100, the 464 nucleotide stretch going through the 
+     EcoRI site at nucleotide 1 will be printed, rather than the 3901 
+     nucleotides in the other direction. See the discussion of parameter 
+     WHICH for further details. 
+
+     NUCCASE
+     The case of nucleotides printed. U for uppercase (capitals) and l for
+     lowercase (small letters).
+     
+     STARTNO
+     By default, STARTNO=START, which means that the numbering refers to
+     the absolute position in the input sequence ie. a sequence-based co-
+     ordinate system. Setting STARTNO to any number other that START
+     implies a user-specified coordinate system.  Now, the position refered
+     to by START will be numbered as STARTNO, and will increase from left to
+     right.  For example, if you wanted the 58th nucleotide in a sequence to be 
+     numbered as '1', then if all the preceeding nucleotides are to be 
+     printed, STARTNO should be set to -57.  Numbering will increase through 
+     position 57, which will be considered as -1, and position 58 will then 
+     be 1.  NUMSEQ always skips the zero coordinate.   
+
+     If WHICH=O, numbering will decrease, left to right, thus ensuring that
+     an absolute numbering system obtains regardless of which strand is
+     being printed.
+
+     NOTE: Setting START will reset STARTNO to be equal to START.
+     Therefore, you should set START first, then assign a value to STARTNO.
+     
+     GROUP
+     GPL
+     Sequences are numbered every GROUP nucleotides, and GPL GROUPs are 
+     printed per line.  By default, as shown in the example above, 7 GROUPs 
+     of 10 nucleotides are printed per line.  When changing these parameters, 
+     the user should keep the width of the paper in mind.  If the amino acid 
+     sequence is also to be printed, GROUP must be a number evenly divisible 
+     by three, usually 15 or 30.  If a value is specified that is not 
+     divisible by 3, NUMSEQ will set GROUP to 15 and GPL to 3. Remember, 
+     GROUP refers to nucleotides, not codons. The minimum value for GROUP is 
+     3, the maximum is 160. 
+
+     WHICH 
+     WHICH is set by default to 'I', for the input strand.  Setting WHICH to 
+     'O' will cause NUMSEQ to process the opposite, ie. complementary strand, 
+     but in the opposite direction.  Remember, NUMSEQ always works 5'--->3' 
+     and START and FINISH always refer to nucleotide positions in the input 
+     strand. Thus to obtain the entire complementary strand of a linear 
+     sequence 40 nucleotides long, for example, START must be set to 40 
+     (which is the 5'end of the complementary strand) and FINISH to 1.  
+     NUMSEQ will begin by printing the complementary nucleotide to input 
+     position 40, then the complementary nucleotide to position 39 and so on.  
+     If START=1 and FINISH=40, then NUMSEQ will only print the complementary 
+     nucleotide to input position 1. 
+
+     Study the table and make sure you understand the reason for each result:
+
+     WHICH  START <> FINISH   Config.       result
+     ------------------------------------------------------------------------
+     I      START <  FINISH   linear        seq. printed from START to FINISH
+     I      START <  FINISH   circular       "     "       "    "    "   "
+     I      START >  FINISH   linear        seq. printed from START to end
+     I      START >  FINISH   circular      seq. printed from START past the
+                                            end, continuing at beginning and
+                                            finishing at FINISH.
+     O      START <  FINISH   linear        seq. printed from START to
+                                            beginning of sequence.
+     O      START <  FINISH   circular      seq. printed from START past the
+                                            beginning, finishing at FINISH
+     O      START >  FINISH   linear        seq. printed from START to FINISH
+     O      START >  FINISH   circular       "     "       "    "    "   "
+
+     Although it is permissible to set START and FINISH values which imply 
+     circularity for linear molecules, sequences specified as linear at the 
+     beginning of the program will only be processed until an end is reached. 
+     NUMSEQ, like an enzyme, will simply 'fall off the ends' of linear 
+     molecules. 
+
+     STRANDS
+     If STRANDS=1, then only the input strand is printed.  If STRANDS=2 then 
+     the complementary strand will be printed below the input strand. 
+
+     KIND
+     If KIND='D' (the default) the nucleotide sequence will be printed as 
+     DNA. If KIND='R' then it will be printed as RNA. 
+
+     NUMBERS
+     NUMBERS='Y' causes numbers to be printed corresponding to the nucleotide 
+     sequence.  'N' supresses the printing of numbers.  This is useful if 
+     sending output to a file for use as input by another program. 
+
+     NUCS
+     NUCS='Y' causes the nucleotide sequence to be printed. 'N' supresses 
+     printing of nucleotides. 
+
+     PEPTIDES
+     PEPTIDES='Y' causes the amino acid sequence, corresponding to the input 
+     strand, to be printed. 'N' supresses printing. 
+
+     NUMBERS, NUCS, and PEPTIDES may be set independantly of one another.
+
+     FRAMES
+     By default, FRAMES=1, which causes the sequence to be translated in one 
+     reading frame, where START is the first position of the first codon, and 
+     FINISH is the last position of the last codon.  The nucleotide sequence 
+     is printed with spacing between codons. If FRAMES=3, then translation is 
+     in all three reading frames, beginning at positions START, START+1, and 
+     START+2, and ending at positions FINISH, FINISH+1, and FINISH+2, 
+     respectively.  There is no spacing between codons. 
+
+     FORM
+     By default, FORM='L', which specifies that amino acids are to be printed 
+     in the long (3 letter) form.  FORM='S' selects the short (1 letter) 
+     form. When using the long form, stop codons are translated as blanks, and
+     untranslatable codons are indicated by ---.
+
+     V. Usage Notes
+
+     1.  NUMSEQ is extremely flexible.  The loop structure of the program 
+     allows the user to print different parts of the sequence in different 
+     ways.  For example, one can print only the DNA sequence in a 5' 
+     non-coding region, then print the coding region with DNA and amino acids 
+     in the correct reading frame, and then print only DNA again in the 3' 
+     non-coding region. Prior to printing, option 5 of the main menu may be used
+     to view output on the screen, without affecting what goes into the output
+     file.
+          
+         The user can simulate recombinant DNA experiments by changing input
+     files, as illustrated in the following example.  If one was cloning a 
+     restriction fragment derived from a larger sequence into the polylinker
+     region of pUC18, he might first read in pUC18 and, with output going to a
+     disk file, print the plasmid sequence from the origin to the cut site
+     into which the subfragment is to be cloned.  Next, he would open a new 
+     input file for the sequence to be cloned.  Now, he would print only that
+     part of the sequence corresponding to the subfragment into the same output
+     file, retaining the numbering system of the original sequence. The last
+     step would be to read in pUC18 once again, and print the rest of the
+     plasmid sequence, from restriction site back to the origin, again using
+     the same output file.  The resultant file will contain the sequence of
+     the chimeric plasmid, with plasmid sequences and insert sequences retain-
+     ing their original coordinates for easy reference.  This sequence could
+     later be used for further manipulations.
+
+     2.   Option 3 of the main menu makes it possible for the user to read in
+     an alternative genetic code from a file.  By default, the program is 
+     initialized to use the Universal Genetic Code, which can also be read
+     from the file UGC.  Additionally, two other genetic code files are sup-
+     plied, the mamalian mitochondrial genetic code (SGC1) and the yeast mito-
+     chondrial genetic code (SGC2).  The user can make his own genetic code
+     files by altering the appropriate amino acid to codon assignments of one
+     of the other genetic code files.  These files may take almost any form you
+     wish to give it, with the following limitations: Amino acids are repre-
+     sented by the standard one-letter symbols, and must be in capital letters.
+     Lowercase letters and all other characters, including blanks, will be
+     ignored, and may be used for annotation of the file.  NUMSEQ will read in
+     the first 64 capital letters that could be amino acid or stop (*) symbols
+     and ignore the rest.  The order in which they are read determines the
+     codons to which the amino acids are assigned.  The amino acids are read in
+     from left to right, and top to bottom.  Thus, the first amino acid will be
+     assigned to TTT, the second to TCT, ... and the last to GGG.
+
+     3.   For each genetic code used, NUMSEQ creates a set of rules enabling it
+     to correctly assign amino acids to any ambiguous codons for which this is
+     possible.  Since the input DNA or RNA sequence may contain any of the 
+     IUPAC-IUB ambiguity codes (see READTHIS), even partially ambiguous seq-
+     uences or consensus sequences will still be translated wherever possible.
+     For example, AUY ACN NCN MGG will be correctly translated to
+     Ile Thr --- Arg.  (Programmers note: The code for printing the ambiguity
+     rule lists made by NUMSEQ can be found at the end of the procedure
+     MAKERULES, sequestered within comment delimiters.  NUMSEQ will list the
+     rules to the screen if the comment delimiters are removed.)

@@ -1,0 +1,25 @@
+This directory contains sample input and output files for use with the
+FSAP package.
+
+testfsap.csh assumes that executable codefiles are in a
+system dependent bin directory. In testfsap.csh, 
+uncomment one of the following lines to specify
+which platform you are using:
+
+#set BINDIR = "../bin-solaris-sparc"
+#set BINDIR = "../bin-solaris-AMD64"
+#set BINDIR = "../bin-linux-intel"
+
+
+To test the WHOLE package, type 
+
+    testfsap.csh > test.log
+
+This will test all the programs, and send output
+to a file called test.log.
+
+
+To test a SPECIFIC program, type
+
+     testfsap.csh program_name
+

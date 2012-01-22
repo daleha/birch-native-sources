@@ -1,0 +1,507 @@
+
+     rest.txt                                              update  4/ 2/2006
+
+             RESTRICTION SITE SEARCH PROGRAMS: INTREST AND BACHREST
+
+     I. Interactive restriction site search: INTREST
+     Below is the screen output of a typical interactive session with 
+     INTREST. Program output and user responses are listed as they would 
+     actually appear on the screen.  Comments, which are listed here for 
+     explanatory purposes but would not appear in the program, are enclosed 
+     in the symbols (* *). 
+
+     INTREST   VERSION  5/10/90                         (* program begins *)
+
+     Enter input filename:           
+     PBR322.DNA                               
+     The following file formats can be read:
+       F:free format    B:BIONET    G:GENBANK
+     Type letter of format  (F|B|G)
+     F
+     Reading input file...
+     Is sequence circular or linear? (Type C or L )
+     C                                          (* User types C or L *)
+     (* INTREST reads in the sequence. *)
+
+     Enter output filename:                
+     PBR322.rest                                       
+     Type name to appear on output:
+     pBR322
+
+     _____________________________________________________________________
+     INTREST                    MAIN MENU
+     _____________________________________________________________________
+     Input file:        PBR322.DNA
+     Output file:       PBR322.rest
+     _____________________________________________________________________
+                         1) Read in a new sequence
+                         2) Open a new output file
+                         3) Search for sites (output to screen)
+                         4) Search for sites (output to file)
+     _____________________________________________________________________
+     Type the number of your choice  (0 to quit program)
+     3
+    
+     (* INTREST writes a heading to the screen or file *)
+     INTREST    Version  5/10/90
+     pBR322  Configuration:  CIRCULAR  Length:     4363 bp
+                                              # of
+                                     Cut     Sites Sites   Frags   Begin     End
+
+     (* User is prompted for enzyme information.     *)
+     (* Ambiguous nucloetides may be specified       *)
+     (* using the IUPAC-IUB conventions:             *)
+     (* Cornish-Bowden (1985) Nucl. Acids Res. 13:   *)
+     (* 3021-3030.                                   *)
+
+     Enter name of enzyme:
+     Ava2                                       (*User types name of enzyme*)
+
+     Enter recognition site using the symbols below:
+     Nucleotides:  A,C,G,T
+     Ambiguous nucleotides:
+     R = A,G    K = G,T    H = A,C,T   D = G,T,A
+     Y = C,T    S = G,C    B = G,T,C   N = G,A,T,C
+     M = A,C    W = A,T    V = G,C,A
+
+     Site must be <= 20 characters:
+     GGWCC                                 (* user types restriction site *)
+     Position of cut?
+     1
+
+     Searching...
+
+     (* INTREST searches for the enzyme in the sequence and writes a report*)
+     (* to the output file, in this case, the printer.  If the restriction *)
+     (* site is symmetric, it searches once.  If it is asymmetric, INTREST *)
+     (* searches again using the inverse complement of the site.           *)
+
+     (* After searching and printing, the user is prompted: *)
+     Type  S to search for a site, Q to quit
+
+     (* The user may repeat the cycle and search for a new enzyme by  *)
+     (* by typing S.  Typing Q ends the program.                      *)
+     (* Below an example of what output might look like:              *)
+
+     BamH1     GGATCC                 1          1
+                                                     376    4363     376     375
+
+     Bgl1      GCCNNNNNGGC            7          3
+                                                     936    2319    1170    3488
+                                                    1170    1810    3489     935
+                                                    3489     234     936    1169
+
+     BstN1     CCWGG                  2          6
+                                                     132    1857    2638     131
+                                                    1061    1060    1444    2503
+                                                    1444     929     132    1060
+                                                    2504     383    1061    1443
+                                                    2625     121    2504    2624
+                                                    2638      13    2625    2637
+                                    
+     EcoR1     GAATTC                 1          1
+                                                    4362    4363    4362    4361
+
+     Hind3     AAGCTT                 1          1
+                                                      30    4363      30      29
+
+     Kpn1      GGTACC                 5          0
+
+     Mbo2      GAAGA                 13 ( 12)   11
+                                                     477     791    2347    3137
+                                                     731     755    3209    3963
+                                                    1002     753    1594    2346
+                                                    1594     592    1002    1593
+                                                    2347     493    4347     476
+                                                    3138     271     731    1001
+                                                    3209     254     477     730
+                                                    3964     196    4151    4346
+                                                    4042     109    4042    4150
+                                                    4151      78    3964    4041
+                                                    4347      71    3138    3208
+
+
+     II. What the output means
+     Although the output is quite straightforward, several aspects deserve 
+     some comment.  First, note that the column labled "Cut" refers to the 
+     position in the restriction site after which the enzyme cuts.  "# of 
+     sites" obviously tells how many sites were found in the sequence.  The 
+     column "Sites" tells the starting position of the fragment after the 
+     cut, not the beginning of the restriction site.  Thus, in a BamH1 digest 
+     of pBR322, a single linear fragment is produced which begins at position 
+     376 and ends at position 375 (as read 5'-->3').  Restriction sites are 
+     listed in this column in the order of their appearance in the sequence. 
+
+     The rightmost three columns should be thought of as a group.  The column 
+     "Frags" lists the fragments produced by digestion with a given enzyme in 
+     descending order of size, as they would appear on a gel. The columns 
+     "Begin" and "End" list the corresponding 5' and 3' ends of each fragment 
+     in "Frags".  To reiterate, the column "Sites" represents an entirely 
+     different way of representing the data as compared to "Frags", "Begin" 
+     and "End".  Note that the fragment lengths, and beginning and ends of 
+     fragments refer only to the strand being processed. 
+
+     III. Searching for many sites:  BACHREST
+     INTREST allows the user to search for restriction sites one at a time in 
+     an interactive manner.  Frequently, however, the investigator may wish 
+     to search for a battery of restriction enzymes.  Since typing a large 
+     number of sites can be rather tedious and allows errors to crop up, a 
+     batch version of INTREST has been written, called BACHREST that reads 
+     recognition sequences are read from a file.
+
+     Two types of restriction site files can be read. Preferrably, you
+     should use Rich Robert's REBASE file "type2.xxx"(where xxx is the
+     current version number) as input. With REBASE, a variety of subsets of 
+     restriction enzymes may be chosen, as illustrated in the example below.
+     REBASE is available by anonyous FTP to the directory pub/rebase at
+     vent.neb.com. REBASE entries take the form:
+
+     <1><name>
+     <2><prototype>
+     <3><recognition sequence>
+     <4><methylation site>
+     <5><commercial source>
+     <6><reference>
+
+     For example:
+
+     <1>HindII
+     <2>
+     <3>GTY^RAC
+     <4>5(6)
+     <5>EM
+     <6>333,627,628,686
+ 
+     The original restriction enzyme files used with earlier versions of
+     BACHREST can also be read. For example, to produce the output shown above,
+     the following restriction site file would be used: 
+
+     ENZYME     RECOGNITION SEQ.     CUTTING POSITION(S)     4/24/87
+
+     BamH1      GGATCC                1
+     Bgl1       GCCNNNNNGGC           7
+     BstN1      CCWGG                 2
+     EcoR1      GAATTC                1
+     Hind3      AAGCTT                1
+     Kpn1       GGTACC                5
+     Mbo2       GAAGA                13   12
+
+     It is readily apparant that the restriction sequence file simply 
+     contains the same information that the user would have typed at the 
+     keyboard in INTREST. Such a file, therefore, is quite easy to make.
+     The user can then make a file of restriction sequences to suit his own 
+     needs, following the three column format shown above.  The following rules 
+     apply : 
+
+     1.  The first two lines, reserved for titles and spacing, are ignored by 
+         the programs.  Input begins on line 3 of the file. 
+
+     2.  All enzymes must include a name, a recognition sequence, and a 
+         cutting site. These data items must all be on the same line, and 
+         must be separated by one or more blanks. 
+
+     3.  Restriction enzyme names must be ten or fewer characters. Blanks are 
+         not permitted. 
+
+     4.  If the recognition sequence contains characters other than those
+         specified above, the enzyme will be ignored. 
+
+     5.  If the recognition sequence is assymetric, (ie. the inverse 
+         complement is not the same as the original site) a second cutting 
+     site must be included after the first, telling where the enzyme cuts on 
+     the complementary strand. 
+
+     A useful type of file might consist of only "4-cutters", or another file 
+     of "6-cutters", or any other grouping that is convenient. A sample file 
+     which contains commercially-available restriction enzymes is found in the
+     file comrest.dat. (Note: With the availability of REBASE, comrest.dat is
+     no longer being updated.)
+
+     IV. Sample BACHREST run
+     
+     In this example, we will search for restriction sites that cut the 
+     Pseudomonas aeruginosa (http://www.pseudomonas.org) into only a few
+     fragments. To accomplish this, we will search for recognition sequences
+     6 bases or longer, and set FRAGMOST to 5, which will only print digests
+     giving 5 or fewer fragments. To eliminate redundancy, we will only search
+     for prototypes (ie. the original enzyme for a given recognition sequence,
+     ignoring all isoscizomers.)
+     
+     NOTE: The sequence obtained  from pseudomonas.org is in FASTA format,
+     which has no way to specify that the sequence is circular. When
+     reading fasta (bionet) formatted sequences, bachrest assumes 
+     that the sequence is linear, unless the file ends with the
+     character '2'. In Unix, a 2 can be appended to a file in the following
+     way:
+     
+     echo '2' >> P_aeruginosa.fsa
+     
+     The following is a transcript of the bachrest search of P_aeruginosa:
+
+     bachrest
+     
+                	  BACHREST   Version  3/29/2006
+
+     Enter filename of sequence to search:
+     P_aeruginosa.fsa
+     The following file formats can be read:
+       F:free format   B:BIONET    G:GENBANK
+     Type letter of format (F|B|G)
+     b                              (* Bionet format is essentially the same as FASTA*)
+     Reading input file...
+     Enter restriction site filename:
+     /home/psgendb/dat/REBASE/type2.lst  (* REBASE enzymes*)
+     Enter output filename:
+     P_aeruginosa.bachrest
+
+     ________________________________________________________________________________
+     BACHREST                     MAIN MENU
+     ________________________________________________________________________________
+     Input file:        P_aeruginosa.fsa
+     Rest. enz. file:   /home/psgendb/dat/REBASE/type2.lst
+     Output file:       P_aeruginosa.bachrest
+     ________________________________________________________________________________
+                	 1) Read in a new sequence
+                	 2) Open a new rest. enz. file
+                	 3) Open a new output file
+                	 4) Set search parameters
+                	 5) Search for sites and write output to file
+     ________________________________________________________________________________
+     Type the number of your choice  (0 to quit program)
+     4
+	
+     ________________________________________________________________________________
+        	 Parameter   Description/Response                     Value
+     ________________________________________________________________________________
+        	  1)SOURCE    C:Commercial only  A:all                   C
+        	  2)PROTOTYPE P:prototypes only  A:all                   A
+        	  3)PROT3     3' protruding end cutters (Y/N)            Y
+        	  4)BLUNT     Blunt end cutters         (Y/N)            Y
+        	  5)PROT5     5' protruding end cutters (Y/N)            Y
+        	  6)SYMM      S:symmetric A:asymmetric B:both            B
+        	  7)MINSITE   Minimum RE site length                     4
+        	  8)MAXSITE   Maximum RE site length                    23
+        	  9)FRAGLEAST Min. # of fragments to print a digest      0
+        	 10)FRAGMOST  Max. # of fragments to print a digest   6000
+        	 11)FRAGPRINT Print a number if > FRAGPRINT frags       30
+     ________________________________________________________________________________
+     Type number of parameter you wish to change (0 to continue)
+     2
+
+     Type new value for PROTOTYPE   (CURRENT VALUE: A)
+     p
+
+     ________________________________________________________________________________
+        	 Parameter   Description/Response                     Value
+     ________________________________________________________________________________
+        	  1)SOURCE    C:Commercial only  A:all                   C
+        	  2)PROTOTYPE P:prototypes only  A:all                   P
+        	  3)PROT3     3' protruding end cutters (Y/N)            Y
+        	  4)BLUNT     Blunt end cutters         (Y/N)            Y
+        	  5)PROT5     5' protruding end cutters (Y/N)            Y
+        	  6)SYMM      S:symmetric A:asymmetric B:both            B
+        	  7)MINSITE   Minimum RE site length                     4
+        	  8)MAXSITE   Maximum RE site length                    23
+        	  9)FRAGLEAST Min. # of fragments to print a digest      0
+        	 10)FRAGMOST  Max. # of fragments to print a digest   6000
+        	 11)FRAGPRINT Print a number if > FRAGPRINT frags       30
+     ________________________________________________________________________________
+     Type number of parameter you wish to change (0 to continue)
+     7
+     Type new value for MINSITE     (CURRENT VALUE:            4)
+     6
+
+     ________________________________________________________________________________
+        	 Parameter   Description/Response                     Value
+     ________________________________________________________________________________
+        	  1)SOURCE    C:Commercial only  A:all                   C
+        	  2)PROTOTYPE P:prototypes only  A:all                   P
+        	  3)PROT3     3' protruding end cutters (Y/N)            Y
+        	  4)BLUNT     Blunt end cutters         (Y/N)            Y
+        	  5)PROT5     5' protruding end cutters (Y/N)            Y
+        	  6)SYMM      S:symmetric A:asymmetric B:both            B
+        	  7)MINSITE   Minimum RE site length                     6
+        	  8)MAXSITE   Maximum RE site length                    23
+        	  9)FRAGLEAST Min. # of fragments to print a digest      0
+        	 10)FRAGMOST  Max. # of fragments to print a digest   6000
+        	 11)FRAGPRINT Print a number if > FRAGPRINT frags       30
+     ________________________________________________________________________________
+     Type number of parameter you wish to change (0 to continue)
+     10
+     Type new value for FRAGMOST    (CURRENT VALUE:         6000)
+     5
+
+     ________________________________________________________________________________
+        	 Parameter   Description/Response                     Value
+     ________________________________________________________________________________
+        	  1)SOURCE    C:Commercial only  A:all                   C
+        	  2)PROTOTYPE P:prototypes only  A:all                   P
+        	  3)PROT3     3' protruding end cutters (Y/N)            Y
+        	  4)BLUNT     Blunt end cutters         (Y/N)            Y
+        	  5)PROT5     5' protruding end cutters (Y/N)            Y
+        	  6)SYMM      S:symmetric A:asymmetric B:both            B
+        	  7)MINSITE   Minimum RE site length                     6
+        	  8)MAXSITE   Maximum RE site length                    23
+        	  9)FRAGLEAST Min. # of fragments to print a digest      0
+        	 10)FRAGMOST  Max. # of fragments to print a digest      5
+        	 11)FRAGPRINT Print a number if > FRAGPRINT frags       30
+     ________________________________________________________________________________
+     Type number of parameter you wish to change (0 to continue)
+     0
+
+     ________________________________________________________________________________
+     BACHREST                     MAIN MENU
+     ________________________________________________________________________________
+     Input file:        P_aeruginosa.fsa
+     Rest. enz. file:   /home/psgendb/dat/REBASE/type2.lst
+     Output file:       P_aeruginosa.bachrest
+     ________________________________________________________________________________
+                	 1) Read in a new sequence
+                	 2) Open a new rest. enz. file
+                	 3) Open a new output file
+                	 4) Set search parameters
+                	 5) Search for sites and write output to file
+     ________________________________________________________________________________
+     Type the number of your choice  (0 to quit program)
+     5
+	
+	AatII     
+	
+	AccI      
+	
+	AcyI      
+	
+	AflII     
+	
+	etc...
+	XmnI      
+	
+     ________________________________________________________________________________
+     BACHREST                     MAIN MENU
+     ________________________________________________________________________________
+     Input file:        P_aeruginosa.fsa
+     Rest. enz. file:   /home/psgendb/dat/REBASE/type2.lst
+     Output file:       P_aeruginosa.bachrest
+     ________________________________________________________________________________
+                	 1) Read in a new sequence
+                	 2) Open a new rest. enz. file
+                	 3) Open a new output file
+                	 4) Set search parameters
+                	 5) Search for sites and write output to file
+     ________________________________________________________________________________
+     Type the number of your choice  (0 to quit program)
+     0
+
+     The output file looks like this:
+     
+     -----------------------------------------------------------
+                	  BACHREST   Version  3/29/2006
+
+     >[org=Pseudomonas   Topology: CIRCULAR  Length:  6264404 bp
+     -----------------------------------------------------------
+     Search parameters:
+	Recognition sequences between    6 and   23 bp
+	Ends: 5' protruding, Blunt, 3' protruding
+	Type: Symmetric, Asymmetric
+	Minimum fragments:     0     Maximum fragments:     5
+	Maximum fragments to print:    30
+     -----------------------------------------------------------
+
+                                              # of
+     Enzyme          Recognition Sequence     Sites     Sites   Frags   Begin     End
+     --------------------------------------------------------------------------------
+
+     PmeI            GTTT^AAAC                    1
+                                                      5859604 6264404 5859604 5859603
+
+     SwaI            ATTT^AAAT                    5
+                                                       331044 3424071 2549592 5973662
+                                                       786993 1302789 1246803 2549591
+                                                      1246803  621785 5973663  331043
+                                                      2549592  459810  786993 1246802
+                                                      5973663  455949  331044  786992
+
+     TaqII           GACCGA(11/9),CACCCA(11/      2
+                                                       843937 5442291 1666050  843936
+                                                      1666050  822113  843937 1666049
+
+
+	
+   
+     V. Usage Notes
+     1. Sequence topology (circular or linear) must be specified in the input file.
+     GenBank entries contain this information on the LOCUS line. In Fasta format files,
+     simply append a '2' to the end of the file to indicate circularity. Free-format
+     files do not have a mechanism for specifying topology, so linearity
+     is assumed.
+     
+     2.   "N"'s may be included in the DNA sequence to indicate regions that 
+     are unknown.  Any restriction sites which are known in an otherwise 
+     unknown region may be included in the sequence and will be found by 
+     INTREST and BACHREST. The fragments calculated will then be of the 
+     correct size.  The real power of this approach is that it allows the 
+     user to create a composite sequence containing a vector, whose sequence 
+     is known, with a partial sequence of the insert, with the experimentally 
+     determined sized of unknown regions represented by the appropriate 
+     number of "N"'s.  INTREST and BACHREST can be used to predict the 
+     fragments expected from single-enzyme digests, and MULTIDIGEST can be used to 
+     predict double or triple enzyme digests. One can then select from among 
+     these several digests which will be easy to experimentally verify.  The 
+     information gained from these experiments can then be used to update the 
+     DNA sequence file. 
+     
+     3. Parameters PROT3,BLUNT,PROT5 and SYMM control which types of enzymes are
+     to be included in the report. Setting PROT3, BLUNT or PROT5 to N will
+     suppress, respectively, reporting of enzymes generating 3' protruding ends,
+     blunt ends, or 5' protruding ends. By default, all three are printed.
+     Similarly, values for SYMM of S, A or B will print, respectively, only 
+     symmetric sites, only asymmetric sites, or both. (Default B).
+     
+     4. The parameters FRAGLEAST and FRAGMOST allow the user to limit the
+     report only to those enzymes producing a specified number of fragments.
+     A digest will only be printed if the number of fragments is such that
+     FRAGLEAST <= # of fragments <= FRAGMOST. For example, if you only wanted
+     to see enzymes that generate at least one fragment, but no more than
+     four fragments, set FRAGLEAST=1 and FRAGMOST=4.
+     
+     5. FRAGPRINT specifies the maximum number of fragments that will be
+     printed in the report. For example, with the default of FRAGPRINT=30,
+     enzymes generating up to 30 fragments will have a complete listing
+     of the fragment sizes and ends. For enzymes generating a larger
+     number of fragements, only a number will be printed, telling 
+     how many fragments were generated, along with the message:
+     (Fragments not shown). In the current version, the maximum value of FRAGPRINT
+     is 6000. This could be increased in the code and the program recompiled,
+     if needed.
+
+     6.   Although these programs have been written with restriction 
+     sequences in mind, one could just as easily use them to search for other 
+     short sequences, such as splice junctions or promoter sequences. This is 
+     especially facilitated by the fact that INTREST and BACHREST allow 
+     ambiguities at any position.  Since the programs always assume that the 
+     sequence given is a restriction site, a list of fragments will still be 
+     generated. 
+
+     With reference to old style Rest. Enz. files:
+     7.   If searching for sites which are not restriction enzyme sites, or 
+     for enzymes whose cutting sites are not known, it is best to specify a 
+     cutting site of 0, so that sites will be listed as beginning at the 
+     first position in the recognition sequence. 
+
+     8.  The cutting site of an enzyme may be a positive or negative integer, 
+     and may refer to positions beyond the recognition sequence.  In such 
+     cases (eg. Mbo2), if the predicted cutting site occurs beyond the end of 
+     a linear fragment, no site will be listed, even though the recognition 
+     sequence does occur within the fragment. 
+
+     With refreence to REBASE:
+     9. Be careful about setting BOTH PROTOTYPE and COMMERCIAL. If you search
+     for only those commercially-available enzymes that are also prototypes, 
+     you will miss enzymes such as AhaIII and DraIII (TTTAAA). AhaIII is the
+     prototype, but is not commercially available, while DraIII is available,
+     but is not a prototype. 
+
+     
+     10. BACHREST and INTREST now can read GenBank files with LOCUS names
+     of up to 18 characters. The old format, in which names could be
+     a maximum of 12 characters can also be read.

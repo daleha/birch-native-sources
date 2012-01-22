@@ -1,0 +1,815 @@
+  (**********************************************************)
+  (*                                                        *)
+  (*     DIGEST  Version  8/12/01  Standard Pascal          *)
+  (*             Brian Fristensky                           *)
+  (*             Dept. of Plant Science                     *)
+  (*             University of Manitoba                     *)
+  (*             Winnipeg, MB R3T 2N2  CANADA               *)
+  (*                                                        *)
+  (* Copyright (c) 1987,1990 by Brian Fristensky            *)
+  (* !!! in comment indicates feature which may need change *)
+  (******************************************************** *)
+
+(* REVISION HISTORY 
+5 Mar 1998  MAXENZ increased from 500 to 4000 due to growth in REBASE 
+            MAXSITES increased to 100000
+*)
+ 
+  program DIGEST(input, output (*,INFILE,OUTFILE*));
+(*!!! Some Pascals may require file parameters in program heading *)
+ 
+  const MAXSITES=  100000;  (*Max. number of sites in all digests *)
+        MAXENZ  = 4000;  (*Max. number of enzymes read in      *)
+        MAXFRAGS= 500;   (*Max. number of fragments in a digest*)
+        MAXPAT  = 23;   (*Max. length of a restriction site   *)
+        MAXWORD = 23;   (*Max. length of a WORD               *)
+        MAXLINE = 150;
+        VERSION = 'DIGEST            Version  8 Aug 2001';
+ 
+  type
+(* BEGIN MODULE TYPE.WORD *)
+       (*   <word>::= <non-blank char>[<non-blank char>] *)
+       WORD    = record
+                 LEN:integer;
+                 STR:array[1..MAXWORD] of char
+                 end;
+(* END MODULE TYPE.WORD         VERSION= 'SUNMODS     Version  6/26/01'; *)
+
+(* BEGIN MODULE TYPE.LINE *)
+       CHARARRAY = packed array[1..MAXLINE] of char;
+       LINE = record
+                STR:CHARARRAY;
+                LEN:integer
+                end;
+(* END MODULE TYPE.LINE         VERSION= 'SUNMODS     Version  6/26/01'; *)
+ 
+       (* RESTRICTION ENZYME *)
+       ENZYME  = record NAME,RSEQ: WORD;
+                        FIRSTSITE,    (* Rest. sites are stored in  *)
+                        NUMSITES  (* SITES[FIRSTSITE..FIRSTSITE+NUMSITES]*)
+                        :integer
+                        end;
+ 
+       (* LIST OF RESTRICTION SITES FOUND *)
+       FRAG = ^FRAGMENT;
+       FRAGMENT = record
+         START,FINISH,SIZE,STARTENZ,FINISHENZ:integer;
+         PREV,NEXT:FRAG
+         end;
+       FRAGSFOUND = record
+        LNUM:integer;
+        HEAD,TAIL:FRAG
+        end;
+ 
+ 
+  var INFILE,OUTFILE  : text;
+      IFN,OFN,HLINE   : LINE;
+      LIST            : array[0..MAXENZ] of ENZYME;(*Enzyme sites found *)
+      SITES           : array[1..MAXSITES] of integer;
+      NUMENZ          : integer;                (* Number of sites found*)
+      NAME            : WORD;                   (* Name of sequence searched *)
+      FOUND,PFOUND    : FRAGSFOUND;             (* Frags. in current digest *)
+      FREEFRAG        : FRAG;                   (*Points to freelist of sites*)
+      FREESITE        : integer;
+      CIRCULAR        : boolean;                (*=true if seq. is circular *)
+      I,CHOICE,
+      SEQLEN          : integer;                (* length of sequence *)
+
+(* BEGIN MODULE INPLINE *)
+    (*  Read a line from the console.    *)
+    procedure INPLINE(var W:LINE);
+      var I : integer;
+         CH,BACKSPACE : char;
+      begin
+        BACKSPACE:=  chr(8);
+(*!!!   if eoln(input) then readln; *)
+(*!!!   get(input); *)
+        with W do begin
+          LEN:= 0;
+          while not eoln(input) do begin
+            read(CH);
+(*!!!       if not eoln then*)
+              if (CH = BACKSPACE) and (LEN > 0) then begin
+                write(BACKSPACE); LEN:= LEN-1 end
+              else if LEN < MAXLINE then begin
+                LEN := LEN + 1;
+                STR[LEN]:= CH
+                end
+            end;
+          readln(input);
+          for I := LEN+1 to MAXLINE do STR[I] := ' '
+          end
+      end; (* INPLINE *)
+(* END MODULE INPLINE         VERSION= 'SUNMODS     Version  6/26/01'; *)
+
+(* BEGIN MODULE WRITELINE *)
+   (*  Write a line to a file using L char, left-justified.  *)
+   procedure WRITELINE(var F:text;W:LINE;L:integer);
+     var I :integer;
+     begin
+       with W do
+         for I := 1 to L do
+           if I <= LEN then write(F,STR[I])
+           else write(F,' ')
+     end; (* WRITELINE *)
+(* END MODULE WRITELINE         VERSION= 'SUNMODS     Version  6/26/01'; *)
+ 
+(* BEGIN MODULE GETFILE *)
+(* The c function access is found in sys/file.h. access must be declared in
+   the outermost scope of the Pascal program. See access (2) manual pages *)
+(*!!!*) function access(PATH:CHARARRAY; MODE:integer):integer; external c;
+
+(************************************************************)
+(* Open  files, checking for I/O errors.                    *)
+(* Assumes user has already been prompted for filename.     *)
+(* Syntax: GETFILE(F,'I',<filename>);                       *)
+(*              opens file F for input                      *)
+(*         GETFILE(F,'O',<filename>);                       *)
+(*              opens file F for output                     *)
+(* !!! NOTE: this non-Standard procedure must be rewritten  *)
+(* for each different version of Pascal.                    *)
+(************************************************************)
+procedure GETFILE(var F:text; FTYPE:char; var FILENAME:LINE);
+
+  var CH:char;
+      OKAY:boolean;
+
+  (* - - - - - - - - - - - - - - - - - - - - - - - - - - - *)
+  (* =true if file exists, =false if it doesn't *)
+  (* A comparable procedure is provided with ATT System V Pascal *)
+  (* A special thank you to Mark Foster, CIS Rearch Computing, Univ. of Penn.
+     and Glenn Gribble of Synaptics Inc. for showing me how to use access()
+     within Pascal programs. B.F. *)
+  function EXISTS(FILENAME:LINE):boolean;
+    const F_OK=0; (* checks if file exists *)
+    begin (* EXISTS *)
+      with FILENAME do begin
+        STR[LEN+1]:=chr(0); (* c strings terminate with null *)
+        if access(STR,F_OK)=-1 then EXISTS:=false
+        else  EXISTS:=true
+        end (* with FILENAME *)
+    end; (* EXISTS *)
+
+  begin (* GETFILE - - - - - - - - - - - - - - - - - - - - - *)
+      (* Read in filename.*)
+      INPLINE(FILENAME);
+      case FTYPE of
+        (* Input file must exist before being opened.*)
+        'I':begin (* input file *)
+              while not(EXISTS(FILENAME)) do begin
+                writeln('***FILE NOT FOUND');
+                writeln('Enter another filename:');
+                INPLINE(FILENAME);
+                end; (* while *) 
+(*!!!*)       reset(F,FILENAME.STR)
+            end; (* I *)
+
+        (* If output file already exists, ask user if he really wants
+           to over write it. *)
+        'O':begin
+              repeat
+                OKAY:=true;
+                if EXISTS(FILENAME) then begin
+                  repeat  
+                    writeln('*** WARNING! File already exists. Overwrite?[Y|N]');
+                    readln(CH)
+                  until CH in ['Y','y','N','n'];
+                  if not (CH in ['Y','y']) then begin
+                    writeln('Enter another filename:');
+                    INPLINE(FILENAME);
+                    OKAY:=false
+                    end
+                  end (* EXISTS(FILENAME) *)
+              until OKAY;
+            rewrite(F,FILENAME.STR)  (* output file *)
+            end (* O *)
+        end (*case*)
+  end;  (* GETFILE *)
+(* END MODULE GETFILE         VERSION= 'SUNMODS     Version  6/26/01'; *)
+ 
+  (**************************************************)
+  (*  WORD  I/O procedures                          *)
+  (**************************************************)
+(* BEGIN MODULE INPWORD *)
+  (* Read a WORD from the terminal. *)
+   procedure INPWORD(var W:WORD);
+      var I : integer;
+         CH : char;
+         BACKSPACE: char;
+      begin
+        with W do begin
+          BACKSPACE:= chr(8);
+          LEN:= 0;
+          while input^ = ' ' do read(input,CH);
+          while (input^ <> ' ') and (not eoln(input)) do begin
+            read(CH);
+(*!!!       if not eoln then*)
+              if (CH= BACKSPACE) and (LEN > 0) then begin
+                write(BACKSPACE);LEN:= LEN-1 end
+              else if LEN < MAXWORD then begin
+                LEN := LEN + 1;
+                STR[LEN]:= CH
+                end
+            end;
+        (*readln;*)
+          for I := LEN+1 to MAXWORD do STR[I] := ' '
+          end
+      end; (* INPWORD *)
+(* END MODULE INPWORD         VERSION= 'SUNMODS     Version  6/26/01'; *)
+ 
+(* BEGIN MODULE READWORD *)
+  (*  Read a word from a textfile           *)
+  procedure READWORD(var F:text;var W:WORD);
+    var I : integer;
+        CH: char;
+    begin
+      with W do begin
+        LEN:=0;
+        while F^ = ' ' do
+          if not eoln(F) then read(F,CH)
+          else if not eof(F) then readln(F);
+        while (F^ <> ' ') do 
+          if LEN < MAXWORD then begin
+            LEN := LEN + 1;
+            read(F,STR[LEN])
+            end
+          else read(F,CH);
+        for I := LEN+1 to MAXWORD do STR[I]:= ' '
+        end
+    end; (* READWORD *)
+(* END MODULE READWORD         VERSION= 'SUNMODS     Version  6/26/01'; *)
+ 
+(* BEGIN MODULE WRITEWORD *)
+   (*  Write a word to a file using L char, left-justified.  *)
+   procedure WRITEWORD(var F:text;W:WORD;L:integer);
+     var I :integer;
+     begin
+       with W do
+         for I := 1 to L do
+           if I <= LEN then write(F,STR[I])
+           else write(F,' ')
+     end;
+(* END MODULE WRITEWORD         VERSION= 'SUNMODS     Version  6/26/01'; *)
+ 
+(* BEGIN MODULE GETINTEGER *)
+  (* Prompts user for an integer, checks whether all characters are digits,*)
+  (* and whether number is within desired range; harasses user until valid *)
+  (* integer is received. *)
+  procedure GETINTEGER(var NUM:integer;LBOUND,HBOUND:integer);
+ 
+   var I,VAL,ORDZERO  : integer;
+     LEGAL,INRANGE,NEGATIVE      : boolean;
+     CH : char;
+     NUMWORD : WORD;
+ 
+  begin
+    INRANGE:= false;
+    LEGAL := false;
+    NEGATIVE := false;
+    ORDZERO:= ord('0');
+    repeat
+      repeat
+        INPWORD(NUMWORD);
+        with NUMWORD do begin
+ 
+          (* Evaluate sign, if any *)
+          I:=1;CH:=STR[I];
+          if CH = '-' then begin
+             NEGATIVE := true;
+             I:=I+1; CH:= STR[I]
+             end
+          else begin NEGATIVE:= false; if CH='+' then begin
+                         I:=I+1; CH:= STR[I] end end;
+ 
+          (* Evaluate unsigned integer *)
+          NUM:= 0;
+          while CH in ['0'..'9'] do
+           begin
+             VAL:= ord(CH)-ORDZERO;
+             NUM:= (NUM * 10) + VAL;
+             I:= I+1; CH:= STR[I]
+             end;
+           if I > LEN then LEGAL:= true
+           else  begin
+              LEGAL:= false;
+              writeln;
+              writeln('Illegal character encountered.');
+              writeln('Enter new value:  ');
+             end
+         end (* with *)
+       until LEGAL;
+ 
+       (* If the number entered was negative, multiply *)
+       (* NUM by -1. Check range of number.            *)
+       if NEGATIVE then NUM:= - NUM;
+       if (NUM >= LBOUND) and (NUM <= HBOUND)
+         then INRANGE := true
+       else begin
+         INRANGE := false;
+         writeln;
+         writeln('Number is out of range.');
+         writeln('Please enter new value:')
+         end;
+     until INRANGE;
+   end;   (* GETINTEGER *)
+(* END MODULE GETINTEGER         VERSION= 'SUNMODS     Version  6/26/01'; *)
+ 
+  (**************************************************************)
+  (*  Read a list of restriction sites from INFILE.             *)
+  (**************************************************************)
+  procedure READSITES;
+ 
+    var  DUMMY,CONFIGURATION:WORD;
+         COLUMN,POSN,I,CUT,NUMREAD:integer;
+         CH:char;
+    begin
+      writeln('Reading restriction site data...');
+      readln(INFILE);
+      READWORD(INFILE,NAME);READWORD(INFILE,DUMMY);
+(*!!!*) WRITEWORD(output, NAME, NAME.LEN); write(output,' ');
+WRITEWORD(output,DUMMY, DUMMY.LEN); write(output,' ');
+
+      READWORD(INFILE,CONFIGURATION);READWORD(INFILE,DUMMY);
+(*!!!*) WRITEWORD(output, CONFIGURATION, CONFIGURATION.LEN); write(output,' ');
+WRITEWORD(output,DUMMY, DUMMY.LEN); write(output,' ');
+      if CONFIGURATION.STR[1]='C' then CIRCULAR:= true
+      else CIRCULAR:= false;
+      readln(INFILE,SEQLEN);readln(INFILE);readln(INFILE);
+(*!!!*)writeln(output,SEQLEN);
+      NUMENZ:=0;FREESITE:=1; (*first element in site array *)
+ 
+      while not eof(INFILE) do begin
+        NUMENZ:= NUMENZ+1;
+        with LIST[NUMENZ] do begin
+          READWORD(INFILE,NAME);READWORD(INFILE,RSEQ);    
+(*!!!*) WRITEWORD(output, NAME, NAME.LEN); write(output,' ');
+WRITEWORD(output,RSEQ, RSEQ.LEN); write(output,' '); writeln(output);
+ 
+(* Old code, prior to reading REBASE style sites *)
+          (* Read cutting position.  Asymmetric enzymes will have a *)
+          (* second cutting position in parentheses.                *)
+(*        read(INFILE,CUT); read(INFILE,CH);
+          while INFILE^=' ' do read(INFILE,CH);
+          if INFILE^='(' then begin
+            while INFILE^<> ')' do read(INFILE,CH);
+            read(INFILE,CH) end;                                    *)
+
+         (* Read in restriction sites for enzyme *)
+          readln(INFILE,NUMSITES);
+          if NUMSITES > 0 then begin
+            FIRSTSITE:= FREESITE; I:= FIRSTSITE;
+            for NUMREAD:=  1 to NUMSITES do begin
+              readln(INFILE,SITES[I]); I:=I+1 end;
+            FREESITE:= FREESITE + NUMSITES
+            end
+          else NUMENZ:= NUMENZ-1; (* Enzymes with no sites are ignored *)
+
+          if not CIRCULAR then readln(INFILE)
+          end;(*with*)
+        while (INFILE^=' ') and not eof(INFILE) do read(INFILE,CH)
+        end; (*while*)
+(*!!!*) CLOSE(INFILE)
+      end;(* READSITES *)
+ 
+ 
+(* BEGIN MODULE LINKED *)
+  (*********************************************************)
+  (*  Linked-list operations for restriction fragment list.*)
+  (*********************************************************)
+ 
+  (*Get a new fragment from freelist.*)
+  procedure GETFRAG(var NEWFRAG:FRAG);
+    begin
+      if FREEFRAG = nil then new(NEWFRAG)
+      else begin
+        NEWFRAG:= FREEFRAG;
+        FREEFRAG:= FREEFRAG^.NEXT
+      end
+    end;
+ 
+  (*Add a fragment after DEST*)
+  procedure ADDFRAG(var AFRAG,DEST:FRAG);
+    var TEMP: FRAG;
+    begin
+      TEMP:= DEST^.NEXT;
+      DEST^.NEXT:= AFRAG; AFRAG^.PREV:= DEST;
+      AFRAG^.NEXT:= TEMP;TEMP^.PREV:= AFRAG
+    end;
+ 
+  (*Return a list to the top of freelist*)
+  procedure RIDOF(var HEAD,TAIL:FRAG);
+    var TEMPHEAD,TEMPTAIL:FRAG;
+    begin
+      if HEAD^.NEXT <> TAIL then begin
+        TEMPHEAD:= HEAD^.NEXT;TEMPTAIL:= TAIL^.PREV;
+        HEAD^.NEXT:= TAIL;TAIL^.PREV:= HEAD;
+        TEMPHEAD^.PREV:= nil;TEMPTAIL^.NEXT:= FREEFRAG;
+        FREEFRAG:= TEMPHEAD
+        end
+    end;
+(* END MODULE LINKED         VERSION= 'SUNMODS     Version  6/26/01'; *)
+ 
+  (************************************************)
+  (*  Re-initialize linked lists.                 *)
+  (************************************************)
+  procedure INITLIST(var F:FRAGSFOUND);
+    begin
+      with F do begin
+        HEAD^.NEXT:= TAIL; TAIL^.PREV:= HEAD;
+        HEAD^.START:=0; HEAD^.SIZE:=0;
+        TAIL^.START:=SEQLEN+1; TAIL^.SIZE:= SEQLEN+1
+        end
+    end; (* INITLIST *)
+ 
+  (************************************************)
+  (*  Perform one-time initializations.           *)
+  (************************************************)
+  procedure INITIALIZE;
+    begin
+      LIST[0].NAME.LEN:=0;
+      (* Initialize the linked list FOUND *)
+      FREEFRAG:= nil;
+      with FOUND do begin new(HEAD);new(TAIL) end;
+      with PFOUND do begin new(HEAD);new(TAIL) end;
+      INITLIST(FOUND);
+      INITLIST(PFOUND)
+    end;
+  
+    (***************************************************************)
+    (*  Ask user for enzymes he wishes included in the digest      *)
+    (***************************************************************)
+    procedure WHICH(var OUTFILE:text);
+      var NUMDISPLAYED,FIRST,LAST,I:integer;
+          INCSYM:array[boolean] of char;
+          INCLUDED:array[1..MAXENZ] of boolean;
+
+      (* Display enzymes on screen and add enzymes to FOUND *)
+      procedure DISPLAY(FIRST,LAST:integer);
+        var ANS,I,WIDTH:integer;
+ 
+        (*  Merge an enzyme with the list of sites found *)
+        procedure MERGE(ANS:integer);
+ 
+          var RIGHTMOST: FRAG;
+              NUMADDED,S:integer;
+          (*  Add a node to the linked list FOUND, telling the cutting site.*)
+          procedure ADDSITE(POSN:integer);
+            var NEWFRAG:FRAG;
+            begin
+              GETFRAG(NEWFRAG);
+              NEWFRAG^.START:= POSN;
+              NEWFRAG^.STARTENZ:= ANS;
+              (* Find the rightmost site <= POSN *)
+              while RIGHTMOST^.NEXT^.START <= POSN do
+                RIGHTMOST:= RIGHTMOST^.NEXT;
+              (* if RIGHTMOST site <> POSN, add a site *)
+              if POSN > RIGHTMOST^.START then begin
+                ADDFRAG(NEWFRAG,RIGHTMOST);
+                FOUND.LNUM:= FOUND.LNUM + 1;
+                RIGHTMOST:= NEWFRAG
+                end
+            end; (* ADDSITE *)
+ 
+          begin (* MERGE *)
+            with LIST[ANS] do begin
+              WRITEWORD(OUTFILE,NAME,10);
+              WRITEWORD(OUTFILE,RSEQ,MAXPAT);
+              writeln(OUTFILE,NUMSITES:4);
+              NUMADDED:= 0;S:= FIRSTSITE;
+              RIGHTMOST:= FOUND.HEAD;
+              while NUMADDED < NUMSITES do begin
+                ADDSITE(SITES[S]);
+                NUMADDED:= NUMADDED + 1;
+                S:= S+1
+                end
+              end;
+            INCLUDED[ANS]:=true
+          end;  (* MERGE *)
+ 
+ 
+        begin (* DISPLAY *)
+          repeat
+            page(output);
+            WIDTH:=0;
+            for I:= FIRST to LAST do begin
+              write(I:3,')',INCSYM[INCLUDED[I]]);
+              WRITEWORD(output,LIST[I].NAME,10);
+              WIDTH:= WIDTH + 1;
+              if WIDTH= 5 then begin writeln; WIDTH:=0 end
+              end;
+            writeln;
+            writeln('Type number of an enzyme to include in this digest');
+            writeln('or 0 to continue:');
+            GETINTEGER(ANS,0,LAST);readln;
+            if (ANS >= FIRST) and (ANS <= LAST) then MERGE(ANS)
+            else if ANS <> 0 then writeln(ANS,' OUT OF RANGE')
+          until ANS= 0;
+          NUMDISPLAYED:= LAST
+        end; (* DISPLAY *)
+ 
+      begin (* WHICH *)
+
+        (* Initialize inclusion array.  INCLUDED[n] is true when LIST[n] has
+           been included in the current digest.  INCSYM holds a '+' to indicate
+           inclusion and a ' ' to indicate non-inclusion. *)
+        INCSYM[true]:='+'; INCSYM[false]:=' ';
+        for I:= 1 to NUMENZ do INCLUDED[I]:=false;
+
+        (* Print instructions *)
+        write('The names of enzymes with known sites in ');
+        WRITEWORD(output,NAME,NAME.LEN+1);writeln;
+        writeln('will be displayed a screenful at a time.');
+        writeln('You will be asked to specify enzymes one at a time,');
+        writeln('to include in this digest.');
+        writeln('There are ',NUMENZ,' enzymes listed');
+        writeln('Press RETURN to begin.');
+        readln;
+        NUMDISPLAYED:=0;FOUND.LNUM:=0;
+        while NUMDISPLAYED < NUMENZ do begin
+          FIRST:= NUMDISPLAYED+1;
+          if NUMENZ- NUMDISPLAYED > 100 then
+            LAST:= NUMDISPLAYED + 100
+          else LAST:= NUMENZ;
+          DISPLAY(FIRST,LAST)
+          end
+      end; (* WHICH *)
+ 
+    (*********************************************)
+    (* Compile a report for output.              *)
+    (*********************************************)
+    procedure REPORT(var OUTFILE:text);
+    var RESPONSE:char;
+        ORDER: array[1..MAXFRAGS] of FRAG;
+ 
+    (*Calculate sizes and ends of fragments*)
+    procedure CALCULATE;
+ 
+      var CURRENTFRAG:FRAG;
+          SITE:integer;
+      begin
+        with FOUND do begin
+        (* if LINEAR add a fragment to head of list*)
+        if (not CIRCULAR) and (HEAD^.NEXT^.START <> 1) then begin
+          GETFRAG(CURRENTFRAG);
+          ADDFRAG(CURRENTFRAG,HEAD);
+          CURRENTFRAG^.START:= 1;
+          CURRENTFRAG^.STARTENZ:= 0;
+          LNUM:= LNUM + 1
+          end
+        else CURRENTFRAG:= HEAD^.NEXT;
+ 
+        if LNUM > 0 then begin
+        (*Calculate ends and size of each fragment and assign it *)
+        (* a place in the ORDER array, to be sorted later.    *)
+          SITE:=1;
+          while CURRENTFRAG^.NEXT <> TAIL do begin
+            with CURRENTFRAG^ do begin
+              FINISH:= NEXT^.START-1; FINISHENZ:= NEXT^.STARTENZ;
+              SIZE:= FINISH-START+1 end;
+            ORDER[SITE]:= CURRENTFRAG; SITE:= SITE+1;
+            CURRENTFRAG:= CURRENTFRAG^.NEXT
+            end;
+          (*Last fragment in list is a special case*)
+          with CURRENTFRAG^ do
+            if CIRCULAR then begin
+              FINISH:= HEAD^.NEXT^.START-1; FINISHENZ:= HEAD^.NEXT^.STARTENZ;
+              SIZE:= (SEQLEN-START)+(FINISH+1);
+              if FINISH=0 then FINISH:= SEQLEN end
+            else begin
+              FINISH:= SEQLEN; FINISHENZ:=0; SIZE:= FINISH-START+1 end;
+          ORDER[SITE]:= CURRENTFRAG
+          end
+       end
+   end;
+ 
+(* BEGIN MODULE SORT *)
+  (*  Invariant:  The array elements > TOP are sorted.*)
+  (*    TOP >= unsorted elements.                     *)
+  procedure BUBBLESORT(TOP,BOTTOM:integer);
+  var SMALLEST,NEXT :integer;
+  procedure SWAP(var FIRST,SECOND:FRAG);
+    var TEMP:FRAG;
+    begin
+      TEMP:= FIRST;FIRST:=SECOND;SECOND:=TEMP
+    end;
+  begin
+    while TOP >= BOTTOM do begin
+      (*bubble smallest unsorted number to the top of sorted list*)
+      SMALLEST:= BOTTOM; NEXT:= BOTTOM+1;
+      while NEXT <= TOP do begin
+        if ORDER[SMALLEST]^.SIZE < ORDER[NEXT]^.SIZE then
+          SWAP(ORDER[SMALLEST],ORDER[NEXT]);
+        SMALLEST:= NEXT;
+        NEXT:= SMALLEST+1
+        end;
+      TOP:= TOP - 1
+      end;
+  end; (* BUBBLESORT *)
+(* END MODULE SORT         VERSION= 'SUNMODS     Version  6/26/01'; *)
+ 
+    (* Calculate fragments in a partial digest, using complete digest
+       as a guide. *)
+    procedure PARTIAL(var FOUND,PFOUND:FRAGSFOUND);
+      var RIGHTMOST,PFRAG,STARTFRAG,ENDFRAG:FRAG;
+          I,J,LENGTH:integer;
+ 
+      (* Create a partial fragment *)
+      procedure MAKEFRAG(var F:FRAG);
+        begin
+          GETFRAG(F);
+          with F^ do begin
+            STARTENZ:= STARTFRAG^.STARTENZ;
+            START:= STARTFRAG^.START;
+            SIZE:= LENGTH;
+            FINISH:= ENDFRAG^.FINISH;
+            FINISHENZ:= ENDFRAG^.FINISHENZ
+            end
+        end; (* MAKEFRAG *)
+ 
+      begin
+        with FOUND do begin
+          (* if CIRCULAR, circularize the complete digest linked list. *)
+          if CIRCULAR then begin
+            HEAD^.NEXT^.PREV:= TAIL^.PREV;
+            TAIL^.PREV^.NEXT:= HEAD^.NEXT
+            end;
+ 
+          (* Using the complete digest list as a guide, calculate the
+             partial fragments and store in PFOUND.  PFOUND is sorted as it
+             is built.  Invariant: PFOUND is sorted by SIZE, increasing
+             from HEAD to TAIL. *)
+          STARTFRAG:= HEAD^.NEXT; PFOUND.LNUM:=0;
+          for I:= 1 to LNUM do begin (* for each starting point *)
+            ENDFRAG:= STARTFRAG; LENGTH := STARTFRAG^.SIZE;
+            RIGHTMOST:= PFOUND.HEAD;
+            while LENGTH <= SEQLEN do begin (* for each end point *)
+              (* Creat a parital fragment*)
+              MAKEFRAG(PFRAG);
+              (* Place the fragment into PFOUND list *)
+              while LENGTH > RIGHTMOST^.NEXT^.SIZE do
+                RIGHTMOST:= RIGHTMOST^.NEXT;
+              ADDFRAG(PFRAG,RIGHTMOST); PFOUND.LNUM:= PFOUND.LNUM + 1;
+              RIGHTMOST:= PFRAG;
+              ENDFRAG:= ENDFRAG^.NEXT;
+              LENGTH := LENGTH + ENDFRAG^.SIZE
+              end;
+            STARTFRAG:= STARTFRAG^.NEXT
+            end;
+ 
+          (* Get rid of the complete digest list and reassign FOUND to the
+             parital list. *)
+          RIDOF(HEAD,TAIL);
+          HEAD^.NEXT:= PFOUND.HEAD^.NEXT; TAIL^.PREV:= PFOUND.TAIL^.PREV;
+          HEAD^.NEXT^.PREV:= HEAD; TAIL^.PREV^.NEXT:= TAIL;
+          LNUM:= PFOUND.LNUM;
+ 
+          (* Assign sorted values in FOUND to the ORDER array, in descending
+             order of size. *)
+          RIGHTMOST:= TAIL^.PREV;
+          for J:= 1 to LNUM do begin
+            ORDER[J]:= RIGHTMOST;
+            RIGHTMOST:= RIGHTMOST^.PREV
+            end
+          end; (* with FOUND *)
+ 
+        (* Reinitialize PFOUND *)
+        with PFOUND do begin
+          HEAD^.NEXT:= TAIL; TAIL^.PREV:= HEAD end
+      end; (* PARTIAL*)
+ 
+    (*  Print the list of sites found.        *)
+    procedure PRINTLIST;
+      var SITE:integer;
+      begin
+        with FOUND do begin
+          for SITE:= 1 to LNUM do
+            with ORDER[SITE]^ do begin
+              write(OUTFILE,SIZE:MAXPAT+22);
+              write(OUTFILE,START:8);
+              WRITEWORD(OUTFILE,LIST[STARTENZ].NAME,10);
+              write(OUTFILE,FINISH:6);
+              WRITEWORD(OUTFILE,LIST[FINISHENZ].NAME,10);
+              writeln(OUTFILE)
+              end;
+          RIDOF(HEAD,TAIL)
+        end;
+        writeln(OUTFILE)
+      end;
+ 
+  begin
+    CALCULATE;
+    repeat
+      writeln('Type C for complete digest, P for parital:');
+      readln(RESPONSE)
+    until RESPONSE in ['C','c','P','p'];
+    case RESPONSE of
+      'C','c':BUBBLESORT(FOUND.LNUM,1);
+      'P','p':PARTIAL(FOUND,PFOUND)
+      end;
+    PRINTLIST
+  end; (* REPORT *)
+
+   (***************************************************************)
+  (* Prompt user for sites and call SEARCH.                      *) 
+  (***************************************************************)
+  procedure PROMPT(var OUTFILE:text);
+    var ANSWER:char;
+    begin
+      writeln(OUTFILE,VERSION);
+      WRITEWORD(OUTFILE,NAME,NAME.LEN);
+      write(OUTFILE,'  Configuration: ');
+      case CIRCULAR of
+        true:write(OUTFILE,' CIRCULAR');
+        false:write(OUTFILE,' LINEAR')
+        end;
+      writeln(OUTFILE,' Length: ',SEQLEN,' bp');
+      writeln(OUTFILE,'# of':MAXPAT+14);
+      writeln(OUTFILE,'Sites   Frags   Begin            End':MAXPAT+46);
+      repeat
+        WHICH(OUTFILE);
+        REPORT(OUTFILE);
+        repeat
+          writeln('Type  D to generate a digest, Q to quit');
+          readln(ANSWER)
+        until ANSWER in ['D','d','Q','q']
+     until ANSWER in ['Q','q']
+    end; (* PROMPT *) 
+
+
+  (* ----------------------------------------------------------  *)
+  (* ----------------- MAIN  PROCEDURE  -----------------------  *)
+    begin
+(* BEGIN MODULE STARTUP *)
+(* Peform operations which must be done at beginning of main
+   procedure. *)
+(*!!!   TERMIN(input);    Open input for interactive use *)
+(*!!!   TERMOUT(output);   "   output "      "        "  *)
+     writeln(VERSION:50);
+     writeln;
+(* END MODULE STARTUP         VERSION= 'SUNMODS     Version  6/26/01'; *)
+      INITIALIZE;
+      (* Initialize horizontal output line *)
+      with HLINE do begin
+        for I:= 1 to MAXLINE do STR[I]:='_';
+        LEN:=MAXLINE
+        end;
+      
+      (* Open restriction site file *)
+      writeln('Enter restriction site filename:');
+      GETFILE(INFILE,'I',IFN);
+      NAME.LEN:=0;
+      READSITES;
+      if NAME.LEN=0 then begin
+         writeln('Type name to appear on output:');
+         INPWORD(NAME);readln
+         end;
+       INITLIST(FOUND);
+       INITLIST(PFOUND);
+
+       OFN.LEN:=0; (* indicates that OUTFILE is not yet open *)
+
+      (* MAIN MENU *)
+      repeat
+        writeln;
+        WRITELINE(output,HLINE,80);writeln;
+        writeln('DIGEST','MAIN MENU':30);
+        WRITELINE(output,HLINE,80);writeln;
+        write('Input file:        ');WRITELINE(output,IFN,IFN.LEN);writeln;
+        write('Output file:       ');WRITELINE(output,OFN,OFN.LEN);writeln;
+        WRITELINE(output,HLINE,80);writeln;
+        writeln(' ':20,'1) Read in a new input file');
+        writeln(' ':20,'2) Open a new output file');
+        writeln(' ':20,'3) Generate digests (output to screen)');
+        writeln(' ':20,'4) Generate digests (output to file)');
+        WRITELINE(output,HLINE,80);writeln;
+        writeln('Type the number of your choice  (0 to quit program)');
+        GETINTEGER(CHOICE,0,4);readln;
+
+        case CHOICE of
+          0:;
+          1:begin
+              writeln('Enter restriction site filename:');
+              GETFILE(INFILE,'I',IFN);
+              NAME.LEN:=0;
+              READSITES;
+              if NAME.LEN=0 then begin
+                writeln('Type name to appear on output:');
+                INPWORD(NAME);readln
+                end;
+              INITLIST(FOUND);
+              INITLIST(PFOUND)
+            end;
+          2:begin
+(*!!!         CLOSE(OUTFILE); *)
+              writeln('Type output filename:');
+              GETFILE(OUTFILE,'O',OFN);
+            end;
+          3:PROMPT(output);
+          4:if OFN.LEN>0 then PROMPT(OUTFILE)
+            else begin writeln('>>> NO OUTPUT FILE CURRENTLY OPEN');
+                       readln end
+          end (* case *)
+        until CHOICE = 0;
+(*!!!*)CLOSE(OUTFILE)
+     end. (* DIGEST *)
+ 

@@ -1,0 +1,562 @@
+
+     FSAP.txt                                              update  3/29/2006
+                FRISTENSKY (CORNELL) SEQUENCE ANALYSIS PACKAGE
+
+     As described in Fristensky, Lis, and Wu (1982) in Nucl. Acids Res. 10: 
+       6451-6463 and Fristensky (1986) Nucl. Acids Res. 14: 597-610. 
+
+     I.  CONTENTS
+
+     The following programs and documents are distributed with the package:
+
+     General documents:
+     FSAP.asc - This document, introductory information
+     DOS.asc
+     UNIX.asc - installation notes for UNIX
+     PROGRAMR.asc - Programmers' notes for transportation and modification
+
+     Sequence formatting and translation:
+     NUMSEQ.asc documentation for NUMSEQ
+     NUMSEQ   - numbers and translates sequences
+     UGC,SGC1,SGC2 - alternative genetic codes for use by NUMSEQ
+     FUNNEL.asc documentation for FUNNEL
+     FUNNEL   - reformats sequence file
+     N.DNA    - template file for manual sequence entry
+     TEST.SEQ - a sample sequence file in BIONET format
+
+     Restriction site search and mapping:
+     REST.asc - documentation for restriction search programs
+     INTREST &
+     BACHREST - search for restriction sites
+     COMREST  - restriction sequences for commercially available enzymes
+     SIXCUT   -     "           "      "       "          "  six-cutters
+     MULTIDIGEST.asc - documentation for DIGEST
+     MULTIDIGEST   - calc. frags. from multiple R.E. digests, complete & part.
+
+     Similarity searches:
+     HOM.asc  - documentation for similarity search programs
+     P1HOM &                                                       
+     P2HOM    - search for similarity between protein sequences
+     D3HOM &
+     D4HOM    - search for similarity between nucleic acid sequences
+
+     Other programs:
+     TESTCODE.asc - documentation for TESTCODE
+     TESTCODE - tests to see if open reading frames are coding
+     GEL.asc  - documentation for GEL
+     GEL      - given mol.wt.standards, calculates sizes of unk.frags.
+     COMP.asc - documentation for COMP
+     COMP     - base or a.a. composition of DNA, RNA, or protein
+     PROSTAT.asc  - documentation for PROSTAT
+     PROSTAT  - calculates amino acid comp. and mol. wt. of protein
+
+     Program maintanence and transportation:
+     MODULE.asc   - documentation for MODULE
+     MODULE   - subroutine replacement program
+     DOSMODS.P  - subroutine module library for MS-DOS
+     UNIXMODS.P -      "       "       "     "  UNIX
+     CREATE - runs module to create compileable codefiles
+     COMPILE - compiles programs
+
+     II. NEW FEATURES
+
+    (March 2006)
+    Added new features to BACHREST that gives the user more ways to narrow
+    the list of enzymes and digests shown in the output. Searches can be limited
+    to enzymes that generate 5' protruding, blunt or 3' protruding ends, or that
+    have either symmetric or asymmetric recognition sequences. The parameters
+    LEASTFRAGS and MOSTFRAGS also allow you to only print digests with at least
+    LESTFRAGS fragments, or at most MOSTFRAGS. It is also possible to
+    keep the output file small by setting PRINTFRAGS. When the number of fragments
+    in a digest exceeds PRINTFRAGS, MULTIDIGEST will only print the number
+    of fragments, rather than printing all of the fragments themselves.
+    Finally, BACHREST now prints the values of these parameters in the
+    header lines of the output file.
+    
+    To avoid conflict with the Solaris 10 digest command, DIGEST has been
+    renamed as MULTIDIGEST. MULTIDIGEST has been updated to read the
+    new BACHREST output file format.
+    
+    (August 2001)
+    DNA sequence programs updated to be able to read the new GenBank flatfile
+    format, scheduled to be used as of GenBank Release 126.0. The length of
+    LOCUS names has been increased from 12 to 18. This has caused the
+    word 'Circular' to be shifted to the write, for circular sequences.
+    All FSAP programs can read files in both the old and new formats.
+    
+    
+    (November 1994)  
+    COMP, LINEPLOT, MAP and PAGINATE have been deleted.
+    BACHREST can now directly read REBASE files.
+
+    (October 1990)
+    Numseq now makes it possible to choose whether you want nucleic acid
+    sequences printed in upper or lowercase. Also, the menu option for
+    specifying a change in numbering system has been simplified. Finally, 
+    most of the programs now have an explicit option for sending output to
+    the screen.  This is because, on systems in which file output is buffered,
+    simply specifying the name of the terminal (eg. /dev/tty in UNIX) as the 
+    output file would result in a delay in part of the output going to the
+    screen. Now there is an explicit option for screen output.
+
+    (1988) 
+    General- Most of the programs now use enhanced menus, which 
+     provide more information to the user, as well as increasing the 
+     versatility of the programs.  Additionally, in the event that a user
+     is attempting to overwrite an existing file, the programs will now
+     give the user the option of changing his mind and writing to another
+     file.
+     
+     MAP - Now displays characters used for each enzyme in a map.
+
+     Similarity search programs -  In the last release (Aug.'87) only, P1HOM
+     et al. would sometimes score an identity when comparing N's between two
+     sequences.  This problem did not result in long stretches of N's scoring
+     as identities, but would only occur when individual N's were contained
+     within other local similarities comprised of nonambiguous symbols.  This
+     bug has been fixed.  Also, P1HOM, P2HOM, and PROSTAT now permit the 
+     symbols B for Asx and Z for Glx.
+
+     PROSTAT - Given an amino acid sequence, this program calculates amino
+     acid composition and molecular weight.
+     
+     SEQUENCE ENTRY - A versatile and time-saving protocol is presented for
+     sequence entry (see section IV).
+     
+     III. DATAFILE FORMAT
+         The sequence analysis programs allow a lot of flexibility in setting 
+     up datafiles.  A datafile may contain a DNA, RNA, or amino acid 
+     sequence, written in the standard one-letter notation: 
+
+     A. Nucleic acid sequences - The IUPAC-IUB symbols for nucleotide nomen-
+     clature [Cornish-Bowden (1985) Nucl. Acids Res. 13: 3021-3030.] are used
+     by the programs, as shown below:
+
+     Symbol         Meaning              | Symbol         Meaning
+     ------------------------------------+---------------------------------
+     G              Guanine              | K              G or T
+     A              Adenine              | S              G or C
+     C              Cytosine             | W              A or T
+     T              Thymine              | H              A or C or T
+     U              Uracil               | B              G or T or C
+     R              Purine (A or G)      | V              G or C or A
+     Y              Pyrimidine (C or T)  | D              G or T or A
+     M              A or C               | N              G or A or T or C
+     
+     Either upper- or lowercase letters may be used.  Also, U's will 
+     automatically be converted to T's as sequences are read in, but the user
+     is given the option of printing T's as U's during output.
+     By convention (and common sense) sequences are always written 
+     5'--->3'. 
+
+     B.   IUPAC-IUP AMINO ACID SYMBOLS
+          J. Biol. Chem. 243, 3557-3559 (1968)
+          (only 1-letter symbol allowed as program input)
+
+          Phe         F          Leu         L          Ile         I
+          Met         M          Val         V          Ser         S
+          Pro         P          Thr         T          Ala         A
+          Tyr         Y          His         H          Gln         Q
+          Asn         N          Lys         K          Asp         D
+          Glu         E          Cys         C          Trp         W
+          Arg         R          Gly         G          STOP        *
+          Asx         B          Glx         Z          UNKNOWN     X
+
+     C. File formats - Programs which read sequences will prompt the user 
+     with a choice of file formats.  It is up to the user to know which 
+     format his file(s) is/are in prior to starting the program.  The 
+     following file extensions are recommended for use in operating systems 
+     which permit them (eg. MS-DOS, UNIX):
+
+     .DNA     free format, nucleic acid
+     .SEQ     BIONET, nucleic acid
+     .GEN     GENBANK, nucleic acid
+     .PRO     free format, protein
+     .PEP     NBRF, protein
+
+     Although some errors in input file format will be caught, others may 
+     result in the interpretation of legal nucleotide or amino acid 
+     characters as being incorrectly added to the sequence.  For example, 
+     if the user attempted to read in a BIONET file as a free format file, 
+     any legal nucleotide characters in the sequence name would be added to 
+     the sequence.
+
+     1. Free format (nucleic acids or proteins) 
+
+     There are only three rules to making a free-format file:
+        1. Comments are denoted by a semicolon (;). When a semicolon is 
+           encountered, the rest of the line is ignored by the programs.
+        2. Outside of comments, only legal sequence symbols (see III) are
+           read as sequence.  Other characters (eg. blanks, numerals) are
+           ignored.
+        3. DNA and RNA symbols may be in either upper or lowercase.
+
+       Sequences can be typed into a file in any arrangement that is 
+     convenient.  Blank spaces between bases or amino acids are ignored, 
+     and a sequence may run over many lines.  Thus, you may skip a space 
+     every five or ten bases to make proofreading of the file easier.  Any 
+     letters that are not in the above lists of symbols are ignored. This 
+     makes it possible to intersperse numbers and other symbols with the 
+     actual nucleotides or amino acids to be read in.
+       Comments can be inclueded anywhere in the file to annotate the 
+     sequence.  Their importance can be likened to comments you might write
+     in your laboratory notebook.  Without comments, data you entered a year
+     ago may be meaningless.
+     
+     Below is a sample datafile: 
+     ; pEX-A  10/31/81
+     ; Sequence from experiment #185, starts at EcoRI site.
+              10          20    30          40         50
+     AATTC CGGTT CCTTA TTAAC AAATT CCCTT CCCTT CCCCC GGTTA
+              60    
+     CCACA GAATT GATTC ;Hinf I site
+     ; Experiment #186
+     cccta ggcca aattg gaTTC CNTTA NNCCC GGGAC TTACA GACTA
+     CCTAG GACCG TTCGG TTACT ACTTC TCAGA AGACT GACTA CGGCT
+     AAAAA AAA
+
+     2. BIONET (nucleic acids only)
+     Any line beginning with a semicolon is considered a comment.  The 
+     first non-comment line is read as the sequence name, although only the 
+     first non-blank string on that line will be read.  If this string is 
+     longer than MAXWORD, the name will be truncated to MAXWORD characters.  
+     MAXWORD may vary from program to program, but will always be greater 
+     than 20.  The sequence itself begins on the next line.  Although not 
+     explicitly included in BIONET format, these programs permit annotation 
+     characters and comments anywhere in the sequence.  However, the last 
+     '1' or '2' read in the file will be interpreted as the flag for a 
+     linear or circular sequence, respectively.  See BIONET documentation 
+     for more information.
+
+     3. GENBANK  (nucleic acids only)
+          Owing to the complexity of the GENBANK format, I will not define it 
+     here.  However, I will describe the algorithm used to read GENBANK 
+     files.  This algorithm does not strictly check GENBANK files for 
+     correctness.
+          The first non-blank string in the file must be 'LOCUS'.  The next 
+     non-blank string will be read as the sequence name, and truncated if 
+     it is longer than MAXWORD, as for BIONET files.  The next non-blank 
+     string, and fourteen characters following it, are skipped.  The next 
+     character should be in column 43 of a GENBANK file.  If this character 
+     is 'C' or 'c', then the sequence is considered to be circular.  The 
+     programs next skip to the first line with the word 'ORIGIN' beginning in 
+     column 1, and then skips to the next line.  From this point, sequences 
+     are read exactly as in free format files, until the end of the file.
+     NOTE: These programs do NOT read sequences directly from GENBANK, but
+     assume that a single entry has been extracted from the database and
+     written to a file in GENBANK tape format.  The floppy diskette version
+     of GENBANK now includes programs (eg. GBTAPE) that extract entries.
+     
+     4. NBRF  (proteins only)
+          All NBRF files begin with a name line, whose first character is '>'. 
+     This character is deleted, and the next non-blank string is read in.  
+     The program tests to see if the fourth character on the line is a ';'.     
+     If so, then the official NBRF format is assumed, and the data 
+     characters in columns 2-4 of the first line are also deleted. The next 
+     non-blank string will be used as the name, and the next line, assumed 
+     to be the title line, will be skipped.  The short NBRF format, as 
+     distributed on floppy diskettes, is assumed if the fourth character on 
+     the first line is not a semicolon.  In this case, only the leading '>' 
+     is deleted, and the second line in the file is assumed to be an amino 
+     acid sequence. 
+     
+     D. Filenames
+        It is up to the user to know how to use the filenameing conventions
+     of his particular operating system.  Any legal filename should be
+     usable with these programs.  Note that printers and terminals often
+     have special filenames.  The chart below lists filenames for several 
+     operating systems:
+
+               Device: |   Screen          Printer
+     ------------------+--------------------------------------                              
+     Operating system: |
+       MS-DOS          |   user            prn,lpt1,lpt2
+       UNIX            |   /dev/tty        send output to file 
+                       |                   and print using lp 
+       CMS (Pascal VS) |   term            printer
+     
+     (Note: Since the menus now give you the explicit option of sending
+     output to the screen, most of the above should be unnecessary.)
+
+     IV. SEQUENCE ENTRY
+     Although many packages offer some sort of sequence collation program, I
+     have yet to find a method for sequence entry which is simpler and, in
+     the long run, easier, than manual entry of sequence data using a good
+     screen editor or word processor.  I shall describe an approach for 
+     sequence entry which I have found to be more versatile than any sequence
+     editor I have yet seen. Below is part of a free-format file
+     containing data from several gel runs.  I shall use this example to 
+     demonstrate advantages of this approach, and then list a step-by-step
+     protocol for entry and updating of sequence data.
+     
+     A. Overview
+        The example shown below takes the form of a free-format file.  
+
+     ;                     410       420       430       440       450 
+     ;5' BF146-2    nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnggatcccnnttngcaaagct 
+     ;3' BF151-1    nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnttcga 
+                    nnnnnnnnnnnnnnnCTGCAGnnnnnnnnnGGATCCnnnnnnnnnAAGCT 
+     ;                 Pst1,BamH1 sites-^----------^ from mapping
+
+     ;                     460       470       480       490       500 
+     ;5' BF146-2    gagtgtgaaatactcacaaaaggtgatgctgctcctagtgagagcactcn 
+     ;5' BF146-1    nnnnnnnnnnnnnnnnnaaaaggtgatgctgctcctagtgaaagagcaaa 
+     ;5' BF148-2    nnnnnnnnnnnnnncacaaaaggtgatgctgctcctagtga agagg aa 
+     ;3'            ctcacactttatgagtgttttccactacgacgaggatcactctcgtgagt 
+                    GAGTGTGAAATACTCACAAAAGGTGATGCTGCTCCTAGTGAGAGCACtCA 
+
+     ;                      510       520       530       540       550 
+     ;5' BF146-1    ctcagga ctgacaagctagggggatggtcttttca ggctcttgagnnnnn 
+     ;5' BF148-2    ctcagcaactgacaagctagggggatggtcttttca ggctcttgagggttt 
+     ;5' BF148-1    nnnnnnnnnnnnnnnnnnnnnnnnnnggtcttttcanggctcttgagggttt
+     ;3' BF151-1    gagtcgttgactgaacgatccccctaccagaaaagttccgagaactcccaaa
+                    CTCAGCAACTGACAAGCTAGGGGGATGGTCTTTTCAtGGCTCTTGAGGGTTT
+
+     We can take advantage of the simple rules governing free-format files
+     to make a master file containing all of our sequencing reactions. In the
+     example, we see that data from both strands are presented as they
+     appeared on the gel. Data can be written in groups of 50 to simplify
+     reading and leave space for entering additional nucleotides, if necessary.
+     The only non-comment lines contain the user-defined consensus, with
+     lowercase letters used to indicate uncertainty in the sequence. The actual
+     gel runs are written as comment lines, permitting annotation of each run. 
+     For example, data from reaction BF146 is obtained from two gel loadings
+     (BF146-1 and BF146-2), and the presence of the "5'" serves to indicate
+     their orientation.  We can also see that data from the first loading of
+     BF151 represent the opposite strand (thus 3') relative to the consensus.
+     This strand is written as it appeared on the actual gel, making it 
+     possible to always refer to the autoradiogram for any gel run, without
+     having to try to reconcile complementarity.
+
+     Among the advantages are:
+     
+     1. All data on gel runs can be preserved during the entire sequencing
+     project.  Individual gel runs don't change, only the consensus.
+     
+     2. There only needs to be one file to contain all data.  This file is
+     directly readable by all CSAP programs as a 'free-format' file.  It
+     can also be printed for reference. 
+     
+     3. The file serves as a model of the fragment being sequenced.  Parts
+     of the sequence not yet determined can be represented as N's, with 
+     restriction sites written in at appropriate places if available from
+     mapping.  Using this model, programs such as INTREST, BACHREST, DIGEST
+     or MAP can be used to generate digests or maps as an aid in sequencing.
+     The usefulness of this technique can be further enhanced by including
+     the sequence of the vector in the file.
+     
+     4. Since the gel entries show the actual strand that was sequenced,
+     you can always refer to the original autoradiogram easily when trying
+     to reconcile gel runs.
+
+     5. Any screen-editor or word processor can be used for sequence entry.
+     Thus, the investigator can enter data using a program with which he
+     is already familiar.
+     
+     B. Strategy
+     1. Use a polar deletion method.
+        The shotgun sequencing approach is a tedious and dangerous 
+     strategy.  It is tedious because the random sequencing of clones quickly
+     suffers from Poisson effects. That is, after a while you keep 
+     resequencing the same fragments, and not finding others that haven't
+     yet been sequences.  Furthermore,  the presence of repetitive elements
+     within a sequence can make ordering of clones difficult. 
+        In recent years, methods for rapidly making rapid sets of nested
+     deletions in plasmid inserts have made it possible to generate a 
+     'minimal set' of ordered clones for sequencing. Thus, you only sequence
+     a near minimal number of clones, and you always know where, in the
+     original insert, a particular clone lies.
+           
+     2. Create a template file.
+        Knowing the size of the insert you are sequencing, a template can
+     be created by simply making a file containing the appropriate number
+     of n's, to serve as place holders.  Using NUMSEQ, create a numbered
+     version of this file, preferably double-stranded.  This file can now
+     be manipulated using your word processor or text editor.
+        Depending on your editor, you may wish to put more than 50 n's on a
+     line.  However, it is probably best not to exceed an 80-character line,
+     since you'll probably want to print this file out each time you update
+     it.  Some space can be saved by removing blanks between groups of
+     nucleotides.  An example of a template file can be found in the file
+     N.DNA.  This file can be used as a template for sequences <= 1KB.
+       Finally, you may wish to include the sequence of your cloning vector 
+     in the file.  Use NUMSEQ to generate a 'restriction digested' version
+     of the vector by writing output to a file beginning at the 5' end of one
+     restriction site, continuing all the way around to the 3'end. If you are
+     cloning into double-digested plasmid, remember to stop at the 3' end of
+     the distal first site.  For example, if you are cloning an EcoR1/Hind3
+     fragment into BLUESCRIPT, start writing the BLUESCRIPT at the 5'-end of
+     the Hind3 site, and finish at the 3'-end of the EcoR1 site.  Thus, the
+     short R1/Hind3 site of the polylinker will be effectively deleted.
+     When you're done, simply add this file to the end of your template file.
+     
+     3.  Enter the sequence data gel by gel.
+       The first step in this process is to read your sequencing gel.  Since
+     you have used a polar deletion method and presumably know approximately
+     where each clone begins and ends, try to assign coordinates to the bands
+     in each set of lanes.  It is probably simplest to start at the 5'end of
+     the insert, so that your numbers can begin at 1, but this is not 
+     essential.     
+       In the example shown above, I knew the approximate locations of the
+     Bam and Pst sites from a very crude mapping of the insert.  Since I began
+     sequencing from the Pst1 site, I wrote in the known sites and began
+     entering my sequence data based on the known Bam site.  
+       When sequencing from two ends and meeting in the middle, it is better
+     to overestimate the size of a fragment, rather than to underestimate.  
+     If you over estimate, and your reactions are separated by some space
+     after they should have met, simply blank out the intervening space
+     by overwriting with the space key.  
+
+     4. Add new data as you get it directly to the file.
+       Since you all your previous sequence data is nicely aligned (albeit
+     by hand) it is easy to enter each new sequence by typing directly below
+     some previous gel run.  This helps you keep your place.  
+       When entering strands corresponding to the consensus, it is easy to 
+     simply read up the gel, 5' to 3' as you type in your sequence.  For the
+     complementary strand I often find it easiest to actually write the
+     sequence directly on the autoradiogram, and then read DOWN the gel,
+     3' to 5' as I type it in.
+       If you have a gel digitizer that creates sequence files, you can still
+     enter your sequence into a separate file for each gel run, and then 
+     insert this file at the top or bottom of your main file.  Now, use
+     your editor to move chunks of your sequence down to the appropriate
+     lines, inserting blanks as necessary to line up your new sequence with
+     those already present.  
+       If you are having trouble locating where a particular sequencing reac-
+     tion overlaps your consensus, simply use the consensus file as input
+     for INTREST.  By searching for short oligomers (eg. 5 or 6) from your
+     new sequence, you should easily be able to find where they overlap.
+   
+    5. Maintain a consistent numbering system.
+       Perhaps the most confusing thing about assembling a sequence is the
+    fact that most or all sequence editing programs change the numbering
+    system everytime sequence data is entered.  Although it may sound strange
+    at first, I have found that it is better to maintain a fixed numbering
+    system for particular bases, even if it does mean that there will sometimes
+    be, for example, 12 nucleotides between positions 540 and 550.
+      The advantage of doing this is that you can write numbers on your auto-
+    radiograms to mark (perhaps every 10 bases) where your sequence is.
+    If you are afraid to write on an autoradiogram ("EVERY experiment I do
+    is considered to be of PUBLICATION QUALITY") you have to realistically ask
+    yourself the question, when was the last time you saw an autoradiogram of
+    a sequencing gel in a non-methods paper?  If you still feel squeamish
+    about marking up your autorad., use a Sharpie or other ethanol-soluble ink,
+    so that it can be erased if need be.
+       As runs accumulate, it may be necessary to insert gaps to properly
+    align sequences.  If you have to do this, be sure to insert gaps in the
+    blank spaces between numbers, as well.
+
+    6.  Data analysis.
+      The beauty of this approach is that at any time, your file can be read
+    by any of the programs for printing, translation, similarity searching
+    etc.  Although a host of other data is present in the file, it is trans-
+    parent to the programs because it is enclosed in comments.
+
+ 
+   V.  FURTHER INFORMATION
+     
+     The Fristensky (Cornell) Sequence Analysis Package is not for sale and 
+     is available free of charge to any researcher in academia or industry. 
+     Users of the programs are free to copy these files for distribution to
+     colleagues.
+    
+     As with any technique, please be sure to cite the appropriate references
+     for these programs in any publications for which the results were aided
+     by their use.
+
+
+FSAP WEB SITE
+
+http://home.cc.umanitoba.ca/~psgendb/FSAP.html
+
+FTP AVAILABILITY
+
+FTP, or File Transfer Program, is a facility that in essence provides a way
+for computer users to remotely logon to computers at other sites, by way of
+global computer networks. From the user's point of view, he is carrying on
+an interactive terminal session with a computer that in reality could be on
+the other side of the planet. This is accomplished through the
+sending of short packets of information between the user's local mainframe
+and the remote system over the network. Frequently, the response is rapid
+enough that it seems as if the user is carrying on a normal terminal
+session.
+
+Many computer sites now have 'public' ftp directories that can be read by
+anyone, and some cases even written. In this way, a single individual can
+make programs or data available to anyone with ftp access simply by placing
+it in the public directory.  Although access to the rest of the computer
+system is restricted to those with accounts, the public ftp directory can
+be accessed by any user whose computer is connected to the Internet.
+Generally passwords are not required.
+
+Some of the public ftp directories throughout the net have all kinds of
+public domain software and databases, so once you have mastered ftp, you have
+a virtual goldmine at your disposal. One such directory is at genbank.bio.net.
+In addition to giving you access to the complete database, there are also
+directories full of PC and Mac programs.
+
+If your campus computer system is setup for ftp access, it is trivial to
+obtain programs or data. If it is not, scream to your computer center staff
+that you can't afford not to be a part of our global network village.
+
+USING FTP
+Although FTP is available on a number of mainframe operating systems
+(eg.VAX), I will be assuming for descriptive purposes that you are a Unix
+user.  I don't know enough about the nuances of FTP on the other systems to
+be able to say anything intelligent on the subject. Contact your local
+computer services people for more information.
+
+First, let me bring to your attention the fact that you should be able to
+look at the FTP manual page by typing 'man ftp'. If you want a printout,
+something like 'man ftp |lpr' will probably work.  The most important thing
+you need to know about ftp is that it emulates several Unix commands,
+including 'ls' and 'cd'. With these, you can enter an ftp directory that is
+strange to you and browse through until you find what you want.
+
+Here is how to obtain the FSAP package by FTP:
+1. In Unix, type ftp 'ftp.umanitoba.ca'. 
+   This will connect you with the SUN-Unix system at the University of
+    Manitoba (home of the Bisons!)
+
+2. Login under username 'anonymous', with passsword 'ident'. 
+
+3. Look at the contents of the current directory with 'ls -l'. If you are
+in /var/spool/ftp, you should see a directory called 'pub'.
+
+4. 'cd pub' should put you into that directory, and 'ls -l' should 
+show the presence of a directory 'psgendb'.
+
+5. 'cd psgendb' should put you where you want to be. 'ls -l' should show
+two files, README and fsap.tar.Z.
+
+6.  Use the GET command to download the file README. It's probably best to
+look at this file and make sure you can read it before you download fsap.tar.Z. 
+This can be done by typing `!cat README'. (The ! lets you issue a Unix
+command to your local machine without having to exit ftp).
+
+7. If README looks good, download fsap.tar.Z. README will tell you what to
+do from there. 
+
+
+FURTHER INFORMATION
+     For detailed information on the programs, technical questions, or to 
+     report possible errors or incompatabilities with your implementation of 
+     Pascal, write or call Brian Fristensky, as shown below.
+
+     The author assumes no responsibility or liability for any errors which
+     may be found in the programs or caused by them. 
+
+     The files MODDEF and MODULE are included in this package with permission 
+     of Thomas D. Schneider.
+
+===============================================================================
+Brian Fristensky                
+Dept. of Plant Science         
+University of Manitoba       
+Winnipeg, MB R3T 2N2  CANADA 
+frist@cc.umanitoba.ca      
+Office phone:   204-474-6085     
+FAX:            204-474-7528
+http://home.cc.umanitoba.ca/~frist   
+===============================================================================
+

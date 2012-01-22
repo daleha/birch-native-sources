@@ -1,0 +1,56 @@
+     funnel.doc                                          update 10/27/90
+
+                             FUNNEL                          
+     I. Function- Reads in a DNA or RNA sequence and writes it to a file, 
+        with a fixed number or characters (LINELENGTH) per line, as set by 
+        user.
+
+     NOTE: FUNNEL WILL NOT WORK CORRECTLY ON BIONET OR GENBANK FILES.
+
+     NEW FEATURES
+     The right arrow (>) is also interpreted by FUNNEL as a comment.
+     This is convenient for FUNNELing Pearson format files.
+   
+     The maximum line length is set to 10000, to permit the generation of
+     long output lines, that are sometimes convenient to have.
+     
+     DESCRIPTION
+     The most efficient way to type in a sequence is by spacing every five or 
+     ten bases.  This makes proofreading easy.  However, blank spaces make a 
+     file bigger than it needs to be, and therefore slower for a program to 
+     read.  FUNNEL's job is to take a sequence, after it has been stored as a 
+     TEXT file and proofread, and compress it into a file containing a 
+     user-specified number of bases on each line (LINESIZE). FUNNEL 
+     faithfully copies upper and lower case letters (amino acid sequences as 
+     well as nucleic acids), from one file to another.  Comments are also 
+     transferred, although each comment in the reformatted file will be 
+     written to a separate line. FUNNEL is most useful when used in 
+     conjunction with NUMSEQ.  If a sequence has previously been numbered 
+     with NUMSEQ, one can write changes (such as insertions or deletions 
+     based on new sequencing experiments) on the NUMSEQ printout, and then go 
+     back to the original file, formatted by FUNNEL, and easily find the 
+     corresponding region, using the numbered printout as a guide. 
+
+     Parameters:
+     LINESIZE     no. of nucleotides written per line to output file.
+
+     Example:
+     Given the following input file,
+     ; EXP #190
+     gggca cccaa ttata ccctt cccta ggtagttta ntttc tttcc cagagc ccaga ccatt
+     tttca cccc tatgg cagat ccatg gacca tcaat tatat ttaca
+     cctt aaaaa aacaa atata
+     ; EXP #191 & #192
+     gatac cataa aacct TTAAT AAAAA AAAAC CAATA CATTA CAAAT
+     TATAT aACCAG GAAGA GAATT
+
+     and specifying LINESIZE to be 40,FUNNEL will produce the output file
+
+     ; EXP #190
+     gggcacccaattatacccttccctaggtagtttantttct
+     ttcccagagcccagaccatttttcacccctatggcagatc
+     catggaccatcaattatatttacaccttaaaaaaacaaat
+     ata
+     ; EXP #191 & #192
+     gataccataaaacctTTAATAAAAAAAAACCAATACATTA
+     CAAATTATATaACCAGGAAGAGAATT

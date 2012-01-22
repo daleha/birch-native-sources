@@ -1,0 +1,18 @@
+MULTIDIGEST       Version 29 Mar 2006
+PSDRR1  Topology:  LINEAR Length:          734 bp
+                                 # of
+                                 Sites   Frags   Begin            End
+AluI      AG^CT                     3
+BstSFI    C^TRYAG                   2
+                                          258     477AluI         734          
+                                          182     129AluI         310BstSFI    
+                                          128       1             128AluI      
+                                           68     311BstSFI       378BstSFI    
+                                           67     410AluI         476AluI      
+                                           31     379BstSFI       409AluI      
+
+Cac8I     GCN^NGC                   1
+                                          734       1             734          
+                                          721      14Cac8I        734          
+                                           13       1              13Cac8I     
+

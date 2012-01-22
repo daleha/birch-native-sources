@@ -1,0 +1,45 @@
+LOCUS       PSDRR1        734 bp    RNA             PLN       22-DEC-1993
+DEFINITION  P. sativum disease resistance response protein (PI49) mRNA
+ACCESSION   X13383 M18305
+KEYWORDS    disease resistance response gene.
+SOURCE      pea
+  ORGANISM  Pisum sativum
+            Eukaryota; Plantae; Embryobionta; Magnoliophyta; Magnoliopsida;
+            Rosidae; Fabales; Fabaceae.
+REFERENCE   1  (bases 1 to 734)
+  AUTHORS   Fristensky,B.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (21-JAN-1988) to the EMBL/GenBank/DDBJ databases.
+            Fristensky B..
+  STANDARD  full automatic
+REFERENCE   3  (bases 1 to 734)
+  AUTHORS   Fristensky,B., Horovitz,D. and Hadwiger,L.A.
+  TITLE     cDNA sequences for pea disease resistance response genes
+  JOURNAL   Plant Mol. Biol. 11, 713-715 (1988)
+  STANDARD  full automatic
+FEATURES               Location/Qualifiers
+     mRNA            1..734
+     source          1..734
+                     /organism="Pisum sativum"
+     CDS             65..541
+                     /product="disease resistance response protein"
+                     /codon_start=1
+                     /translation="MGVFNVEDEITSVVAPAILYKALVTDADNLTPKVIDAIKSIEIV
+                     EGNGGAGTIKKLTFVEDGETKHVLHKVELVDVANLAYNYSIVGGVGFPDTVEKISFEA
+                     KLSAGPNGGSIAKLSVKYFTKGDAAPSEEQLKTDKAKGDGLFKALEGYCLAHPDYN"
+BASE COUNT      220 a    124 c    143 g    247 t
+ORIGIN      
+        1 acacaactag gcaagcaatt tcttagttct ttctcacact ttagcattat aaaacattat
+       61 catcatgggt gtttttaatg ttgaagatga aatcacttct gttgtagcac ctgctatact
+      121 ctacaaagct ctagttacag atgctgataa ccttactcca aaggttattg atgccatcaa
+      181 aagtatcgaa attgttgaag gaaacggtgg tgctggaacc atcaaaaaac tcactttcgt
+      241 tgaagatggt gaaaccaaac atgtgttgca caaagtggag ttagtagatg ttgctaactt
+      301 ggcttacaac tatagcatag ttggtggtgt tggatttcca gacacagttg agaagatctc
+      361 attcgaggct aaactgtctg caggaccaaa tggaggatcc attgcaaagc tgagtgtgaa
+      421 atacttcaca aaaggtgatg ctgctcctag tgaagagcaa ctcaagactg acaaagctaa
+      481 gggggatggt cttttcaagg ctcttgaggg ttactgtttg gctcatcctg attacaacta
+      541 aactatataa tcatcaacaa gtgtgttgtt atgtatacta tataatcatc ctgtgtgctt
+      601 aatttggctg ccaatgtaat tttctgtttt gtttttttcc ttttcttttg ttgtggaact
+      661 aaaagtgtga gattgtaagt catgtatacc tctccttcaa taaattataa taataattta
+      721 tatatatctt tttt
+//

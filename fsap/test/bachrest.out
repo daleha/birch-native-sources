@@ -1,0 +1,1945 @@
+-----------------------------------------------------------
+                     BACHREST   Version  3/29/2006
+
+PSDRR1              Topology: LINEAR  Length:      734 bp
+-----------------------------------------------------------
+Search parameters:
+   Recognition sequences between    6 and   23 bp
+   Ends: 5' protruding, Blunt, 3' protruding
+   Type: Symmetric, Asymmetric
+   Minimum fragments:     0     Maximum fragments:  6000
+   Maximum fragments to print:    30
+-----------------------------------------------------------
+
+                                         # of
+Enzyme          Recognition Sequence     Sites     Sites   Frags   Begin     End
+--------------------------------------------------------------------------------
+
+AarI            CACCTGC(4/8)                 1
+                                                     119     616     119     734
+                                                             118       1     118
+
+AatI            AGG^CCT                      0
+                                                             734       1     734
+
+AatII           GACGT^C                      0
+                                                             734       1     734
+
+AauI            T^GTACA                      0
+                                                             734       1     734
+
+AccI            GT^MKAC                      2
+                                                     575     574       1     574
+                                                     686     111     575     685
+                                                              49     686     734
+
+AccII           CG^CG                        0
+                                                             734       1     734
+
+AccIII          T^CCGGA                      0
+                                                             734       1     734
+
+Acc16I          TGC^GCA                      0
+                                                             734       1     734
+
+Acc36I          ACCTGC(4/8)                  1
+                                                     119     616     119     734
+                                                             118       1     118
+
+Acc65I          G^GTACC                      0
+                                                             734       1     734
+
+Acc113I         AGT^ACT                      0
+                                                             734       1     734
+
+AccB1I          G^GYRCC                      0
+                                                             734       1     734
+
+AccB7I          CCANNNN^NTGG                 0
+                                                             734       1     734
+
+AccBSI          CCGCTC(-3/-3)                0
+                                                             734       1     734
+
+AciI            CCGC(-3/-1)                  0
+                                                             734       1     734
+
+AclI            AA^CGTT                      0
+                                                             734       1     734
+
+AclWI           GGATC(4/5)                   2
+                                                     391     390       1     390
+                                                     404     331     404     734
+                                                              13     391     403
+
+AcsI            R^AATTY                      0
+                                                             734       1     734
+
+AcyI            GR^CGYC                      0
+                                                             734       1     734
+
+AdeI            CACNNN^GTG                   1
+                                                     275     460     275     734
+                                                             274       1     274
+
+AfaI            GT^AC                        0
+                                                             734       1     734
+
+AfeI            AGC^GCT                      0
+                                                             734       1     734
+
+AflI            G^GWCC                       1
+                                                     384     383       1     383
+                                                             351     384     734
+
+AflII           C^TTAAG                      0
+                                                             734       1     734
+
+AflIII          A^CRYGT                      1
+                                                     260     475     260     734
+                                                             259       1     259
+
+AgeI            A^CCGGT                      0
+                                                             734       1     734
+
+AhdI            GACNNN^NNGTC                 0
+                                                             734       1     734
+
+AhlI            A^CTAGT                      0
+                                                             734       1     734
+
+AloI            (7/12)GAACNNNNNNTCC(12/      0
+                                                             734       1     734
+
+AluI            AG^CT                        3
+                                                     129     281     129     409
+                                                     410     258     477     734
+                                                     477     128       1     128
+                                                              67     410     476
+
+AlwI            GGATC(4/5)                   2
+                                                     391     390       1     390
+                                                     404     331     404     734
+                                                              13     391     403
+
+Alw21I          GWGCW^C                      0
+                                                             734       1     734
+
+Alw26I          GTCTC(1/5)                   0
+                                                             734       1     734
+
+Alw44I          G^TGCAC                      0
+                                                             734       1     734
+
+AlwNI           CAGNNN^CTG                   1
+                                                     144     591     144     734
+                                                             143       1     143
+
+Ama87I          C^YCGRG                      0
+                                                             734       1     734
+
+AocI            CC^TNAGG                     0
+                                                             734       1     734
+
+Aor51HI         AGC^GCT                      0
+                                                             734       1     734
+
+ApaI            GGGCC^C                      0
+                                                             734       1     734
+
+ApaLI           G^TGCAC                      0
+                                                             734       1     734
+
+ApoI            R^AATTY                      0
+                                                             734       1     734
+
+AscI            GG^CGCGCC                    0
+                                                             734       1     734
+
+AseI            AT^TAAT                      0
+                                                             734       1     734
+
+AsiAI           A^CCGGT                      0
+                                                             734       1     734
+
+AsnI            AT^TAAT                      0
+                                                             734       1     734
+
+AspI            GACN^NNGTC                   0
+                                                             734       1     734
+
+Asp700I         GAANN^NNTTC                  1
+                                                     423     422       1     422
+                                                             312     423     734
+
+Asp718I         G^GTACC                      0
+                                                             734       1     734
+
+AspEI           GACNNN^NNGTC                 0
+                                                             734       1     734
+
+AspHI           GWGCW^C                      0
+                                                             734       1     734
+
+AspLEI          GCG^C                        0
+                                                             734       1     734
+
+AspS9I          G^GNCC                       1
+                                                     384     383       1     383
+                                                             351     384     734
+
+AsuII           TT^CGAA                      0
+                                                             734       1     734
+
+AsuC2I          CC^SGG                       0
+                                                             734       1     734
+
+AsuHPI          GGTGA(8/7)                   2
+                                                     261     288     447     734
+                                                     447     260       1     260
+                                                             186     261     446
+
+AsuNHI          G^CTAGC                      0
+                                                             734       1     734
+
+AvaI            C^YCGRG                      0
+                                                             734       1     734
+
+AvaII           G^GWCC                       1
+                                                     384     383       1     383
+                                                             351     384     734
+
+AviII           TGC^GCA                      0
+                                                             734       1     734
+
+AvrII           C^CTAGG                      0
+                                                             734       1     734
+
+AxyI            CC^TNAGG                     0
+                                                             734       1     734
+
+BaeI            (10/15)ACNNNNGTAYC(12/7      0
+                                                             734       1     734
+
+BalI            TGG^CCA                      0
+                                                             734       1     734
+
+BamHI           G^GATCC                      1
+                                                     396     395       1     395
+                                                             339     396     734
+
+BanI            G^GYRCC                      0
+                                                             734       1     734
+
+BanII           GRGCY^C                      0
+                                                             734       1     734
+
+BanIII          AT^CGAT                      0
+                                                             734       1     734
+
+BbeI            GGCGC^C                      0
+                                                             734       1     734
+
+BbrPI           CAC^GTG                      0
+                                                             734       1     734
+
+BbsI            GAAGAC(2/6)                  0
+                                                             734       1     734
+
+BbuI            GCATG^C                      0
+                                                             734       1     734
+
+BbvI            GCAGC(8/12)                  2
+                                                     428     427       1     427
+                                                     595     167     428     594
+                                                             140     595     734
+
+Bbv12I          GWGCW^C                      0
+                                                             734       1     734
+
+BbvCI           CCTCAGC(-5/-2)               0
+                                                             734       1     734
+
+BceAI           ACGGC(12/14)                 0
+                                                             734       1     734
+
+BcgI            (10/12)CGANNNNNNTGC(12/      0
+                                                             734       1     734
+
+BciVI           GTATCC(6/5)                  0
+                                                             734       1     734
+
+BclI            T^GATCA                      0
+                                                             734       1     734
+
+BcnI            CC^SGG                       0
+                                                             734       1     734
+
+BcoI            C^YCGRG                      0
+                                                             734       1     734
+
+BcuI            A^CTAGT                      0
+                                                             734       1     734
+
+BfaI            C^TAG                        3
+                                                       8     316     132     447
+                                                     132     287     448     734
+                                                     448     124       8     131
+                                                               7       1       7
+
+BfiI            ACTGGG(5/4)                  0
+                                                             734       1     734
+
+BfmI            C^TRYAG                      2
+                                                     311     356     379     734
+                                                     379     310       1     310
+                                                              68     311     378
+
+BfrI            C^TTAAG                      0
+                                                             734       1     734
+
+BfrBI           ATG^CAT                      0
+                                                             734       1     734
+
+BfuI            GTATCC(6/5)                  0
+                                                             734       1     734
+
+BglI            GCCNNNN^NGGC                 0
+                                                             734       1     734
+
+BglII           A^GATCT                      1
+                                                     355     380     355     734
+                                                             354       1     354
+
+BlnI            C^CTAGG                      0
+                                                             734       1     734
+
+BlpI            GC^TNAGC                     0
+                                                             734       1     734
+
+Bme18I          G^GWCC                       1
+                                                     384     383       1     383
+                                                             351     384     734
+
+Bme1390I        CC^NGG                       0
+                                                             734       1     734
+
+BmrI            ACTGGG(5/4)                  0
+                                                             734       1     734
+
+BmyI            GDGCH^C                      0
+                                                             734       1     734
+
+BoxI            GACNN^NNGTC                  0
+                                                             734       1     734
+
+BpiI            GAAGAC(2/6)                  0
+                                                             734       1     734
+
+BplI            (8/13)GAGNNNNNCTC(13/8)      1
+                                                     374     373       1     373
+                                                             361     374     734
+
+BpmI            CTGGAG(16/14)                0
+                                                             734       1     734
+
+Bpu10I          CCTNAGC(-5/-2)               1
+                                                     478     477       1     477
+                                                             257     478     734
+
+Bpu14I          TT^CGAA                      0
+                                                             734       1     734
+
+Bpu1102I        GC^TNAGC                     0
+                                                             734       1     734
+
+BpuAI           GAAGAC(2/6)                  0
+                                                             734       1     734
+
+BsaI            GGTCTC(1/5)                  0
+                                                             734       1     734
+
+Bsa29I          AT^CGAT                      0
+                                                             734       1     734
+
+BsaAI           YAC^GTR                      0
+                                                             734       1     734
+
+BsaBI           GATNN^NNATC                  0
+                                                             734       1     734
+
+BsaHI           GR^CGYC                      0
+                                                             734       1     734
+
+BsaJI           C^CNNGG                      0
+                                                             734       1     734
+
+BsaMI           GAATGC(1/-1)                 0
+                                                             734       1     734
+
+BsaOI           CGRY^CG                      0
+                                                             734       1     734
+
+BsaWI           W^CCGGW                      0
+                                                             734       1     734
+
+BsaXI           (9/12)ACNNNNNCTCC(10/7)      0
+                                                             734       1     734
+
+BscI            AT^CGAT                      0
+                                                             734       1     734
+
+Bsc4I           CCNNNNN^NNGG                 1
+                                                     393     392       1     392
+                                                             342     393     734
+
+BscBI           GGN^NCC                      2
+                                                     218     337     398     734
+                                                     398     217       1     217
+                                                             180     218     397
+
+BscCI           GAATGC(1/-1)                 0
+                                                             734       1     734
+
+BscFI           ^GATC                        2
+                                                     355     354       1     354
+                                                     396     339     396     734
+                                                              41     355     395
+
+Bse1I           ACTGG(1/-1)                  0
+                                                             734       1     734
+
+Bse8I           GATNN^NNATC                  0
+                                                             734       1     734
+
+Bse21I          CC^TNAGG                     0
+                                                             734       1     734
+
+Bse118I         R^CCGGY                      0
+                                                             734       1     734
+
+BseAI           T^CCGGA                      0
+                                                             734       1     734
+
+BseCI           AT^CGAT                      0
+                                                             734       1     734
+
+BseDI           C^CNNGG                      0
+                                                             734       1     734
+
+Bse3DI          GCAATG(2/0)                  1
+                                                     400     399       1     399
+                                                             335     400     734
+
+BseGI           GGATG(2/0)                   3
+                                                     491     490       1     490
+                                                     524     148     587     734
+                                                     587      63     524     586
+                                                              33     491     523
+
+BseLI           CCNNNNN^NNGG                 1
+                                                     393     392       1     392
+                                                             342     393     734
+
+BseMI           GCAATG(2/0)                  1
+                                                     400     399       1     399
+                                                             335     400     734
+
+BseMII          CTCAG(10/8)                  1
+                                                     402     401       1     401
+                                                             333     402     734
+
+BseNI           ACTGG(1/-1)                  0
+                                                             734       1     734
+
+BsePI           G^CGCGC                      0
+                                                             734       1     734
+
+BseRI           GAGGAG(10/8)                 0
+                                                             734       1     734
+
+BseSI           GKGCM^C                      0
+                                                             734       1     734
+
+BseXI           GCAGC(8/12)                  2
+                                                     428     427       1     427
+                                                     595     167     428     594
+                                                             140     595     734
+
+BseX3I          C^GGCCG                      0
+                                                             734       1     734
+
+BsgI            GTGCAG(16/14)                0
+                                                             734       1     734
+
+BshI            GG^CC                        0
+                                                             734       1     734
+
+Bsh1236I        CG^CG                        0
+                                                             734       1     734
+
+Bsh1285I        CGRY^CG                      0
+                                                             734       1     734
+
+Bsh1365I        GATNN^NNATC                  0
+                                                             734       1     734
+
+BshNI           G^GYRCC                      0
+                                                             734       1     734
+
+BshTI           A^CCGGT                      0
+                                                             734       1     734
+
+BsiBI           GATNN^NNATC                  0
+                                                             734       1     734
+
+BsiCI           TT^CGAA                      0
+                                                             734       1     734
+
+BsiEI           CGRY^CG                      0
+                                                             734       1     734
+
+BsiHKAI         GWGCW^C                      0
+                                                             734       1     734
+
+BsiLI           CC^WGG                       0
+                                                             734       1     734
+
+BsiMI           T^CCGGA                      0
+                                                             734       1     734
+
+BsiQI           T^GATCA                      0
+                                                             734       1     734
+
+BsiSI           C^CGG                        0
+                                                             734       1     734
+
+BsiWI           C^GTACG                      0
+                                                             734       1     734
+
+BsiXI           AT^CGAT                      0
+                                                             734       1     734
+
+BsiYI           CCNNNNN^NNGG                 1
+                                                     393     392       1     392
+                                                             342     393     734
+
+BsiZI           G^GNCC                       1
+                                                     384     383       1     383
+                                                             351     384     734
+
+BslI            CCNNNNN^NNGG                 1
+                                                     393     392       1     392
+                                                             342     393     734
+
+BsmI            GAATGC(1/-1)                 0
+                                                             734       1     734
+
+BsmAI           GTCTC(1/5)                   0
+                                                             734       1     734
+
+BsmBI           CGTCTC(1/5)                  0
+                                                             734       1     734
+
+BsmFI           GGGAC(10/14)                 0
+                                                             734       1     734
+
+Bso31I          GGTCTC(1/5)                  0
+                                                             734       1     734
+
+BsoBI           C^YCGRG                      0
+                                                             734       1     734
+
+BsoMAI          GTCTC(1/5)                   0
+                                                             734       1     734
+
+Bsp13I          T^CCGGA                      0
+                                                             734       1     734
+
+Bsp19I          C^CATGG                      0
+                                                             734       1     734
+
+Bsp68I          TCG^CGA                      0
+                                                             734       1     734
+
+Bsp106I         AT^CGAT                      0
+                                                             734       1     734
+
+Bsp119I         TT^CGAA                      0
+                                                             734       1     734
+
+Bsp120I         G^GGCCC                      0
+                                                             734       1     734
+
+Bsp143I         ^GATC                        2
+                                                     355     354       1     354
+                                                     396     339     396     734
+                                                              41     355     395
+
+Bsp143II        RGCGC^Y                      0
+                                                             734       1     734
+
+Bsp1286I        GDGCH^C                      0
+                                                             734       1     734
+
+Bsp1407I        T^GTACA                      0
+                                                             734       1     734
+
+Bsp1720I        GC^TNAGC                     0
+                                                             734       1     734
+
+BspA2I          C^CTAGG                      0
+                                                             734       1     734
+
+BspCI           CGAT^CG                      0
+                                                             734       1     734
+
+BspDI           AT^CGAT                      0
+                                                             734       1     734
+
+BspEI           T^CCGGA                      0
+                                                             734       1     734
+
+BspHI           T^CATGA                      0
+                                                             734       1     734
+
+BspLI           GGN^NCC                      2
+                                                     218     337     398     734
+                                                     398     217       1     217
+                                                             180     218     397
+
+BspLU11I        A^CATGT                      1
+                                                     260     475     260     734
+                                                             259       1     259
+
+BspMI           ACCTGC(4/8)                  1
+                                                     119     616     119     734
+                                                             118       1     118
+
+BspPI           GGATC(4/5)                   2
+                                                     391     390       1     390
+                                                     404     331     404     734
+                                                              13     391     403
+
+BspTI           C^TTAAG                      0
+                                                             734       1     734
+
+BspT104I        TT^CGAA                      0
+                                                             734       1     734
+
+BspT107I        G^GYRCC                      0
+                                                             734       1     734
+
+BspXI           AT^CGAT                      0
+                                                             734       1     734
+
+BsrI            ACTGG(1/-1)                  0
+                                                             734       1     734
+
+BsrBI           CCGCTC(-3/-3)                0
+                                                             734       1     734
+
+BsrBRI          GATNN^NNATC                  0
+                                                             734       1     734
+
+BsrDI           GCAATG(2/0)                  1
+                                                     400     399       1     399
+                                                             335     400     734
+
+BsrFI           R^CCGGY                      0
+                                                             734       1     734
+
+BsrGI           T^GTACA                      0
+                                                             734       1     734
+
+BsrSI           ACTGG(1/-1)                  0
+                                                             734       1     734
+
+BssAI           R^CCGGY                      0
+                                                             734       1     734
+
+BssECI          C^CNNGG                      0
+                                                             734       1     734
+
+BssHI           C^TCGAG                      0
+                                                             734       1     734
+
+BssHII          G^CGCGC                      0
+                                                             734       1     734
+
+BssKI           ^CCNGG                       0
+                                                             734       1     734
+
+BssNAI          GTA^TAC                      2
+                                                     576     575       1     575
+                                                     687     111     576     686
+                                                              48     687     734
+
+BssSI           CACGAG(-5/-1)                0
+                                                             734       1     734
+
+BssT1I          C^CWWGG                      0
+                                                             734       1     734
+
+Bst71I          GCAGC(8/12)                  2
+                                                     428     427       1     427
+                                                     595     167     428     594
+                                                             140     595     734
+
+Bst98I          C^TTAAG                      0
+                                                             734       1     734
+
+Bst1107I        GTA^TAC                      2
+                                                     576     575       1     575
+                                                     687     111     576     686
+                                                              48     687     734
+
+BstACI          GR^CGYC                      0
+                                                             734       1     734
+
+BstAPI          GCANNNN^NTGC                 0
+                                                             734       1     734
+
+BstBI           TT^CGAA                      0
+                                                             734       1     734
+
+Bst2BI          CACGAG(-5/-1)                0
+                                                             734       1     734
+
+BstBAI          YAC^GTR                      0
+                                                             734       1     734
+
+Bst4CI          ACN^GT                       4
+                                                     207     219     516     734
+                                                     347     206       1     206
+                                                     376     140     207     346
+                                                     516     140     376     515
+                                                              29     347     375
+
+BstDEI          C^TNAG                       3
+                                                      23     388      23     410
+                                                     411     257     478     734
+                                                     478      67     411     477
+                                                              22       1      22
+
+BstDSI          C^CRYGG                      0
+                                                             734       1     734
+
+BstEII          G^GTNACC                     0
+                                                             734       1     734
+
+BstENI          CCTNN^NNNAGG                 0
+                                                             734       1     734
+
+BstENII         ^GATC                        2
+                                                     355     354       1     354
+                                                     396     339     396     734
+                                                              41     355     395
+
+BstF5I          GGATG(2/0)                   3
+                                                     491     490       1     490
+                                                     524     148     587     734
+                                                     587      63     524     586
+                                                              33     491     523
+
+BstFNI          CG^CG                        0
+                                                             734       1     734
+
+BstH2I          RGCGC^Y                      0
+                                                             734       1     734
+
+BstHHI          GCG^C                        0
+                                                             734       1     734
+
+BstHPI          GTT^AAC                      0
+                                                             734       1     734
+
+BstMCI          CGRY^CG                      0
+                                                             734       1     734
+
+BstNI           CC^WGG                       0
+                                                             734       1     734
+
+BstNSI          RCATG^Y                      1
+                                                     264     471     264     734
+                                                             263       1     263
+
+BstOI           CC^WGG                       0
+                                                             734       1     734
+
+BstPI           G^GTNACC                     0
+                                                             734       1     734
+
+BstPAI          GACNN^NNGTC                  0
+                                                             734       1     734
+
+BstSFI          C^TRYAG                      2
+                                                     311     356     379     734
+                                                     379     310       1     310
+                                                              68     311     378
+
+BstSNI          TAC^GTA                      0
+                                                             734       1     734
+
+BstUI           CG^CG                        0
+                                                             734       1     734
+
+Bst2UI          CC^WGG                       0
+                                                             734       1     734
+
+BstV2I          GAAGAC(2/6)                  0
+                                                             734       1     734
+
+BstXI           CCANNNNN^NTGG                0
+                                                             734       1     734
+
+BstX2I          R^GATCY                      2
+                                                     355     354       1     354
+                                                     396     339     396     734
+                                                              41     355     395
+
+BstYI           R^GATCY                      2
+                                                     355     354       1     354
+                                                     396     339     396     734
+                                                              41     355     395
+
+BstZI           C^GGCCG                      0
+                                                             734       1     734
+
+BstZ17I         GTA^TAC                      2
+                                                     576     575       1     575
+                                                     687     111     576     686
+                                                              48     687     734
+
+Bsu6I           CTCTTC(1/4)                  1
+                                                     448     447       1     447
+                                                             287     448     734
+
+Bsu15I          AT^CGAT                      0
+                                                             734       1     734
+
+Bsu36I          CC^TNAGG                     0
+                                                             734       1     734
+
+BsuRI           GG^CC                        0
+                                                             734       1     734
+
+BtgI            C^CRYGG                      0
+                                                             734       1     734
+
+BtrI            CACGTC(-3/-3)                0
+                                                             734       1     734
+
+BtsI            GCAGTG(2/0)                  0
+                                                             734       1     734
+
+Cac8I           GCN^NGC                      1
+                                                      14     721      14     734
+                                                              13       1      13
+
+CaiI            CAGNNN^CTG                   1
+                                                     144     591     144     734
+                                                             143       1     143
+
+CciNI           GC^GGCCGC                    0
+                                                             734       1     734
+
+CelII           GC^TNAGC                     0
+                                                             734       1     734
+
+CfoI            GCG^C                        0
+                                                             734       1     734
+
+CfrI            Y^GGCCR                      0
+                                                             734       1     734
+
+Cfr9I           C^CCGGG                      0
+                                                             734       1     734
+
+Cfr10I          R^CCGGY                      0
+                                                             734       1     734
+
+Cfr13I          G^GNCC                       1
+                                                     384     383       1     383
+                                                             351     384     734
+
+Cfr42I          CCGC^GG                      0
+                                                             734       1     734
+
+ClaI            AT^CGAT                      0
+                                                             734       1     734
+
+CpoI            CG^GWCCG                     0
+                                                             734       1     734
+
+CspI            CG^GWCCG                     0
+                                                             734       1     734
+
+Csp6I           G^TAC                        0
+                                                             734       1     734
+
+Csp45I          TT^CGAA                      0
+                                                             734       1     734
+
+CviJI           RG^CY                        8
+                                                     129     174     129     302
+                                                     303     128       1     128
+                                                     369     127     608     734
+                                                     410      86     522     607
+                                                     477      67     410     476
+                                                     501      66     303     368
+                                                     522      41     369     409
+                                                     608      24     477     500
+                                                              21     501     521
+
+CviRI           TG^CA                        3
+                                                     269     330     405     734
+                                                     381     268       1     268
+                                                     405     112     269     380
+                                                              24     381     404
+
+CviTI           RG^CY                        8
+                                                     129     174     129     302
+                                                     303     128       1     128
+                                                     369     127     608     734
+                                                     410      86     522     607
+                                                     477      67     410     476
+                                                     501      66     303     368
+                                                     522      41     369     409
+                                                     608      24     477     500
+                                                              21     501     521
+
+CvnI            CC^TNAGG                     0
+                                                             734       1     734
+
+DdeI            C^TNAG                       3
+                                                      23     388      23     410
+                                                     411     257     478     734
+                                                     478      67     411     477
+                                                              22       1      22
+
+DpnI            GA^TC                        2
+                                                     357     356       1     356
+                                                     398     337     398     734
+                                                              41     357     397
+
+DpnII           ^GATC                        2
+                                                     355     354       1     354
+                                                     396     339     396     734
+                                                              41     355     395
+
+DraI            TTT^AAA                      0
+                                                             734       1     734
+
+DraII           RG^GNCCY                     0
+                                                             734       1     734
+
+DraIII          CACNNN^GTG                   1
+                                                     275     460     275     734
+                                                             274       1     274
+
+DrdI            GACNNNN^NNGTC                0
+                                                             734       1     734
+
+DsaI            C^CRYGG                      0
+                                                             734       1     734
+
+DseDI           GACNNNN^NNGTC                0
+                                                             734       1     734
+
+EaeI            Y^GGCCR                      0
+                                                             734       1     734
+
+EagI            C^GGCCG                      0
+                                                             734       1     734
+
+Eam1104I        CTCTTC(1/4)                  1
+                                                     448     447       1     447
+                                                             287     448     734
+
+Eam1105I        GACNNN^NNGTC                 0
+                                                             734       1     734
+
+EarI            CTCTTC(1/4)                  1
+                                                     448     447       1     447
+                                                             287     448     734
+
+EciI            GGCGGA(11/9)                 0
+                                                             734       1     734
+
+Ecl136II        GAG^CTC                      0
+                                                             734       1     734
+
+EclHKI          GACNNN^NNGTC                 0
+                                                             734       1     734
+
+EclXI           C^GGCCG                      0
+                                                             734       1     734
+
+Eco24I          GRGCY^C                      0
+                                                             734       1     734
+
+Eco31I          GGTCTC(1/5)                  0
+                                                             734       1     734
+
+Eco32I          GAT^ATC                      0
+                                                             734       1     734
+
+Eco47I          G^GWCC                       1
+                                                     384     383       1     383
+                                                             351     384     734
+
+Eco47III        AGC^GCT                      0
+                                                             734       1     734
+
+Eco52I          C^GGCCG                      0
+                                                             734       1     734
+
+Eco57I          CTGAAG(16/14)                0
+                                                             734       1     734
+
+Eco64I          G^GYRCC                      0
+                                                             734       1     734
+
+Eco72I          CAC^GTG                      0
+                                                             734       1     734
+
+Eco81I          CC^TNAGG                     0
+                                                             734       1     734
+
+Eco88I          C^YCGRG                      0
+                                                             734       1     734
+
+Eco91I          G^GTNACC                     0
+                                                             734       1     734
+
+Eco105I         TAC^GTA                      0
+                                                             734       1     734
+
+Eco130I         C^CWWGG                      0
+                                                             734       1     734
+
+Eco147I         AGG^CCT                      0
+                                                             734       1     734
+
+EcoICRI         GAG^CTC                      0
+                                                             734       1     734
+
+Eco57MI         CTGRAG(16/14)                0
+                                                             734       1     734
+
+EcoNI           CCTNN^NNNAGG                 0
+                                                             734       1     734
+
+EcoO65I         G^GTNACC                     0
+                                                             734       1     734
+
+EcoO109I        RG^GNCCY                     0
+                                                             734       1     734
+
+EcoRI           G^AATTC                      0
+                                                             734       1     734
+
+EcoRII          ^CCWGG                       0
+                                                             734       1     734
+
+EcoRV           GAT^ATC                      0
+                                                             734       1     734
+
+EcoT14I         C^CWWGG                      0
+                                                             734       1     734
+
+EcoT22I         ATGCA^T                      0
+                                                             734       1     734
+
+EcoT38I         GRGCY^C                      0
+                                                             734       1     734
+
+EgeI            GGC^GCC                      0
+                                                             734       1     734
+
+EheI            GGC^GCC                      0
+                                                             734       1     734
+
+ErhI            C^CWWGG                      0
+                                                             734       1     734
+
+Esp3I           CGTCTC(1/5)                  0
+                                                             734       1     734
+
+FauI            CCCGC(4/6)                   0
+                                                             734       1     734
+
+FauNDI          CA^TATG                      0
+                                                             734       1     734
+
+FbaI            T^GATCA                      0
+                                                             734       1     734
+
+FblI            GT^MKAC                      2
+                                                     575     574       1     574
+                                                     686     111     575     685
+                                                              49     686     734
+
+Fnu4HI          GC^NGC                       2
+                                                     442     441       1     441
+                                                     609     167     442     608
+                                                             126     609     734
+
+FokI            GGATG(9/13)                  3
+                                                     498     497       1     497
+                                                     511     161     574     734
+                                                     574      63     511     573
+                                                              13     498     510
+
+FriOI           GRGCY^C                      0
+                                                             734       1     734
+
+FseI            GGCCGG^CC                    0
+                                                             734       1     734
+
+FspI            TGC^GCA                      0
+                                                             734       1     734
+
+FspAI           RTGC^GCAY                    0
+                                                             734       1     734
+
+Fsp4HI          GC^NGC                       2
+                                                     442     441       1     441
+                                                     609     167     442     608
+                                                             126     609     734
+
+FunI            AGC^GCT                      0
+                                                             734       1     734
+
+FunII           G^AATTC                      0
+                                                             734       1     734
+
+GsuI            CTGGAG(16/14)                0
+                                                             734       1     734
+
+HaeII           RGCGC^Y                      0
+                                                             734       1     734
+
+HaeIII          GG^CC                        0
+                                                             734       1     734
+
+HapII           C^CGG                        0
+                                                             734       1     734
+
+HgaI            GACGC(5/10)                  0
+                                                             734       1     734
+
+HgiEI           G^GWCC                       1
+                                                     384     383       1     383
+                                                             351     384     734
+
+HhaI            GCG^C                        0
+                                                             734       1     734
+
+Hin1I           GR^CGYC                      0
+                                                             734       1     734
+
+Hin4I           (8/13)GAYNNNNNVTC(13/8)      2
+                                                     663     662       1     662
+                                                     695      40     695     734
+                                                              32     663     694
+
+Hin6I           G^CGC                        0
+                                                             734       1     734
+
+HinP1I          G^CGC                        0
+                                                             734       1     734
+
+HincII          GTY^RAC                      0
+                                                             734       1     734
+
+HindII          GTY^RAC                      0
+                                                             734       1     734
+
+HindIII         A^AGCTT                      0
+                                                             734       1     734
+
+HinfI           G^ANTC                       0
+                                                             734       1     734
+
+HpaI            GTT^AAC                      0
+                                                             734       1     734
+
+HpaII           C^CGG                        0
+                                                             734       1     734
+
+HphI            GGTGA(8/7)                   2
+                                                     261     288     447     734
+                                                     447     260       1     260
+                                                             186     261     446
+
+Hpy8I           GTN^NAC                      2
+                                                     576     575       1     575
+                                                     687     111     576     686
+                                                              48     687     734
+
+Hpy99I          CGWCG^                       0
+                                                             734       1     734
+
+Hpy188I         TCN^GA                       0
+                                                             734       1     734
+
+Hpy188III       TC^NNGA                      4
+                                                     339     338       1     338
+                                                     464     207     528     734
+                                                     504     125     339     463
+                                                     528      40     464     503
+                                                              24     504     527
+
+HpyCH4III       ACN^GT                       4
+                                                     207     219     516     734
+                                                     347     206       1     206
+                                                     376     140     207     346
+                                                     516     140     376     515
+                                                              29     347     375
+
+HpyCH4IV        A^CGT                        0
+                                                             734       1     734
+
+HpyCH4V         TG^CA                        3
+                                                     269     330     405     734
+                                                     381     268       1     268
+                                                     405     112     269     380
+                                                              24     381     404
+
+HpyF44III       TG^CA                        3
+                                                     269     330     405     734
+                                                     381     268       1     268
+                                                     405     112     269     380
+                                                              24     381     404
+
+Hsp92I          GR^CGYC                      0
+                                                             734       1     734
+
+Hsp92II         CATG^                        3
+                                                      68     421     264     684
+                                                     264     196      68     263
+                                                     685      67       1      67
+                                                              50     685     734
+
+HspAI           G^CGC                        0
+                                                             734       1     734
+
+ItaI            GC^NGC                       2
+                                                     442     441       1     441
+                                                     609     167     442     608
+                                                             126     609     734
+
+KasI            G^GCGCC                      0
+                                                             734       1     734
+
+KpnI            GGTAC^C                      0
+                                                             734       1     734
+
+Kpn2I           T^CCGGA                      0
+                                                             734       1     734
+
+KspI            CCGC^GG                      0
+                                                             734       1     734
+
+Ksp22I          T^GATCA                      0
+                                                             734       1     734
+
+Ksp632I         CTCTTC(1/4)                  1
+                                                     448     447       1     447
+                                                             287     448     734
+
+KspAI           GTT^AAC                      0
+                                                             734       1     734
+
+Kzo9I           ^GATC                        2
+                                                     355     354       1     354
+                                                     396     339     396     734
+                                                              41     355     395
+
+LspI            TT^CGAA                      0
+                                                             734       1     734
+
+LweI            GCATC(5/9)                   3
+                                                     131     307     428     734
+                                                     161     267     161     427
+                                                     428     130       1     130
+                                                              30     131     160
+
+MabI            A^CCWGGT                     0
+                                                             734       1     734
+
+MaeI            C^TAG                        3
+                                                       8     316     132     447
+                                                     132     287     448     734
+                                                     448     124       8     131
+                                                               7       1       7
+
+MaeII           A^CGT                        0
+                                                             734       1     734
+
+MaeIII          ^GTNAC                       2
+                                                     134     376     134     509
+                                                     510     225     510     734
+                                                             133       1     133
+
+MamI            GATNN^NNATC                  0
+                                                             734       1     734
+
+MbiI            CCGCTC(-3/-3)                0
+                                                             734       1     734
+
+MboI            ^GATC                        2
+                                                     355     354       1     354
+                                                     396     339     396     734
+                                                              41     355     395
+
+MboII           GAAGA(8/7)                   4
+                                                      96     270     465     734
+                                                     255     159      96     254
+                                                     365     110     255     364
+                                                     465     100     365     464
+                                                              95       1      95
+
+MfeI            C^AATTG                      0
+                                                             734       1     734
+
+MflI            R^GATCY                      2
+                                                     355     354       1     354
+                                                     396     339     396     734
+                                                              41     355     395
+
+MhlI            GDGCH^C                      0
+                                                             734       1     734
+
+MlsI            TGG^CCA                      0
+                                                             734       1     734
+
+MluI            A^CGCGT                      0
+                                                             734       1     734
+
+MluNI           TGG^CCA                      0
+                                                             734       1     734
+
+MlyI            GAGTC(5/5)                   0
+                                                             734       1     734
+
+Mly113I         GG^CGCC                      0
+                                                             734       1     734
+
+MnlI            CCTC(7/6)                    4
+                                                     359     358       1     358
+                                                     387     200     500     699
+                                                     500     113     387     499
+                                                     700      35     700     734
+                                                              28     359     386
+
+Mph1103I        ATGCA^T                      0
+                                                             734       1     734
+
+MroI            T^CCGGA                      0
+                                                             734       1     734
+
+MroNI           G^CCGGC                      0
+                                                             734       1     734
+
+MroXI           GAANN^NNTTC                  1
+                                                     423     422       1     422
+                                                             312     423     734
+
+MscI            TGG^CCA                      0
+                                                             734       1     734
+
+MseI            T^TAA                        2
+                                                      76     524      76     599
+                                                     600     135     600     734
+                                                              75       1      75
+
+MslI            CAYNN^NNRTG                  0
+                                                             734       1     734
+
+MspI            C^CGG                        0
+                                                             734       1     734
+
+Msp17I          GR^CGYC                      0
+                                                             734       1     734
+
+MspA1I          CMG^CKG                      0
+                                                             734       1     734
+
+MspCI           C^TTAAG                      0
+                                                             734       1     734
+
+MspR9I          CC^NGG                       0
+                                                             734       1     734
+
+MssI            GTTT^AAAC                    0
+                                                             734       1     734
+
+MunI            C^AATTG                      0
+                                                             734       1     734
+
+MvaI            CC^WGG                       0
+                                                             734       1     734
+
+Mva1269I        GAATGC(1/-1)                 0
+                                                             734       1     734
+
+MvnI            CG^CG                        0
+                                                             734       1     734
+
+MwoI            GCNNNNN^NNGC                 1
+                                                     300     435     300     734
+                                                             299       1     299
+
+NaeI            GCC^GGC                      0
+                                                             734       1     734
+
+NarI            GG^CGCC                      0
+                                                             734       1     734
+
+NciI            CC^SGG                       0
+                                                             734       1     734
+
+NcoI            C^CATGG                      0
+                                                             734       1     734
+
+NdeI            CA^TATG                      0
+                                                             734       1     734
+
+NdeII           ^GATC                        2
+                                                     355     354       1     354
+                                                     396     339     396     734
+                                                              41     355     395
+
+NgoAIV          G^CCGGC                      0
+                                                             734       1     734
+
+NgoMIV          G^CCGGC                      0
+                                                             734       1     734
+
+NheI            G^CTAGC                      0
+                                                             734       1     734
+
+NlaIII          CATG^                        3
+                                                      68     421     264     684
+                                                     264     196      68     263
+                                                     685      67       1      67
+                                                              50     685     734
+
+NlaIV           GGN^NCC                      2
+                                                     218     337     398     734
+                                                     398     217       1     217
+                                                             180     218     397
+
+NmuCI           ^GTSAC                       0
+                                                             734       1     734
+
+NotI            GC^GGCCGC                    0
+                                                             734       1     734
+
+NruI            TCG^CGA                      0
+                                                             734       1     734
+
+NruGI           GACNNN^NNGTC                 0
+                                                             734       1     734
+
+NsbI            TGC^GCA                      0
+                                                             734       1     734
+
+NsiI            ATGCA^T                      0
+                                                             734       1     734
+
+NspI            RCATG^Y                      1
+                                                     264     471     264     734
+                                                             263       1     263
+
+NspIII          C^YCGRG                      0
+                                                             734       1     734
+
+NspV            TT^CGAA                      0
+                                                             734       1     734
+
+OliI            CACNN^NNGTG                  0
+                                                             734       1     734
+
+PacI            TTAAT^TAA                    0
+                                                             734       1     734
+
+PaeI            GCATG^C                      0
+                                                             734       1     734
+
+PaeR7I          C^TCGAG                      0
+                                                             734       1     734
+
+PagI            T^CATGA                      0
+                                                             734       1     734
+
+PalI            GG^CC                        0
+                                                             734       1     734
+
+PauI            G^CGCGC                      0
+                                                             734       1     734
+
+PciI            A^CATGT                      1
+                                                     260     475     260     734
+                                                             259       1     259
+
+PctI            GAATGC(1/-1)                 0
+                                                             734       1     734
+
+PdiI            GCC^GGC                      0
+                                                             734       1     734
+
+PdmI            GAANN^NNTTC                  1
+                                                     423     422       1     422
+                                                             312     423     734
+
+Pfl23II         C^GTACG                      0
+                                                             734       1     734
+
+PflBI           CCANNNN^NTGG                 0
+                                                             734       1     734
+
+PflFI           GACN^NNGTC                   0
+                                                             734       1     734
+
+PflMI           CCANNNN^NTGG                 0
+                                                             734       1     734
+
+PinAI           A^CCGGT                      0
+                                                             734       1     734
+
+PleI            GAGTC(4/5)                   0
+                                                             734       1     734
+
+Ple19I          CGAT^CG                      0
+                                                             734       1     734
+
+PmaCI           CAC^GTG                      0
+                                                             734       1     734
+
+PmeI            GTTT^AAAC                    0
+                                                             734       1     734
+
+Pme55I          AGG^CCT                      0
+                                                             734       1     734
+
+PmlI            CAC^GTG                      0
+                                                             734       1     734
+
+PpiI            (7/12)GAACNNNNNCTC(13/8      0
+                                                             734       1     734
+
+PpsI            GAGTC(4/5)                   0
+                                                             734       1     734
+
+Ppu10I          A^TGCAT                      0
+                                                             734       1     734
+
+PpuMI           RG^GWCCY                     0
+                                                             734       1     734
+
+PpuXI           RG^GWCCY                     0
+                                                             734       1     734
+
+PshAI           GACNN^NNGTC                  0
+                                                             734       1     734
+
+PshBI           AT^TAAT                      0
+                                                             734       1     734
+
+PsiI            TTA^TAA                      2
+                                                      50     658      50     707
+                                                     708      49       1      49
+                                                              27     708     734
+
+Psp5II          RG^GWCCY                     0
+                                                             734       1     734
+
+Psp1406I        AA^CGTT                      0
+                                                             734       1     734
+
+PspAI           C^CCGGG                      0
+                                                             734       1     734
+
+Psp124BI        GAGCT^C                      0
+                                                             734       1     734
+
+PspEI           G^GTNACC                     0
+                                                             734       1     734
+
+PspGI           ^CCWGG                       0
+                                                             734       1     734
+
+PspLI           C^GTACG                      0
+                                                             734       1     734
+
+PspN4I          GGN^NCC                      2
+                                                     218     337     398     734
+                                                     398     217       1     217
+                                                             180     218     397
+
+PspOMI          G^GGCCC                      0
+                                                             734       1     734
+
+PspPPI          RG^GWCCY                     0
+                                                             734       1     734
+
+PsrI            (7/12)GAACNNNNNNTAC(12/      0
+                                                             734       1     734
+
+PstI            CTGCA^G                      1
+                                                     383     382       1     382
+                                                             352     383     734
+
+PsuI            R^GATCY                      2
+                                                     355     354       1     354
+                                                     396     339     396     734
+                                                              41     355     395
+
+PsyI            GACN^NNGTC                   0
+                                                             734       1     734
+
+PvuI            CGAT^CG                      0
+                                                             734       1     734
+
+PvuII           CAG^CTG                      0
+                                                             734       1     734
+
+RcaI            T^CATGA                      0
+                                                             734       1     734
+
+RsaI            GT^AC                        0
+                                                             734       1     734
+
+RsrII           CG^GWCCG                     0
+                                                             734       1     734
+
+Rsr2I           CG^GWCCG                     0
+                                                             734       1     734
+
+SacI            GAGCT^C                      0
+                                                             734       1     734
+
+SacII           CCGC^GG                      0
+                                                             734       1     734
+
+SalI            G^TCGAC                      0
+                                                             734       1     734
+
+SanDI           GG^GWCCC                     0
+                                                             734       1     734
+
+SapI            GCTCTTC(1/4)                 1
+                                                     448     447       1     447
+                                                             287     448     734
+
+SatI            GC^NGC                       2
+                                                     442     441       1     441
+                                                     609     167     442     608
+                                                             126     609     734
+
+Sau96I          G^GNCC                       1
+                                                     384     383       1     383
+                                                             351     384     734
+
+Sau3AI          ^GATC                        2
+                                                     355     354       1     354
+                                                     396     339     396     734
+                                                              41     355     395
+
+SbfI            CCTGCA^GG                    0
+                                                             734       1     734
+
+ScaI            AGT^ACT                      0
+                                                             734       1     734
+
+SchI            GAGTC(5/5)                   0
+                                                             734       1     734
+
+ScrFI           CC^NGG                       0
+                                                             734       1     734
+
+SdaI            CCTGCA^GG                    0
+                                                             734       1     734
+
+SduI            GDGCH^C                      0
+                                                             734       1     734
+
+SexAI           A^CCWGGT                     0
+                                                             734       1     734
+
+SfaNI           GCATC(5/9)                   3
+                                                     131     307     428     734
+                                                     161     267     161     427
+                                                     428     130       1     130
+                                                              30     131     160
+
+SfcI            C^TRYAG                      2
+                                                     311     356     379     734
+                                                     379     310       1     310
+                                                              68     311     378
+
+SfiI            GGCCNNNN^NGGCC               0
+                                                             734       1     734
+
+SfoI            GGC^GCC                      0
+                                                             734       1     734
+
+Sfr274I         C^TCGAG                      0
+                                                             734       1     734
+
+Sfr303I         CCGC^GG                      0
+                                                             734       1     734
+
+SfuI            TT^CGAA                      0
+                                                             734       1     734
+
+SgfI            GCGAT^CGC                    0
+                                                             734       1     734
+
+SgrAI           CR^CCGGYG                    0
+                                                             734       1     734
+
+SinI            G^GWCC                       1
+                                                     384     383       1     383
+                                                             351     384     734
+
+SmaI            CCC^GGG                      0
+                                                             734       1     734
+
+SmiI            ATTT^AAAT                    0
+                                                             734       1     734
+
+SmiMI           CAYNN^NNRTG                  0
+                                                             734       1     734
+
+SmlI            C^TYRAG                      2
+                                                     462     461       1     461
+                                                     504     231     504     734
+                                                              42     462     503
+
+SmuI            CCCGC(4/6)                   0
+                                                             734       1     734
+
+SnaBI           TAC^GTA                      0
+                                                             734       1     734
+
+SpaHI           GCATG^C                      0
+                                                             734       1     734
+
+SpeI            A^CTAGT                      0
+                                                             734       1     734
+
+SphI            GCATG^C                      0
+                                                             734       1     734
+
+SrfI            GCCC^GGGC                    0
+                                                             734       1     734
+
+Sse9I           ^AATT                        6
+                                                      17     411     190     600
+                                                     190     173      17     189
+                                                     601      85     618     702
+                                                     618      20     715     734
+                                                     703      17     601     617
+                                                     715      16       1      16
+                                                              12     703     714
+
+Sse8387I        CCTGCA^GG                    0
+                                                             734       1     734
+
+SseBI           AGG^CCT                      0
+                                                             734       1     734
+
+SspI            AAT^ATT                      0
+                                                             734       1     734
+
+SspBI           T^GTACA                      0
+                                                             734       1     734
+
+SstI            GAGCT^C                      0
+                                                             734       1     734
+
+SstII           CCGC^GG                      0
+                                                             734       1     734
+
+StuI            AGG^CCT                      0
+                                                             734       1     734
+
+StyI            C^CWWGG                      0
+                                                             734       1     734
+
+SunI            C^GTACG                      0
+                                                             734       1     734
+
+SwaI            ATTT^AAAT                    0
+                                                             734       1     734
+
+TaaI            ACN^GT                       4
+                                                     207     219     516     734
+                                                     347     206       1     206
+                                                     376     140     207     346
+                                                     516     140     376     515
+                                                              29     347     375
+
+TaiI            ACGT^                        0
+                                                             734       1     734
+
+TaqI            T^CGA                        2
+                                                     187     371     364     734
+                                                     364     186       1     186
+                                                             177     187     363
+
+TasI            ^AATT                        6
+                                                      17     411     190     600
+                                                     190     173      17     189
+                                                     601      85     618     702
+                                                     618      20     715     734
+                                                     703      17     601     617
+                                                     715      16       1      16
+                                                              12     703     714
+
+TatI            W^GTACW                      0
+                                                             734       1     734
+
+TauI            GCSG^C                       0
+                                                             734       1     734
+
+TelI            GACN^NNGTC                   0
+                                                             734       1     734
+
+TfiI            G^AWTC                       0
+                                                             734       1     734
+
+ThaI            CG^CG                        0
+                                                             734       1     734
+
+TliI            C^TCGAG                      0
+                                                             734       1     734
+
+Tru1I           T^TAA                        2
+                                                      76     524      76     599
+                                                     600     135     600     734
+                                                              75       1      75
+
+Tru9I           T^TAA                        2
+                                                      76     524      76     599
+                                                     600     135     600     734
+                                                              75       1      75
+
+TscI            ACGT^                        0
+                                                             734       1     734
+
+TseI            G^CWGC                       2
+                                                     441     440       1     440
+                                                     608     167     441     607
+                                                             127     608     734
+
+Tsp45I          ^GTSAC                       0
+                                                             734       1     734
+
+Tsp509I         ^AATT                        6
+                                                      17     411     190     600
+                                                     190     173      17     189
+                                                     601      85     618     702
+                                                     618      20     715     734
+                                                     703      17     601     617
+                                                     715      16       1      16
+                                                              12     703     714
+
+TspEI           ^AATT                        6
+                                                      17     411     190     600
+                                                     190     173      17     189
+                                                     601      85     618     702
+                                                     618      20     715     734
+                                                     703      17     601     617
+                                                     715      16       1      16
+                                                              12     703     714
+
+TspRI           CASTGNN^                     0
+                                                             734       1     734
+
+Tth111I         GACN^NNGTC                   0
+                                                             734       1     734
+
+TthHB8I         T^CGA                        2
+                                                     187     371     364     734
+                                                     364     186       1     186
+                                                             177     187     363
+
+Van91I          CCANNNN^NTGG                 0
+                                                             734       1     734
+
+Vha464I         C^TTAAG                      0
+                                                             734       1     734
+
+VneI            G^TGCAC                      0
+                                                             734       1     734
+
+VpaK11BI        G^GWCC                       1
+                                                     384     383       1     383
+                                                             351     384     734
+
+VspI            AT^TAAT                      0
+                                                             734       1     734
+
+XagI            CCTNN^NNNAGG                 0
+                                                             734       1     734
+
+XapI            R^AATTY                      0
+                                                             734       1     734
+
+XbaI            T^CTAGA                      0
+                                                             734       1     734
+
+XceI            RCATG^Y                      1
+                                                     264     471     264     734
+                                                             263       1     263
+
+XcmI            CCANNNNN^NNNNTGG             0
+                                                             734       1     734
+
+XhoI            C^TCGAG                      0
+                                                             734       1     734
+
+XhoII           R^GATCY                      2
+                                                     355     354       1     354
+                                                     396     339     396     734
+                                                              41     355     395
+
+XmaI            C^CCGGG                      0
+                                                             734       1     734
+
+XmaIII          C^GGCCG                      0
+                                                             734       1     734
+
+XmaCI           C^CCGGG                      0
+                                                             734       1     734
+
+XmaJI           C^CTAGG                      0
+                                                             734       1     734
+
+XmiI            GT^MKAC                      2
+                                                     575     574       1     574
+                                                     686     111     575     685
+                                                              49     686     734
+
+XmnI            GAANN^NNTTC                  1
+                                                     423     422       1     422
+                                                             312     423     734
+
+XspI            C^TAG                        3
+                                                       8     316     132     447
+                                                     132     287     448     734
+                                                     448     124       8     131
+                                                               7       1       7
+
+ZhoI            AT^CGAT                      0
+                                                             734       1     734
+
+Zsp2I           ATGCA^T                      0
+                                                             734       1     734
+

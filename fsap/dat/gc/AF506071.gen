@@ -1,0 +1,54 @@
+LOCUS       AF506071                 591 bp    DNA     linear   INV 13-NOV-2003
+DEFINITION  Euplotes aediculatus macronuclear histone H4 gene, complete cds.
+ACCESSION   AF506071
+VERSION     AF506071.1  GI:21779944
+KEYWORDS    .
+SOURCE      Euplotes aediculatus
+  ORGANISM  Euplotes aediculatus
+            Eukaryota; Alveolata; Ciliophora; Spirotrichea; Hypotrichia;
+            Euplotida; Euplotidae; Euplotes.
+REFERENCE   1  (bases 1 to 591)
+  AUTHORS   Kelminson,K., Hewitt,E., Arkind,C., Kneeland,P., DuBois,M.L. and
+            Prescott,D.M.
+  TITLE     Histone H4 genes in some stichotrichous ciliates
+  JOURNAL   Eur. J. Protistol. 38 (3), 235-246 (2002)
+REFERENCE   2  (bases 1 to 591)
+  AUTHORS   Kelminson,K., Hewitt,E., Arkind,C., Kneeland,P., DuBois,M. and
+            Prescott,D.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (24-APR-2002) MCDB, University of Colorado-Boulder,
+            Campus Box 347, Boulder, CO 80309, USA
+FEATURES             Location/Qualifiers
+     source          1..591
+                     /organism="Euplotes aediculatus"
+                     /macronuclear
+                     /mol_type="genomic DNA"
+                     /db_xref="taxon:5940"
+     mRNA            <1..571
+                     /product="macronuclear histone H4"
+     CDS             1..324
+                     /codon_start=1
+                     /transl_table=10
+                     /product="macronuclear histone H4"
+                     /protein_id="AAM77588.1"
+                     /db_xref="GI:21779945"
+                     /translation="MAGRGKGGKGGKGYGKVGAKRHTKKALRETILGVTKPAIRRLAR
+                     RGGVKRISSLVYEETRAVLKGFLENVIRDSVTYTEHAKRKTVTALDVVYALKRQGKTL
+                     YGFGG"
+     3'UTR           325..571
+     repeat_region   572..591
+                     /note="telomeric repeat"
+                     /rpt_type=tandem
+BASE COUNT      186 a     98 c    126 g    180 t      1 others
+ORIGIN
+        1 atggccggaa gaggtaaagg tggaaaggga ggaaaaggat acggaaaggt cggagctaag
+       61 agacacacta agaaggctct tagagagacc atcttgggag tcaccaagcc agctattaga
+      121 agattagcaa gaagaggagg agttaagaga atctcatcac tcgtctacga agagactaga
+      181 gctgtcctca agggattctt agagaacgts atcagagact cagtcaccta cactgaacac
+      241 gccaagagaa agactgtaac tgccctcgac gttgtctatg ccctcaagag acaaggaaag
+      301 accctctacg gattcggtgg ttaaatgaaa ttgaattaat aaattctatt caaagaatta
+      361 acaaaataat ctcttctttc tttattgtgt tttgaattaa attatttcct ttttgaccta
+      421 gttctgactt ttacgtttta aatcaatatt gggtatcgtt tagatgaaat attcatgatt
+      481 attttgagaa tttttgaatt tgcctccttt catattaatt tgtttcataa atccttatca
+      541 actgtttcat tcaatatgct tattcactag cggggttttg gggttttggg g
+//

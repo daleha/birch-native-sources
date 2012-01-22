@@ -1,0 +1,170 @@
+#!/bin/csh 
+#   GBUPDATE,   Version 12/22/2001
+#csh script to download GenBank files
+
+# 21 Aug 2000 Updated to extract gzipped files, rather
+#             than tar.Z files.
+
+# Example: {uses 'at' command to run a delayed batch job}
+#  at 1am
+#  at>gbupdate filelist &
+#  at>ctrl-D  {ends the command }
+
+#  This assumes you are in the GenBank directory.  The existing files will be 
+#  replaced with the new ones, and so must be writeable.
+#  Remember to include the index and documentation files in filelist.
+#  When disk space is tight, edit the 'filelist' file to download files in
+#  order of decreasing size.  In general, you need to have at least twice as
+#  much empty space as is necessary to hold the largest file to be downloaded.
+#  This can be circumvented by setting $tmpdir to /tmp, rather than ".".
+
+#-----------------------  Set environment variables -------------
+#Check to see if $MAILID is set
+if (${?MAILID} == 0) then
+  echo Environment variable MAILID must be set to your full Internet address
+  echo in the form     userid@hostname
+  echo This is best done in your .cshrc file.
+  exit
+endif
+
+# directory to store temporary files
+set tmpdir = .
+#set tmpdir = /tmp
+set RM = 'rm -f'
+set GBUSERID = anonymous
+set GBPASSWD = $MAILID
+
+
+# GenBank download site, and directory at that site.
+# Mirror sites and directories are commented out.
+# - - - - - - NCBI
+#set GBHOST = ftp.ncbi.nih.gov
+#set GBDIR = genbank
+
+#- - - - - - -JAPAN
+#set GBHOST = bio-mirror.jp.apan.net 
+#set GBDIR = pub/biomirror/genbank 
+
+#- - - - - - -AUSTRALIA
+#set GBHOST = bio-mirror.au.apan.net
+#set GBDIR = biomirror/genbank 
+
+#- - - - - - -SINGAPORE
+#set GBHOST = bio-mirror.sg.apan.net
+#set GBDIR = biomirrors/genbank 
+
+#- - - - - - -CHINA
+#set GBHOST = bio-mirror.im.ac.cn
+#set GBDIR = genbank 
+
+#- - - - - - -USA - Indiana University
+set GBHOST = bio-mirror.net
+set GBDIR = biomirror/genbank 
+set GBUSERID = anonymous
+set GBPASSWD = $MAILID
+
+#- - - - - - -USA - San Diego Supercomputing Center
+#set GBHOST = genbank.sdsc.edu
+#set GBDIR =  pub
+#set GBUSERID = anonymous
+#set GBPASSWD = $MAILID
+
+# - - - - - - - - - - - - - - -
+# Use 'ls -l' to write a list of GenBank files on remote server,
+# Send output to ls.out
+  # generate FTP command file
+  echo user $GBUSERID $GBPASSWD > ftp.input
+  echo cd $GBDIR >>  ftp.input
+  echo bin >> ftp.input
+  echo ls -l ls.out >> ftp.input 
+  echo bye >> ftp.input
+  # run FTP
+  nice ftp -i -n $GBHOST < ftp.input
+
+#-----------------------  MAIN LOOP -------------
+foreach file (`cat $1`)
+
+     set name = $file:r
+
+     echo $file
+
+  # Create a temporary list of all files for a
+  # GenBank division.
+  egrep -e gb$file'[0-9]*\.seq\.gz' ls.out > $$.temp
+  cat $$.temp
+  if ( -z $$.temp) then # division is in a single file
+    echo $file > $$.filelist
+  else # division is split among several files
+    tr -s ' ' '	' < $$.temp | cut -f9 > $$.filelist 
+  endif 
+  cat $$.filelist
+  $RM $$.temp
+
+  foreach file (`cat $$.filelist`)
+
+     #Nomenclature:
+     # $file - original gzipped file eg. gbest1.seq.gz
+     # $name - $file minus .gz extension eg. gbest1.seq
+     # $base - raw file name eg. gbest1
+     if ($file:e == gz) then
+        set name = $file:r
+        if ($name:e == seq) then
+           set base = $name:r
+           # Make some space by deleting the current GenBank division, if
+           # it exists.
+           echo "Removing file(s) for $base, if they exist"
+           $RM $name.*
+        endif
+     endif
+
+
+     # Create input file for ftp command. Logs in, moves to correct directory,
+     # and downloads the data. Then logs out.
+     echo user $GBUSERID $GBPASSWD > ftp.input
+     echo cd $GBDIR >>  ftp.input
+     echo bin >> ftp.input 
+     echo get $file $tmpdir/$file  >>  ftp.input
+     echo bye >> ftp.input
+
+     #   Get the file from GenBank
+     nice ftp -i -n $GBHOST < ftp.input
+
+     #   Make sure that the file received is the same length as the original
+     #file.
+     set ORIGINAL = `grep $file ls.out |tr -s ' ' '	' |cut -f5`
+     set RECIEVED = `ls -l $tmpdir/$file |tr -s ' ' '	' |cut -f5`
+     echo 'ORIGINAL=  '$ORIGINAL
+     echo 'RECEIVED=  '$RECIEVED
+     if ($ORIGINAL == $RECIEVED) then 
+        ls -l $tmpdir/$file >> files_received
+        if ($file:e == gz) then
+           #Uncompress the file
+           if ($name:e == seq) then
+              nice +10 gunzip -f $tmpdir/$file 
+              #Run splitdb to create the database
+              nice +10 splitdb -c $tmpdir/$name $base.ano $base.wrp $base.ind
+              set success = $status
+              chmod a+r $base.*
+
+              #Remove the .seq file if splitdb exited with a return code of 0.
+              if ($success == 0) then 
+                 $RM $tmpdir/$name
+              # Otherwise, remove the partially split files to make room.
+              # These will have to be split manually.
+              else
+                 $RM $base.ano $base.wrp $base.ind
+              endif # success == 0
+           else
+              nice +10 zcat -c -f $tmpdir/$file > $name
+              $RM $tmpdir/$file
+              chmod a+r $name
+           endif # $name:e == seq
+         endif # $file:e == gz
+
+      else
+        echo $file >> files.missed
+      endif # $ORIGINAL == RECEIVED
+  end #foreach
+
+  $RM $$.filelist
+end #foreach

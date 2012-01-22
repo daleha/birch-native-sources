@@ -1,0 +1,460 @@
+#------------------ Import Free Format (FSAP)  ( 2/ 8/05) -------------------
+
+item:Import Free Format (FSAP)
+itemmethod: free2gb.csh $INPUTFILE out1;
+itemhelp:doc/fsap/funnel.txt
+
+arg:INPUTFILE
+argtype:text
+arglabel:Name of Free Format (FSAP) file?
+
+out:out1
+outformat:genbank
+
+#------------------------- NUMSEQ ( 2/ 8/05) --------------------------
+item:NUMSEQ - number a sequence
+
+# INSTALLATION NOTE: The $GDE_HELP_DIR must contain a directory called 
+# fsapdat that contains the genetic code files eg. ugc.dat These files contain
+# the genetic codes as described in the FSAP documentation. 
+# If you already have FSAP installed elsewhere, simply create a 
+# symbolic link in the $GDE_HELP_DIR. For example:
+# ln -s $DAT/fsap fsapdat
+# will create a symbolic link to $DAT/fsap using the name fsapdat
+
+# The directory fsapdoc must also be available in the $GDE_HELP_DIR,
+# containing the file numseq.asc from the FSAP package. Again, this
+# directory can be implemented as a symbolic link.
+itemmethod: (numseq.csh in1 in1.out $GCFILE $START $FINISH $NUCCASE $SNUM $GROUP $GPL $WHICH $STRANDS $KIND $NUMBERS $NUCS $PEPTIDES $FRAMES $FORM; $RM_CMD in1; ($GDE_TEXTEDIT in1.out; $RM_CMD in1*) & )&
+itemhelp:doc/fsap/numseq.txt
+
+
+arg:START
+argtype:slider
+arglabel:START
+argmin:1
+argmax:500000
+argvalue:1
+
+arg:FINISH
+argtype:slider
+arglabel:FINISH
+argmin:1
+argmax:500000
+argvalue:500000
+
+arg:NUCCASE
+argtype:chooser
+argchoice:UPPERCASE:U
+argchoice:lowercase:l
+argvalue:0
+
+arg:SNUM
+argtype:slider
+arglabel:Number of starting nucleotide
+argmin:-500000
+argmax:500000
+argvalue:0
+
+arg:GROUP
+argtype:slider
+arglabel:write in GROUPs of
+argmin:1
+argmax:100
+argvalue:10
+
+arg:GPL
+argtype:slider
+arglabel:number of GROUPs printed per line
+argmin:1
+argmax:20
+argvalue:7
+
+arg:WHICH
+arglabel:Which strand?
+argtype:chooser
+argchoice:original:i
+argchoice:opposite:o
+argvalue:0
+
+arg:STRANDS
+argtype:chooser
+argchoice:One strand:1
+argchoice:Both strands:2
+argvalue:0
+
+arg:KIND
+argtype:chooser
+arglabel:Print as
+argchoice:DNA:D
+argchoice:RNA:R
+argvalue:0
+
+arg:NUMBERS
+arglabel:Numbering
+argtype:chooser
+argchoice:YES:Y
+argchoice:NO:N
+argvalue:0
+
+arg:NUCS
+arglabel:Print nucleotides
+argtype:chooser
+argchoice:YES:Y
+argchoice:NO:N
+argvalue:0
+
+arg:PEPTIDES
+argtype:chooser
+arglabel:TRANSLATION
+argchoice:YES:Y
+argchoice:NO:N
+argvalue:1
+
+arg:FRAMES
+argtype:chooser
+arglabel:Reading frames
+argchoice:One:1
+argchoice:Three:3
+argvalue:0
+
+arg:FORM
+argtype:chooser
+arglabel:aa code
+argchoice:Three letter:L
+argchoice:One letter:S
+argvalue:1
+
+arg:GCFILE
+argtype:choice_menu
+arglabel:Genetic Code
+argchoice:Standard:$DAT/fsap/gc/1.standard.gc
+argchoice:Vertebrate Mitochondrial:$DAT/fsap/gc/2.vert_mito.gc
+argchoice:Yeast Mitochondrial:$DAT/fsap/gc/3.yeast_mito.gc
+argchoice:Mold, Protozoan, and Coelenterate Mitochondrial:$DAT/fsap/gc/4.MPC.mito.gc
+argchoice:Invertebrate Mitochondrial:$DAT/fsap/gc/5.inv_mito.gc
+argchoice:Ciliate, Dasycladacean and Hexamita:$DAT/fsap/gc/6.CDH.gc
+argchoice:Echinoderm and Flatworm:$DAT/fsap/gc/9.EF_mito.gc
+argchoice:Euplotid:$DAT/fsap/gc/10.Euplotid.gc
+argchoice:Bacterial and Plant Plastid:$DAT/fsap/gc/11.Bact_Plastid.gc
+argchoice:Alternative Yeast Nuclear:$DAT/fsap/gc/12.alt_yeast.gc
+argchoice:Ascidian Mitochondrial:$DAT/fsap/gc/13.Ascidian_mito.gc
+argchoice:Alternative Flatworm Mitochondrial:$DAT/fsap/gc/14.alt_flatworm_mito.gc
+argchoice:Blepharisma:$DAT/fsap/gc/15.Blepharisma.gc
+argchoice:Chlorophycean Mitochondrial:$DAT/fsap/gc/16.Chlorophycean_mito.gc
+argchoice:Trematode Mitochondrial:$DAT/fsap/gc/21.Trematode_mito.gc
+argchoice:Scenedesmus obliquus mitochondrial:$DAT/fsap/gc/22.Scenedesmus_mito.gc
+argchoice:Thraustochytrium Mitochondrial:$DAT/fsap/gc/23.Thraustochytrium_mito.gc
+argvalue:0
+
+in:in1
+informat:genbank
+insave:
+#------------------------- BACHREST 3/29/06  --------------------------
+item:BACHREST - Batch Rest. Site Search
+
+# The directory fsapdoc must also be available in the $GDE_HELP_DIR,
+# containing the file rest.asc from the FSAP package. Again, this
+# directory can be implemented as a symbolic link.
+
+itemmethod: (bachrest.csh in1 $DAT/REBASE/type2.lst in1.tmp $SOURCE $PROTO $PROT3 $BLUNT $PROT5 $SYMM $MINSITE $MAXSITE $FRAGLEAST $FRAGMOST $FRAGPRINT; ($GDE_TEXTEDIT in1.tmp; $RM_CMD in1*)& )&
+itemhelp:doc/fsap/rest.txt
+
+arg:SOURCE
+argtype:chooser
+arglabel:Source
+argchoice:Commercial:C
+argchoice:All:A
+argvalue:1
+
+arg:PROTO
+argtype:chooser
+arglabel:Prototypes only?
+argchoice:Prototypes:P
+argchoice:All:A
+argvalue:0
+
+arg:PROT3
+argtype:chooser
+arglabel:Include enzymes generating 3 prime protruding ends?
+argchoice:Yes:Y
+argchoice:No:N
+argvalue:0
+
+arg:BLUNT
+argtype:chooser
+arglabel:Include enzymes generating blunt ends?
+argchoice:Yes:Y
+argchoice:No:N
+argvalue:0
+
+arg:PROT5
+argtype:chooser
+arglabel:Include enzymes generating 5 prime protruding ends?
+argchoice:Yes:Y
+argchoice:No:N
+argvalue:0
+
+arg:SYMM
+argtype:choice_menu
+arglabel:Include
+argchoice:Symmetric and Asymmetric sites:B
+argchoice:Symmetric sites only:S
+argchoice:Asymmetric sites only:A
+argvalue:0
+
+arg:MINSITE
+argtype:slider
+arglabel:Min. Recognition Seq. Length
+argmin:4
+argmax:21
+argvalue:6
+
+arg:MAXSITE
+argtype:slider
+arglabel:Max. Recognition Seq. Length
+argmin:4
+argmax:21
+argvalue:21
+
+arg:FRAGLEAST
+argtype:slider
+arglabel:Min. number of fragments generated
+argmin:0
+argmax:6000
+argvalue:0
+
+arg:FRAGMOST
+argtype:slider
+arglabel:Max. number of fragments generated
+argmin:0
+argmax:6000
+argvalue:6000
+
+arg:FRAGPRINT
+argtype:slider
+arglabel:Max. number of fragments printed
+argmin:0
+argmax:6000
+argvalue:30
+
+in:in1
+informat:genbank
+insave:
+#------------------------- TESTCODE ( 2/ 8/05) --------------------------
+item:Testcode - find protein coding sequences
+
+# The directory fsapdoc must be available in the $GDE_HELP_DIR,
+# containing the file testcode.asc from the FSAP package. Again, this
+# directory can be implemented as a symbolic link.
+itemmethod:testcode.csh in1 in1.out $START $FINISH $WHICH $FORMAT $WINDOW $SKIP;($GDE_TEXTEDIT in1.out; $RM_CMD in1*) &
+itemhelp:doc/fsap/testcode.txt
+
+arg:START
+argtype:slider
+arglabel:START
+argmin:1
+argmax:500000
+argvalue:1
+
+arg:FINISH
+argtype:slider
+arglabel:FINISH
+argmin:1
+argmax:500000
+argvalue:500000
+
+arg:WHICH
+arglabel:Which strand?
+argtype:chooser
+argchoice:original:i
+argchoice:opposite:o
+argvalue:0
+
+arg:FORMAT
+arglabel:Output format
+argtype:chooser
+argchoice:Histogram:g
+argchoice:Table:t
+argvalue:0
+
+arg:WINDOW
+argtype:slider
+arglabel:# codons in search window
+argmin:10
+argmax:200
+argvalue:67
+
+arg:SKIP
+argtype:slider
+arglabel:# to skip for each window
+argmin:1
+argmax:200
+argvalue:10
+
+in:in1
+informat:genbank
+insave:
+#-------------------------  D3HOM/D4HOM ( 2/ 8/05) --------------------------
+item:DXHOM - Dot-matrix similarity (DNA)
+
+# The directory fsapdoc must also be available in the $GDE_HELP_DIR,
+# containing the file hom.asc from the FSAP package. Again, this
+# directory can be implemented as a symbolic link.
+itemmethod:readseq -i1 -fGenBank -o=in1.seq1 in1; readseq -i2 -fGenBank -o=in1.seq2 in1; hom.csh in1.seq1 $STRAND in1.seq2 in1.out $STARTX $FINISHX $STARTY $FINISHY $RANGE $MINPER $COMPFACT $KIND $LINESIZE $PROGRAM; ($GDE_TEXTEDIT in1.out; $RM_CMD in1*) &
+itemhelp:doc/fsap/hom.txt
+
+arg:STARTX
+argtype:slider
+arglabel:STARTX
+argmin:1
+argmax:500000
+argvalue:1
+
+arg:FINISHX
+argtype:slider
+arglabel:FINISHX
+argmin:1
+argmax:500000
+argvalue:500000
+
+arg:STARTY
+argtype:slider
+arglabel:STARTY
+argmin:1
+argmax:500000
+argvalue:1
+
+arg:FINISHY
+argtype:slider
+arglabel:FINISHY
+argmin:1
+argmax:500000
+argvalue:500000
+
+arg:STRAND
+arglabel:Which strand is X-axis?
+argtype:chooser
+argchoice:original:n
+argchoice:opposite:y
+argvalue:0
+
+arg:PROGRAM
+arglabel:K-tuple
+argtype:chooser
+argchoice:3:d3hom
+argchoice:4:d4hom
+argvalue:0
+
+arg:RANGE
+argtype:slider
+arglabel:Dist. from center of window
+argmin:1
+argmax:30
+argvalue:10
+
+arg:MINPER
+argtype:slider
+arglabel:min. % similarity printed
+argmin:40
+argmax:100
+argvalue:60
+
+arg:COMPFACT
+argtype:slider
+arglabel:compression factor
+argmin:1
+argmax:500
+argvalue:10
+
+arg:KIND
+argtype:chooser
+argchoice:DNA:D
+argchoice:RNA:R
+argvalue:0
+
+arg:LINESIZE
+argtype:slider
+arglabel:width (columns) of output line
+argmin:40
+argmax:150
+argvalue:70
+
+in:in1
+informat:genbank
+insave:
+#-------------------------  P1HOM/P2HOM (11/ 5/00) --------------------------
+item:PXHOM - Dot-matrix similarity (protein)
+
+# The directory fsapdoc must also be available in the $GDE_HELP_DIR,
+# containing the file hom.asc from the FSAP package. Again, this
+# directory can be implemented as a symbolic link.
+itemmethod:readseq -i1 -ffasta -o=in1.seq1 in1; readseq -i2 -ffasta -o=in1.seq2 in1; phom.csh in1.seq1 in1.seq2 in1.out $STARTX $FINISHX $STARTY $FINISHY $RANGE $MINPER $COMPFACT $LINESIZE $PROGRAM; ($GDE_TEXTEDIT in1.out; $RM_CMD in1*) &
+itemhelp:doc/fsap/hom.asc
+
+arg:STARTX
+argtype:slider
+arglabel:STARTX
+argmin:1
+argmax:9000
+argvalue:1
+
+arg:FINISHX
+argtype:slider
+arglabel:FINISHX
+argmin:1
+argmax:9000
+argvalue:9000
+
+arg:STARTY
+argtype:slider
+arglabel:STARTY
+argmin:1
+argmax:9000
+argvalue:1
+
+arg:FINISHY
+argtype:slider
+arglabel:FINISHY
+argmin:1
+argmax:9000
+argvalue:9000
+
+arg:PROGRAM
+arglabel:K-tuple
+argtype:chooser
+argchoice:1:p1hom
+argchoice:2:p2hom
+argvalue:0
+
+arg:RANGE
+argtype:slider
+arglabel:Dist. from center of window
+argmin:1
+argmax:30
+argvalue:10
+
+arg:MINPER
+argtype:slider
+arglabel:min. % similarity printed
+argmin:5
+argmax:100
+argvalue:30
+
+arg:COMPFACT
+argtype:slider
+arglabel:compression factor
+argmin:1
+argmax:100
+argvalue:10
+
+arg:LINESIZE
+argtype:slider
+arglabel:width (columns) of output line
+argmin:40
+argmax:150
+argvalue:70
+
+in:in1
+informat:genbank
+insave:

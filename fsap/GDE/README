@@ -1,0 +1,35 @@
+The file FSAP.GDEmenus contains GDE menu items for many of the FSAP programs
+Installation instructions are inculded as comment lines at the top of that file.
+
+Additionally, you must copy all of the .csh files in this directory to the
+same directory as the other FSAP executables. This might most simply be
+done by copying these .csh files to fsap/bin-xxx-xxx at the same time you
+copy the FSAP executables to fsap/bin-xxx-xxx. Then everything can be copied
+to the final 'bin' directory en masse.
+
+The following table summarizes the relationships between files and menu
+items:
+
+GDE menu item       shell script called by GDE    program(s) called by script
+-----------------------------------------------------------------------------
+Import Free Format  free2gb.csh                   funnel
+NUMSEQ              numseq.csh                    numseq
+BACHREST            bachrest.csh                  bachrest
+DXHOM               hom.csh                       d3hom, d4hom
+PXHOM               phom.csh                      p1hom,p2hom
+TESTCODE            testcode.csh                  testcode
+
+Because the FSAP programs are interactive and can't be directly run
+through command line options, GDE generates a command as if the program
+COULD be run from the command line, and the script reads the command
+line arguments and generates user responses that would normally be
+typed at program prompts. These responses are then piped to the
+program as standard input. Consequently, all screen output that would
+normally appear at the user's terminal will appear in the window in which
+GDE was started up. Finally, output that would normally be sent to the
+output file is piped into a textedit window.
+
+Brian Fristensky
+University of Manitoba
+frist@cc.umanitoba.ca
+

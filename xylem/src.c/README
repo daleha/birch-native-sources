@@ -1,0 +1,37 @@
+The programs in this directory have been tested with the following C
+compilers:
+
+  cc    Sun
+  cc    HP/UX
+  gcc   Sun
+  gcc   AIX
+
+To compile programs:
+
+   1.  Choose the appropriate p2c.h file, and copy it to p2c.h:
+
+       file                      works with
+       -----------------------------------------------------
+       p2c.h.sun                 Sun cc
+       p2c.h.standard            IBM AIX gcc
+       p2c.h.HP                  HP/UX
+
+      ex.  cp p2c.h.HP p2c.h
+
+
+    2. If you are using GNU C, comment out cc in Makefile and uncomment gcc.
+
+    3. To compile,
+
+    make 
+
+To copy executable code to the 'bin' directory:
+
+    make install
+
+
+To get rid of object files etc. when done:
+
+    make clean
+
+

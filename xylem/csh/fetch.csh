@@ -1,0 +1,806 @@
+#!/bin/csh
+# FETCH - a c-shell script (version 3 Apr 02)
+# FETCH retrieves database entries keyed on either accession numbers 
+# or GenBank LOCUS names
+#  3 Apr 2002 Fixed -G and -P options which failed to work with
+#             database files if not in current working directory
+# 25 Jan 2002 Previously, getloc would use the .gen file extension for
+#             PIR files. getloc now creates PIR files with the .pir extension.
+#             FETCH has been updated to also use the .pir extension.
+#             Also, support for VECBASE has been removed. 
+# 25 Aug 2000 revised to accommodate the new tab-delimited format
+#             for gbacc.idx, starting with Release 119.0
+#             Also, no longer supports the discontinued RNA division
+#             of GenBank.
+#      DOES NOT YET SEARCH THE NEW SECONDARY ACC. # FILE gbsec.idx
+
+
+#####################################################################
+# set default parameters
+####################################################################
+# It is assumed that the following environment variables have been set
+# by .cshrc or .login:
+#   GB  - GenBank directory
+#   PIR - PIR/NBRF directory
+
+# Running fetch on a remote host
+# If your databases are on a different host, you can still run fetch
+# locally, and it will use rsh to run a fetch job on the remote host.
+# To facilitate remote fetching, you must set the environment variable
+# XYLEM_RHOST to the name of the remote host, and XYLEM_USERID to your
+# userid on that remote host (should be done in .cshrc)
+
+
+set name = ""
+set namefile = ""
+set outfile  = ""
+set whattoget = b
+set database  = g
+set dbname = ""
+set files     = f
+set mode      = interactive
+set wheretosearch  = local
+set options   = "" #string to hold command line options for getloc
+set jobid = $$
+set runlocal = ""  # runlocal = y prevents remote execution as
+                   # specified by XYLEM_RHOST. 
+set NICE = 'nice +8'
+
+
+# Platform-specific syntax is chosen based on XYLEM_PLATFORM.
+# (default = sun)
+if !(${?XYLEM_PLATFORM}) set XYLEM_PLATFORM = sun #Sun4, Sparcstations
+
+switch ($XYLEM_PLATFORM)
+  case "sun":
+    set RM = "/usr/bin/rm -f"
+    breaksw
+  case "HP":
+    set RM = "rm -f"
+    breaksw
+  default:
+    set RM = "rm -f"
+    breaksw
+endsw
+
+#####################################################################
+# Read options from the command line and set parameters,
+# or prompt user for parameters at terminal.
+####################################################################
+set numargs = $#argv
+if ($numargs != 0) then
+  #---------------------------------------------------
+  #parameters given in command line
+  set files = ""
+  set mode  = command
+  set index = 1
+  while ($index <= $numargs) 
+   set a = $argv[$index]
+   switch ($a)
+     case "-a":
+       set whattoget = a
+       set options   = "$options $a"
+       breaksw
+     case "-s":
+       set whattoget = s
+       set options   = "$options $a"
+       breaksw
+     case "-b":
+       set whattoget = b
+       set options   = "$options $a"
+       breaksw
+     case "-f":
+       set files = f
+       set options   = "$options $a"
+       set outfile   = ""
+       breaksw
+     case "-g":
+       set database = g
+       set options   = "$options $a"
+       breaksw
+     case "-G":
+       set database = G
+       @ index++
+       set dbname = $argv[$index] 
+       breaksw
+     case "-e":
+       set database = e
+       set options   = "$options $a"
+       breaksw
+     case "-p":
+       set database = p
+       set options   = "$options $a"
+       breaksw
+     case "-P":
+       set database = P
+       @ index++
+       set dbname = $argv[$index] 
+       set options   = "$options -p"
+       breaksw
+     default:
+       if ($namefile == "") then
+         set namefile = $a
+       else
+         set outfile = $a
+         set files = ""
+       endif
+       breaksw
+     endsw
+     @ index++
+  end #while
+
+  if ($namefile == "") then
+     echo 'No namefile specified'
+     exit
+  else 
+     if ($files == "" && $outfile == "") then
+         echo 'No outfile specified'
+         exit
+     else
+     endif
+  endif
+
+  #strip comments and blank lines out of $namefile
+  egrep -v -e \; $namefile |egrep -v -e '^ *$' > NAMEFILE.$jobid
+  
+else 
+  #---------------------------------------------------------------
+  # Interactive parameter input
+  set complete = 0
+  while ($complete == 0)
+      #Display current parameter settings
+      echo '___________________________________________________________________'
+      echo '                     FETCH - Version  3 Apr 02                     '
+      echo '    Please cite: Fristensky (1993) Nucl. Acids Res. 21:5997-6003'
+      echo '___________________________________________________________________'
+      echo 'Namefile:' $namefile
+      echo 'Outfile: ' $outfile
+      echo 'Database:' $dbname
+      echo '-------------------------------------------------------------------'
+      echo '   Parameter              Description                      Value'
+      echo ''
+      echo '1) Name/Acc    Name or Accession sequence to get             '$name
+      echo '2) Namefile    Get list of sequences from Namefile'
+      echo '3) WhatToGet   a:annotation s:sequence b:both                '$whattoget
+      echo '4) Database    g:GenBank p:PIR                               '$database
+      echo '               G:GenBank dataset   P:PIR dataset'
+      echo '5) Outfile     Send all output to a single file (Outfile)'
+      echo '6) Files       f:Send each entry to a separate file          '$files
+      echo '   -------------------------------------------------------------'
+      echo '   Type number of your choice or 0 to continue:'
+
+      #Prompt for parameter to change
+      set paramnum = $<
+      switch ($paramnum)
+        case 0:
+          if (-z NAMEFILE.$jobid || (! -e NAMEFILE.$jobid))  then 
+             echo ">>> Must specify Name/Acc or Namefile"
+             echo ">>> Press RETURN to continue"
+             set dummy = $< 
+          else
+            set complete = 1
+          endif
+          breaksw
+        case 1:
+          echo 'Type Name or Accession number of sequence to get:'
+          set name = $<
+          echo $name > NAMEFILE.$jobid
+          set namefile = ""
+          breaksw
+        case 2:
+          echo 'Name of file containing sequence names or accession numbers:'
+          set namefile = $<
+          if ($namefile != "") then
+            if  (-e $namefile  && -r $namefile) then
+                #strip comments and blank lines out of $namefile
+                egrep -v -e \; $namefile |egrep -v -e '^ *$'> NAMEFILE.$jobid
+                set name = ""
+            else
+                echo ">>> $namefile nonexistent or read-protected"
+                echo ">>>Enter another filename"
+                set namefile = ""
+            endif
+          endif
+          breaksw
+        case 3:
+          echo 'Type a for annotation, s for sequence or b for both:'
+          set temp = $<
+          if ($temp == a | $temp == s | $temp == b) then 
+             set whattoget = $temp
+          else echo '>>> Invalid choice'
+          endif
+          breaksw
+        case 4:
+          echo 'Choose one of    gGpP'
+          set temp = $<
+          if ($temp == g | $temp == G |$temp == p | $temp == P ) then
+             set database = $temp
+             if ($temp == G | $temp == P) then
+               echo 'Enter filename:'
+               set dbname = $<
+             endif
+          else echo '>>> Invalid choice'
+          endif
+          breaksw
+        case 5:
+          echo 'Type name of file for output'
+          set outfile = $<
+          set files = ""
+          breaksw
+        case 6:
+          set files = f
+          set outfile = ""
+          breaksw
+        default:
+        endsw
+       #If parameter chosen is 0, and a minimal set of parameters are
+      #set, terminate the loop (complete=1)
+    end #while
+
+endif
+
+  #set options
+  if ($whattoget == b) then
+     switch ($database)
+       case "g":
+         set extension = "gen"
+         breaksw
+       case "G":
+         set extension = "gen"
+         breaksw
+       case "p":
+         set extension = "pir"
+         set options   = "$options -p"
+         breaksw
+        case "P":
+         set extension = "pir"
+         set options   = "$options -p"
+         breaksw
+     endsw
+  else 
+     set options = "-$whattoget"
+     if ($whattoget == a) then
+         set extension = "ano"
+     else 
+         set extension = "wrp"
+     endif
+  endif
+
+  if ($database == g) then
+  else
+     set options = "$options -$database"
+  endif
+
+  if ($files == f && $mode == interactive && $wheretosearch == local) then 
+     set options = "$options -f"
+  endif
+
+
+if (${?XYLEM_RHOST} && $database != G && $database != P && $runlocal != y) then 
+#####################################################################
+#  Run FETCH remotely, if XYLEM_RHOST and XYLEM_USERID are set
+####################################################################
+   if ($XYLEM_RHOST == clever) then
+      mkdir FETCHDIR.$jobid
+      cd FETCHDIR.$jobid
+      # Retrieve the specified entries using nclever
+      echo "database nucleotide" > INFILE.$jobid
+      echo "report GenBank" >> INFILE.$jobid
+      foreach name (`cat NAMEFILE.$jobid`)
+        echo accession $name >> INFILE.$jobid
+        end
+      echo union all >>  INFILE.$jobid
+      echo save OUTFILE.$jobid  all >>  INFILE.$jobid
+      echo quit >>  INFILE.$jobid
+      nclever -b  < INFILE.$jobid
+      $RM INFILE.$jobid
+
+      # Create a XYLEM dataset
+      if ($database == g) then
+         if (outfile != "") then mv OUTFILE.$jobid ../$outfile
+         else
+           $NICE splitdb OUTFILE.$jobid OUTFILE.ano OUTFILE.wrp OUTFILE.ind
+           getloc -f OUTFILE.ind OUTFILE.ano OUTFILE.wrp OUTFILE.ind
+           
+      endif
+
+      cd ..
+   else
+     # Remote hosts can be chosen by having a script called choosehost
+     # in your bin directory. choosehost returns the name of a remote
+     # host. While one possible implementation of choosehost is provided
+     #  with XYLEM, choosehost can be tailored to your particular
+     # configuration of servers.
+     if ($XYLEM_RHOST == choosehost) set XYLEM_RHOST = `choosehost`
+     set tempname = "TMP_$jobid"
+     set remotefn = $XYLEM_USERID@$XYLEM_RHOST\:$tempname
+     if ($mode == interactive) echo Copying namefile to $remotefn.nam ...
+     rcp NAMEFILE.$jobid $remotefn.nam
+     if ($mode == interactive) echo Running FETCH remotely on $XYLEM_RHOST as user $XYLEM_USERID ...
+     rsh $XYLEM_RHOST -l $XYLEM_USERID fetch -L $options $tempname.nam $tempname.out
+     if ($outfile == "") set outfile = $tempname.out
+     if ($mode == interactive) echo Copying $remotefn.out to $outfile ...
+     rcp $remotefn.out $outfile
+
+     # This allows a single name/acc to be specified in 1) without specifying
+     # an outfile name. -f will not work if you use 2) Namefile.
+     if ($files == f) then
+        if ($name != "") then 
+          mv $outfile $name.$extension
+        endif
+     endif
+
+     if ($mode == interactive) echo Removing temporary files...
+     rsh $XYLEM_RHOST -l $XYLEM_USERID $RM $tempname.nam $tempname.out
+     $RM *.$jobid
+   endif
+else 
+#####################################################################
+#  Extract entries from local database
+####################################################################
+switch ($database)
+  #---------------------------  GenBank  ---------------------
+  case g:
+    #find the accession numbers
+    if ($mode == interactive) echo "Searching index file $GB/gbacc.idx ..."
+
+    # To search for only one name, use egrep, otherwise use fgrep
+    if (`wc -l <NAMEFILE.$jobid` == 1) then 
+       nice egrep -i -e `cat NAMEFILE.$jobid` $GB/gbacc.idx > PRELIMINARY.$jobid
+    else
+       nice fgrep -i -f NAMEFILE.$jobid $GB/gbacc.idx > PRELIMINARY.$jobid
+    endif
+
+    # .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+    # Do a more careful screening of the preliminary hits, making sure
+    # that each hit appeared as a separate token, and not as part of
+    # a longer token.
+    foreach token (`cat NAMEFILE.$jobid`)
+       switch ($XYLEM_PLATFORM)              
+         case "sun":
+           grep  -w -i $token PRELIMINARY.$jobid >> FOUND.$jobid
+           breaksw
+         case "HP":
+           #HP Unix doesn't have grep -w, so we have to be tricky to get
+           # egrep to search for tokens. 
+           # Interestingly, '[^ ]'$token'[ $]' doesn't work, but the 
+           # following does:
+#           echo ' '$token'[ $]' >REXP.$jobid
+#           echo '^'$token'[ $]' >>REXP.$jobid
+# This has been revised to accommodate the new tab-delimited
+# format as of GenBank 119.0, but I no longer have access
+# to an HP system, so I can't test it.
+           echo '	'$token'[	$]' >REXP.$jobid
+           echo '^'$token'[	$]' >>REXP.$jobid
+           egrep  -i -f REXP.$jobid  PRELIMINARY.$jobid >> FOUND.$jobid
+           breaksw
+         default:
+           grep  -w -i $token PRELIMINARY.$jobid >> FOUND.$jobid
+           breaksw
+       endsw
+      end
+
+    # .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+    # Retrieve sequences, if any were found.
+    if (-z FOUND.$jobid) then
+       if ($mode == interactive) echo "No matches found in $GB/gbacc.idx"
+    else
+      # If final output goes to a single file,
+      # make a temporary directory to store retrieved entries
+      if ($files == f) then 
+      else
+        set tempdir = "FETCHDIR.$jobid"
+        mkdir $tempdir
+        mv FOUND.$jobid $tempdir
+        cd $tempdir
+        endif
+
+      #retrieve the entries from each division using getloc
+      set divisions =(bct inv mam phg pln pri rod syn una vrt vrl est pat sts gss htg)
+      foreach div ($divisions)
+        egrep -i -e "	$div	" FOUND.$jobid > TMP.$jobid
+        if (-z TMP.$jobid) then
+        else
+          if ($mode == interactive) echo "Retrieving entries from $GB/gb$div ..."
+          #cut out the second tab-separated field, containing
+          # the names of hits, sort it, and write to name.$jobid
+
+#          tr -s " " " " < TMP.$jobid |cut -f2 -d" " |sort| uniq > name.$jobid
+          cut -f2 -d"	" TMP.$jobid |sort| uniq > name.$jobid
+          # Most GenBank divisions are present in one file eg. gbinv.
+          # Large GenBank divisions such as EST and Primate are split
+          # eg. gbest1, gbest2, gbest3...
+          # Regardless of how many divisions there are, DIVSET creates
+          # the list of all files  for that division.
+          if (-e $GB/gb$div.ind) then
+             set DIVSET = $div
+          else
+             set index = 1
+             set DIVSET = ()
+             while (-e $GB/gb$div$index.ind)
+                   set DIVSET = ($DIVSET $div$index)
+                   @ index++
+                   end # while
+          endif
+
+          # Do a more careful screening of the preliminary hits, making sure
+          # that each hit appeared as a separate token, and not as part of
+          # a longer token. 
+          foreach token (`cat name.$jobid`)
+             switch ($XYLEM_PLATFORM)              
+               case "HP":
+                  #HP Unix doesn't have grep -w, so we have to be tricky to get
+                  # egrep to search for tokens. 
+                  # Interestingly, '[^ ]'$token'[ $]' doesn't work, but the 
+                  # following does:
+                  echo ' '$token'[ $]' >REXP.$jobid
+                  echo '^'$token'[ $]' >>REXP.$jobid
+                  foreach base ($DIVSET)
+                     nice egrep  -i -f REXP.$jobid  $GB/gb$base.ind >> $base.$jobid
+                     end
+                  breaksw
+               default:
+                  foreach base ($DIVSET)
+                      nice grep  -w -i $token $GB/gb$base.ind >> $base.$jobid
+                      end
+                  breaksw
+               endsw
+             end #foreach
+
+          foreach base ($DIVSET)          
+            switch ($whattoget)
+              case b:
+                 set extension = "gen"
+                 nice getloc $options -f $base.$jobid $GB/gb$base.ano\
+                        $GB/gb$base.wrp $GB/gb$base.ind 
+                 breaksw
+              case a:
+                 set extension = "ano"
+                 nice getloc $options  -f $base.$jobid $GB/gb$base.ano\
+                        $GB/gb$base.ind 
+                 breaksw
+              case s:
+                 set extension = "wrp"
+                 nice getloc $options -f $base.$jobid $GB/gb$base.wrp \
+                        $GB/gb$base.ind 
+                 breaksw
+              endsw
+           end
+        endif 
+      end #foreach
+
+    # .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+      #If final output goes to a single file,
+      #write the entries to a file in the next highest directory, and 
+      #get rid of the temporary directory
+      if ($files == f) then
+      else
+        cat *.$extension > ../$outfile
+        cd ..
+        $RM -r $tempdir
+      endif
+    endif
+  breaksw
+  #--------------------------- User-defined GenBank  ---------------------
+  case G:
+      # If dataset is not split, split it 
+      set base = $dbname:r
+      set dbextension = $dbname:e
+      if ($dbextension == "gen") then #GenBank
+         set needtosplit = true
+         set base = TMP$jobid
+         $NICE splitdb $dbname $base.ano $base.wrp $base.ind
+      else
+          set needtosplit = false
+      endif
+
+    #find the accession numbers
+    if ($mode == interactive) echo "Searching index file $base.ind ..."
+
+    # To search for only one name, use egrep, otherwise use fgrep
+    if (`wc -l <NAMEFILE.$jobid` == 1) then 
+       nice egrep -i -e `cat NAMEFILE.$jobid` $base.ind > PRELIMINARY.$jobid
+    else
+       nice fgrep -i -f NAMEFILE.$jobid $base.ind > PRELIMINARY.$jobid
+    endif
+
+    # Do a more careful screening of the preliminary hits, making sure
+    # that each hit appeared as a separate token, and not as part of
+    # a longer token. 
+    foreach token (`cat NAMEFILE.$jobid`)
+       switch ($XYLEM_PLATFORM)              
+         case "sun":
+           grep  -w -i $token PRELIMINARY.$jobid >> FOUND.$jobid
+           breaksw
+         case "HP":
+           #HP Unix doesn't have grep -w, so we have to be tricky to get
+           # egrep to search for tokens. 
+           # Interestingly, '[^ ]'$token'[ $]' doesn't work, but the 
+           # following does:
+           echo ' '$token'[ $]' >REXP.$jobid
+           echo '^'$token'[ $]' >>REXP.$jobid
+           egrep  -i -f REXP.$jobid  PRELIMINARY.$jobid >> FOUND.$jobid
+           breaksw
+         default:
+           grep  -w -i $token PRELIMINARY.$jobid >> FOUND.$jobid
+           breaksw
+       endsw
+       end
+
+    #force base name to fully qualified path
+    # There are lots of things that SHOULD work here, but csh
+    # is highly inconsistent. For example, you need to use
+    # "." in the if statement, and $cwd in the set statement.
+    # Below seems to work.
+    if (`dirname $base` == ".") then
+       set base = $cwd/$base
+    endif 
+
+    # Retrieve sequences, if any were found.
+    if (-z FOUND.$jobid) then
+       if ($mode == interactive) echo "No matches found in $base.ind"
+    else
+      # If final output goes to a single file,
+      # make a temporary directory to store retrieved entries
+      if ($files == f) then 
+      else
+        set tempdir = "FETCHDIR.$jobid"
+        mkdir $tempdir
+        mv FOUND.$jobid $tempdir
+        cd $tempdir
+        endif
+
+      #retrieve the entries using getloc
+        if (-z FOUND.$jobid) then
+        else
+          if ($mode == interactive) echo "Retrieving entries from $dbname ..."
+          switch ($whattoget)
+            case b:
+                 set extension = "gen"
+                 nice getloc $options -f FOUND.$jobid $base.ano $base.wrp \
+                        $base.ind 
+               breaksw
+            case a:
+                 set extension = "ano"
+                 nice getloc $options  -f FOUND.$jobid $base.ano \
+                        $base.ind 
+              breaksw
+            case s:
+                 set extension = "wrp"
+                 nice getloc $options -f FOUND.$jobid $base.wrp \
+                        $base.ind 
+              breaksw
+            endsw
+        endif 
+
+      #If final output goes to a single file,
+      #write the entries to a file in the next highest directory, and 
+      #get rid of the temporary directory
+      if ($files == f) then
+      else
+        cat *.$extension > ../$outfile
+        cd ..
+        $RM -r $tempdir
+      endif
+    endif
+    if ($needtosplit == true) $RM $base.ano $base.wrp $base.ind
+  breaksw
+  #---------------------------- PIR/NBRF --------------------
+  case p:
+    # If final output goes to a single file,
+    # make a temporary directory to store retrieved entries
+    if ($files == f) then 
+    else
+      set tempdir = "FETCHDIR.$jobid"
+      mkdir $tempdir
+      mv NAMEFILE.$jobid $tempdir
+      cd $tempdir
+      endif
+
+    #retrieve entries
+    set divisions = (pir1 pir2 pir3 pir4)
+    set success = "f"
+    foreach div ($divisions)
+      #find the accession numbers
+      if ($mode == interactive) echo "Searching index file $PIR/$div.ind ..."
+      nice fgrep -i -f NAMEFILE.$jobid $PIR/$div.ind > PRELIMINARY.$jobid
+    
+      # Do a more careful screening of the preliminary hits, making sure
+      # that each hit appeared as a separate token, and not as part of
+      # a longer token. This time, it's not as simple as for GenBank.
+      # The for loop writes to TRUE.$jobid every line in PRELIMINARY.
+      # fetch that contains one of the tokens in NAMEFILE.$jobid.
+      # However, since grep can only search for one token at a time,
+      # iterative use of grep makes the lines in TRUE.$jobid appear out
+      # of order, w.r.t. to the .ind file. For efficiency, we want 
+      # FOUND.$jobid to list the lines in the order they appear in the
+      # .ind file. Therefore, we run fgrep through PRELIMINARY.$jobid, 
+      # searching for all lines appearing in TRUE.$jobid. 
+      foreach token (`cat NAMEFILE.$jobid`)
+       switch ($XYLEM_PLATFORM)              
+         case "sun":
+           grep  -w -i $token PRELIMINARY.$jobid >> TRUE.$jobid
+           breaksw
+         case "HP":
+           #HP Unix doesn't have grep -w, so we have to be tricky to get
+           # egrep to search for tokens. 
+           # Interestingly, '[^ ]'$token'[ $]' doesn't work, but the 
+           # following does:
+           echo ' '$token'[ $]' >REXP.$jobid
+           echo '^'$token'[ $]' >>REXP.$jobid
+           egrep  -i -f REXP.$jobid  PRELIMINARY.$jobid >> TRUE.$jobid
+           breaksw
+         default:
+           grep  -w -i $token PRELIMINARY.$jobid >> TRUE.$jobid
+           breaksw
+         endsw
+         end
+      fgrep -f TRUE.$jobid PRELIMINARY.$jobid > FOUND.$jobid
+      $RM TRUE.$jobid
+
+    # Retrieve sequences, if any were found.
+      #retrieve the entries using getloc
+      if (-z FOUND.$jobid) then
+         if ($mode == interactive) echo "No matches found in $PIR/$div.ind"
+      else
+        set success = "t"
+        if ($mode == interactive) echo "Retrieving entries from $PIR/$div ..."
+        #note: NBRF does _NOT_ have the PIR entries sorted! Entries are listed
+        #in the index in the order in which they appear in the database.
+        switch ($whattoget)
+          case b:
+               set extension = "pir"
+               nice getloc $options -f FOUND.$jobid $PIR/$div.ano $PIR/$div.wrp \
+                     $PIR/$div.ind 
+             breaksw
+          case a:
+               set extension = "ano"
+               nice getloc $options -f FOUND.$jobid $PIR/$div.ano \
+                      $PIR/$div.ind 
+            breaksw
+          case s:
+               set extension = "wrp"
+               nice getloc $options -f FOUND.$jobid $PIR/$div.wrp \
+                      $PIR/$div.ind 
+            breaksw
+          endsw
+      endif 
+    end
+
+    #If final output goes to a single file,
+    #write the entries to a file in the next highest directory, and 
+    #get rid of the temporary directory
+    if ($files == f) then
+    else
+      if ($success == t) then
+        cat *.$extension  > ../$outfile
+      else
+        endif
+      cd ..
+      $RM -r $tempdir
+      exit
+      endif
+    breaksw
+
+  #----------------------------User-defined PIR/NBRF --------------------
+  case P:
+    # If dataset is not split, split it 
+      set base = $dbname:r
+      set dbextension = $dbname:e
+      if ($dbextension == "pir") then #PIR
+         set needtosplit = true
+         set base = TMP$jobid
+         $NICE splitdb -p $dbname $base.ano $base.wrp $base.ind
+      else
+          set needtosplit = false
+      endif
+
+    #force base name to fully qualified path
+    # There are lots of things that SHOULD work here, but csh
+    # is highly inconsistent. For example, you need to use
+    # "." in the if statement, and $cwd in the set statement.
+    # Below seems to work.
+    if (`dirname $base` == ".") then
+       set base = $cwd/$base
+    endif 
+
+    # If final output goes to a single file,
+    # make a temporary directory to store retrieved entries
+    if ($files == f) then 
+    else
+      set tempdir = "FETCHDIR.$jobid"
+      mkdir $tempdir
+      mv NAMEFILE.$jobid $tempdir
+      cd $tempdir
+      endif
+
+    #retrieve entries
+    set success = "f"
+      #find the accession numbers
+      if ($mode == interactive) echo "Searching index file $base.ind ..."
+      nice fgrep -i -f NAMEFILE.$jobid $base.ind > PRELIMINARY.$jobid
+    
+      # Do a more careful screening of the preliminary hits, making sure
+      # that each hit appeared as a separate token, and not as part of
+      # a longer token. This time, it's not as simple as for GenBank.
+      # The for loop writes to TRUE.$jobid every line in PRELIMINARY.
+      # fetch that contains one of the tokens in NAMEFILE.$jobid.
+      # However, since grep can only search for one token at a time,
+      # iterative use of grep makes the lines in TRUE.$jobid appear out
+      # of order, w.r.t. to the .ind file. For efficiency, we want 
+      # FOUND.$jobid to list the lines in the order they appear in the
+      # .ind file. Therefore, we run fgrep through PRELIMINARY.$jobid, 
+      # searching for all lines appearing in TRUE.$jobid. 
+      foreach token (`cat NAMEFILE.$jobid`)
+       switch ($XYLEM_PLATFORM)              
+         case "sun":
+           grep  -w -i $token PRELIMINARY.$jobid >> TRUE.$jobid
+           breaksw
+         case "HP":
+           #HP Unix doesn't have grep -w, so we have to be tricky to get
+           # egrep to search for tokens. 
+           # Interestingly, '[^ ]'$token'[ $]' doesn't work, but the 
+           # following does:
+           echo ' '$token'[ $]' >REXP.$jobid
+           echo '^'$token'[ $]' >>REXP.$jobid
+           egrep  -i -f REXP.$jobid  PRELIMINARY.$jobid >> TRUE.$jobid
+           breaksw
+         default:
+           grep  -w -i $token PRELIMINARY.$jobid >> TRUE.$jobid
+           breaksw
+         endsw
+        end
+      fgrep -f TRUE.$jobid PRELIMINARY.$jobid > FOUND.$jobid
+      $RM TRUE.$jobid
+
+    # Retrieve sequences, if any were found.
+      #retrieve the entries using getloc
+      if (-z FOUND.$jobid) then
+         if ($mode == interactive) echo "No matches found in $base.ind"
+      else
+        set success = "t"
+        if ($mode == interactive) echo "Retrieving entries from $dbname ..."
+        #note: NBRF does _NOT_ have the PIR entries sorted! Entries are listed
+        #in the index in the order in which they appear in the database.
+        switch ($whattoget)
+          case b:
+               set extension = "pir"
+               nice getloc $options -f FOUND.$jobid $base.ano $base.wrp \
+                      $base.ind 
+             breaksw
+          case a:
+               set extension = "ano"
+               nice getloc $options -f FOUND.$jobid $base.ano \
+                      $base.ind 
+            breaksw
+          case s:
+               set extension = "wrp"
+               nice getloc $options -f FOUND.$jobid $base.wrp \
+                      $base.ind 
+            breaksw
+          endsw
+      endif 
+
+    #If final output goes to a single file,
+    #write the entries to a file in the next highest directory, and 
+    #get rid of the temporary directory
+    if ($files == f) then
+    else
+      if ($success == t) then
+        cat *.$extension  > ../$outfile
+      else
+        endif
+      cd ..
+      $RM -r $tempdir
+      exit
+      endif
+    if ($needtosplit == true) $RM $base.ano $base.wrp $base.ind
+    breaksw
+
+  endsw
+
+#####################################################################
+#  Clean up.
+####################################################################
+$RM *.$jobid
+endif

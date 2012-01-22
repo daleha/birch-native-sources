@@ -1,0 +1,13 @@
+The files in this directory are taken from the
+NCBI Taxonomy page on Genetic Codes:
+
+http://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi?mode=c
+
+The numbers at the beginning of filenames correspond
+to the BLAST trans_table numbers.
+
+The *.raw files were directly copied from this
+page. The .gc files contain genetic code information
+extracted using process.csh, included in this
+directory.
+

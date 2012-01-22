@@ -1,0 +1,161 @@
+                            XYLEM RELEASE NOTES
+
+Current XYLEM Version: 1.8.7		May 13, 2002
+
+13 May 02 fil.py - Python script to create .fil files for use with fasta
+10 May 02 a GDE menu item for splitdb has been added.
+29 Jan 02 Updates have been made to gbupdate and pirupdate to
+          conform to current directory organization at host sites.
+25 Jan 02 GETLOC: Removed support for LiMB, Vecbase
+          PIR files (-p) will be written with the .pir extension
+          Previously, the .gen extension was used.
+---------------------------------------------------------------------------
+XYLEM Version: 1.8.6           September 2, 2001
+
+1. GenBank has changed the locus name field to 16 characters, from
+   18 characters as previously announced. splitdb has been changed to
+   write he LOCUS name field of the .ind file using 16 characters.
+   
+---------------------------------------------------------------------------
+XYLEM Version: 1.8.5           August 16, 2001
+
+1. As of GenBank Release 126.0, the space allocated to LOCUS names
+   is 18 characters, increased from a previous value of 12. GETOB
+   and SPLITDB have been modified so that now both old and new
+   formats can be read. In .ind files, the NAME filed will now
+   occupy 18 characters.
+   
+---------------------------------------------------------------------------
+XYLEM Version: 1.8.4           June 5, 2000
+
+1. Fixed bug in REFORM. Previously, any sequences over MAXLEN
+   in length would overflow the ALIGNMENT array. This isn't
+   a problem if you directly compile the Pascal code, because
+   the program would just crash, and the error would have been
+   discovered.  Because I was usually translating to C, C tolerates
+   this kind of nonsense without a complaint. The bug has been
+   fixed.
+
+---------------------------------------------------------------------------
+XYLEM Version: 1.8.3           June 5, 1998
+
+1. SPLITDB now has the -t option, which writes taxonomic information from
+   the GenBank ORGANISM line, to the end of each line in the index file.
+2. FETCH and FINDKEY have been modified to automatically detect whether
+   a GenBank division is in one file or split among several files. For
+   example, the EST division is split up among gbest1, gbest2, gbest3...
+3. FETCH and FINDKEY now run grep, egrep and fgrep at lower priority,
+   using the 'nice' command. This improves overall system performance.
+
+---------------------------------------------------------------------------
+Version: 1.8.2           March 13, 1997
+
+1. FETCH and FINDKEY have been updated to work with HTG and GSS
+   divisions of GenBank.
+
+---------------------------------------------------------------------------
+Version: 1.8.1           March 19, 1996
+
+1. Remote execution of FETCH and FINDKEY can now be done on
+multiple servers, chosen in rotation, from job to job.
+2. FINDKEY and FETCH now allow an arbitrary number of files in the
+GenBank EST division (gbest1, gbest2, gbest3...)
+3. Procedure RGB has been modified to be more forgiving of
+   errors in GenBank entries that might otherwise cause
+   GETOB to loop infinitely. Now, if the first column of
+   a line doesn't match a legal field identifier (eg. L for 
+   LOCUS) it will simply keep reading until if finds one.
+   This fix is primarily aimed at GDE, which really messes up
+   a number of fields, but may help with GenBank entries that
+   have been filtered through other programs.
+4. MAXSEQ for REFORM has been increased from 50 to 200, allowing
+   200 sequences with a maximum length of 2000, to be printed.
+
+---------------------------------------------------------------------------
+Version: 1.8           February 13, 1996
+
+
+1. FEATURES has been upgraded to work with 8-character accession numbers.
+
+---------------------------------------------------------------------------
+Version: 1.7           January 27, 1996
+
+1. The Expressed Sequence Tag division of GenBank is now distributed
+in two files, gbest1.seq and gbest2.seq. fetch.csh, findkey.csh and gbupdate 
+have been modified to be able to work with the EST division so that
+this change is transparent to the user.
+
+2. FINDKEY and FETCH now call cpu-intensive programs (eg. SPLITDB,
+GETLOC) using 'nice', which decreases the impact of these programs
+on system performance.
+
+3. GETOB now recognizes GenBank NID lines.
+
+---------------------------------------------------------------------------
+Version: 1.6           October 3, 1995
+
+1. As of February 1996, GenBank and EMBL will begin assigning 8 character
+accession numbers to new entries. Old entries will retain their 6 
+character accession numbers. SPLITDB, FINDKEY, and UDS have
+been updated to comply with this change. All other programs should be unaffected.
+
+2. uds.csh has been substantially revised. Previous versions would sometimes
+lose entries.
+
+3. The file xylem/GDE/expfile.template has been updated with more
+accurate instructions for retrieval of sequences by expressions
+using the FEATURES program.
+
+4. Documentation for FETCH, FINDKEY, GETOB, and SPLITDB has been 
+updated.
+
+5. Routines that automatically download GenBank and PIR by FTP
+(gbupdate and pirupdate) have been made a bit more reliable.
+
+6. GETLOC has been updated to be able to use unsorted namefiles.
+
+7. SPLITDB -c will compress leading blanks when creating .ano files.
+This saves ~ 9% of the space normally taken up by an annotation file.
+GETLOC and GETOB automatically uncompress these blanks, if they
+have been compressed. However, the .fnd file from FINDKEY will
+retrieve lines without uncompressing the blanks. The output is
+a little less elegant, but accomplishes the same thing.
+
+---------------------------------------------------------------------------
+Version: 1.5           October 29, 1994
+
+1. All XYLEM programs are now available as both the original Pascal
+source code as well as C code generated by p2c. The C code has been
+tested with the following compilers:
+
+compiler   platform
+-------------------
+  cc       Sun
+  cc       HP/UX
+  gcc      Sun
+  gcc      AIX
+
+2. FETCH and FINDKEY can now access the STS division of GenBank, which
+was added with GenBank Release 85.0 The .GDEmenus entry for FINDKEY has
+been changed accordingly.
+
+3. A bug has been fixed in FETCH that in some case would cause FETCH
+to fail when retrieving entries from VecBase.
+
+4. The following modifications have been made to GETOB:
+     13 Oct 94 Initialize NUMN. Failure to initialize causes n's to be written
+               to expression file for non-translated features.               
+     13 Oct 94 MAXSEQ increased to 750,000
+     11 Sep 94 Added ability to handle single base_position as a location. 
+      9 Sep 94 If codon_start=2,3, write n's to expression file, as is
+               already done for outfile.
+     13 Apr 94 Literature citation in .msg file
+      2 Jan 94 add NCBI_GI field
+     25 Oct 93 Fixed bug in COMPLEMENT. Only complemented 3' most location
+               in an expression of the form complement(join(L1,L2..Ln))
+
+5. PROT2NUC - new program, performs reverse translation of protein to DNA.
+
+
+
+

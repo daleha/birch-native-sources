@@ -1,0 +1,15 @@
+This directory is for generating c source code from SUN Pascal code.
+
+runp2c is a csh script for running p2c using the parameter settings taken
+from ./loc.p2crc.  All .p files in the current directory are translated
+and written to .c files in the destination directory. The variable
+DEST in runp2c controls the destination.
+
+
+NOTE for p2c users
+------------------
+p2c version 1.2 was used.  If you have p2c installed, these programs
+require one modification. In the p2c/src directory, replace the procedure
+makeexpr_hat in the file expr.c with the modified version in the file
+makeexpr_hat.fix.c and recompile p2c. This fixes a 'bug' in the original p2c.
+See comments in makeexpr_hat.c for a full explanation.

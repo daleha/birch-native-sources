@@ -1,0 +1,30 @@
+DBSTAT       Version  2/ 1/90
+
+
+Nonpolar side chains:
+Gly(G)          45 (0.091)
+Ala(A)          48 (0.098)
+Val(V)          41 (0.083)
+Leu(L)          34 (0.069)
+Ile(I)          36 (0.073)
+Met(M)           4 (0.008)
+Phe(F)          26 (0.053)
+Pro(P)          20 (0.041)
+Neutral polar side chains:
+Ser(S)          29 (0.059)
+Thr(T)          35 (0.071)
+Cys(C)           4 (0.008)
+Asn(N)          23 (0.047)
+Glu(Q)           5 (0.010)
+Tyr(Y)          21 (0.043)
+Trp(W)           3 (0.006)
+Charged polar side chains:
+Asp(D)          28 (0.057)
+Glu(E)          31 (0.063)
+His(H)          11 (0.022)
+Lys(K)          42 (0.085)
+Arg(R)           6 (0.012)
+Other:
+Asx(B)           0 (0.000)
+Arg(Z)           0 (0.000)
+Unk(X)           0 (0.000)

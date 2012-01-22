@@ -1,0 +1,28 @@
+# Commands to be executed at login time
+
+# include bin directory in path
+if (-e /usr/ucb/hostname) then
+   set HOSTNAME = `/usr/ucb/hostname`
+else  
+   set HOSTNAME = `hostname`
+endif
+if ($HOSTNAME == regulus) then
+  set path = (~psgendb/bin/AIXbin $path)
+else
+  set path = (~psgendb/bin ~psgendb/pkg/staden/solaris-bin $path /usr/ucb)
+endif
+
+# Set Manual path
+setenv MANPATH $MANPATH\:$DB
+
+# Environment variables for Staden
+setenv STADENROOT $db/pkg/staden
+source $STADENROOT/staden.login
+
+#-------------------------------------------------------------
+# Generate statistics on users
+# record logins
+echo `whoami` `date` >> ~psgendb/admin/logins.log
+
+# Print login messages
+cat ~psgendb/admin/Login_Message
