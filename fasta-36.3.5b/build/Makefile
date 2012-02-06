@@ -6,7 +6,7 @@ ifndef config
 endif
 export config
 
-PROJECTS := fasta36 fasty36 scaleswts fastf36 fasts36 fastm36 tfastx36 tfasty36
+PROJECTS := fasta36 fasty36 scaleswts fastf36 fasts36 fastm36 tfastx36 tfasty36 tfastf36 tfastm36
 
 .PHONY: all clean help $(PROJECTS)
 
@@ -44,6 +44,14 @@ tfasty36:
 	@echo "==== Building tfasty36 ($(config)) ===="
 	@${MAKE} --no-print-directory -C . -f tfasty36.make
 
+tfastf36: 
+	@echo "==== Building tfastf36 ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f tfastf36.make
+
+tfastm36: scaleswts
+	@echo "==== Building tfastm36 ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f tfastm36.make
+
 clean:
 	@${MAKE} --no-print-directory -C . -f fasta36.make clean
 	@${MAKE} --no-print-directory -C . -f fasty36.make clean
@@ -53,6 +61,8 @@ clean:
 	@${MAKE} --no-print-directory -C . -f fastm36.make clean
 	@${MAKE} --no-print-directory -C . -f tfastx36.make clean
 	@${MAKE} --no-print-directory -C . -f tfasty36.make clean
+	@${MAKE} --no-print-directory -C . -f tfastf36.make clean
+	@${MAKE} --no-print-directory -C . -f tfastm36.make clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -72,5 +82,7 @@ help:
 	@echo "   fastm36"
 	@echo "   tfastx36"
 	@echo "   tfasty36"
+	@echo "   tfastf36"
+	@echo "   tfastm36"
 	@echo ""
 	@echo "For more information, see http://industriousone.com/premake/quick-start"
