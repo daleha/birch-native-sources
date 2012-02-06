@@ -6,7 +6,7 @@ ifndef config
 endif
 export config
 
-PROJECTS := fasta36 fastax36
+PROJECTS := fasta36 fasty36 scaleswts fastf36 fasts36 fastm36 tfastx36 tfasty36
 
 .PHONY: all clean help $(PROJECTS)
 
@@ -16,13 +16,43 @@ fasta36:
 	@echo "==== Building fasta36 ($(config)) ===="
 	@${MAKE} --no-print-directory -C . -f fasta36.make
 
-fastax36: 
-	@echo "==== Building fastax36 ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f fastax36.make
+fasty36: 
+	@echo "==== Building fasty36 ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f fasty36.make
+
+scaleswts: 
+	@echo "==== Building scaleswts ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f scaleswts.make
+
+fastf36: scaleswts
+	@echo "==== Building fastf36 ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f fastf36.make
+
+fasts36: scaleswts
+	@echo "==== Building fasts36 ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f fasts36.make
+
+fastm36: scaleswts
+	@echo "==== Building fastm36 ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f fastm36.make
+
+tfastx36: 
+	@echo "==== Building tfastx36 ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f tfastx36.make
+
+tfasty36: 
+	@echo "==== Building tfasty36 ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f tfasty36.make
 
 clean:
 	@${MAKE} --no-print-directory -C . -f fasta36.make clean
-	@${MAKE} --no-print-directory -C . -f fastax36.make clean
+	@${MAKE} --no-print-directory -C . -f fasty36.make clean
+	@${MAKE} --no-print-directory -C . -f scaleswts.make clean
+	@${MAKE} --no-print-directory -C . -f fastf36.make clean
+	@${MAKE} --no-print-directory -C . -f fasts36.make clean
+	@${MAKE} --no-print-directory -C . -f fastm36.make clean
+	@${MAKE} --no-print-directory -C . -f tfastx36.make clean
+	@${MAKE} --no-print-directory -C . -f tfasty36.make clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -35,6 +65,12 @@ help:
 	@echo "   all (default)"
 	@echo "   clean"
 	@echo "   fasta36"
-	@echo "   fastax36"
+	@echo "   fasty36"
+	@echo "   scaleswts"
+	@echo "   fastf36"
+	@echo "   fasts36"
+	@echo "   fastm36"
+	@echo "   tfastx36"
+	@echo "   tfasty36"
 	@echo ""
 	@echo "For more information, see http://industriousone.com/premake/quick-start"
