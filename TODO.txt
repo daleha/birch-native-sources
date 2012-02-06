@@ -6,3 +6,23 @@ Need sources for:
 -mapmaker3 
 -primer3
 -weblogo 
+
+Need further testing of:
+
+-phylip
+-FASTA
+
+Not much to do:
+-p2c
+-xylem
+-fsap
+-mrbayes
+-weighbor
+
+Probably lots of work:
+
+-tcoffee 
+
+Need to test builds of:
+
+-emboss (uses automake?)
