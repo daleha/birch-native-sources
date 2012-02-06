@@ -49,7 +49,7 @@ INCDIR=PROJDIR.."include/"
 		}
 
 		location "build"
-		targetdir "bin" -- and the bins into bin
+		targetdir "bin_pre" -- and the bins into bin
 
 		--dofile "./phylip4_lib.lua"
 
@@ -179,6 +179,64 @@ project "fasta36"
 		}
 
 	 
+project "fastx36" 
+       language    "C"
+       kind        "ConsoleApp"
+
+       files
+       {
+
+               SRCDIR.."re_getlib.c"
+               ,SRCDIR.."htime.c"
+               ,SRCDIR.."apam.c"
+               ,SRCDIR.."initfa.c"
+               ,SRCDIR.."doinit.c"
+               ,SRCDIR.."scaleswn.c" -- scalese DLOCAL_SCORE
+               ,SRCDIR.."karlin.c"
+               ,SRCDIR.."dropfx.c"
+               ,SRCDIR.."c_dispn.c"
+               ,SRCDIR.."lib_sel.c"
+               ,SRCDIR.."mrandom.c"
+               ,SRCDIR.."url_subs.c"
+               ,SRCDIR.."pssm_asn_subs.c"
+               ,SRCDIR.."faatran.c"
+
+       }
+
+       defines
+       {
+               "FASTX"
+               ,"LOCAL_SCORE"
+               --,"LALIGN"
+               --,"LCAL_CONS"
+       }
+
+
+       configuration "linux"
+               files
+               {
+
+                       SRCDIR.."comp_lib8.c"
+                       ,SRCDIR.."compacc2.c"
+                       ,SRCDIR.."mshowbest.c"
+                       ,SRCDIR.."build_ares.c"
+                       ,SRCDIR.."mshowalign2.c"
+                       ,SRCDIR.."nmgetlib.c"
+                       ,SRCDIR.."mmgetaa.c"
+                       ,SRCDIR.."ncbl2_mlib.c"
+               }
+
+               defines
+               {
+                       "COMP_MLIB"
+               }
+
+        
+
+
+
+
+ 
 
  
 
@@ -462,6 +520,71 @@ project "tfastx36"
 			"COMP_MLIB"
 		}
 
+	
+project "tfasts36" 
+	language    "C"
+	kind        "ConsoleApp"
+
+	files
+	{
+
+		SRCDIR.."re_getlib.c"
+		,SRCDIR.."htime.c"
+		,SRCDIR.."apam.c"
+		,SRCDIR.."initfa.c"
+		,SRCDIR.."doinit.c"
+		,SRCDIR.."karlin.c"
+		,SRCDIR.."dropfs2.c"
+		,SRCDIR.."last_tat.c"
+		,SRCDIR.."tatstats.c"
+		,SRCDIR.."c_dispn.c"
+		,SRCDIR.."lib_sel.c"
+		,SRCDIR.."mmgetaa.c"
+		,SRCDIR.."cal_consf.c"
+		,SRCDIR.."mrandom.c"
+		,SRCDIR.."url_subs.c"
+		,SRCDIR.."faatran.c"
+		,SRCDIR.."pssm_asn_subs.c"
+
+	}
+	links {"scaleswts" }
+
+	defines
+	{
+		"FASTS"
+		,"TFAST"
+		--,"LALIGN"
+		--,"LCAL_CONS"
+	}
+
+
+	configuration "linux"
+		files
+		{
+
+			SRCDIR.."comp_lib8.c"
+			,SRCDIR.."compacc2.c"
+			,SRCDIR.."mshowbest.c"
+			,SRCDIR.."build_ares.c"
+			,SRCDIR.."mshowalign2.c"
+			,SRCDIR.."nmgetlib.c"
+			,SRCDIR.."mmgetaa.c"
+			,SRCDIR.."ncbl2_mlib.c"
+		}
+
+		defines
+		{
+			"COMP_MLIB"
+		}
+
+--tfasts36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_tfs.o scaleswts.o tatstats_fs.o last_tat.o karlin.o $(DROPTFS_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o faatran.o mrandom.o url_subs.o
+--	$(CC) $(HFLAGS) $(BIN)/tfasts36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_tfs.o $(DROPTFS_O) scaleswts.o tatstats_fs.o last_tat.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o faatran.o mrandom.o url_subs.o $(LIB_M)
+--
+
+
+
+--fasts36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_fs.o scaleswts.o last_tat.o tatstats_fs.o karlin.o $(DROPFS_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o mrandom.o url_subs.o
+--	$(CC) $(HFLAGS) $(BIN)/fasts36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_fs.o $(DROPFS_O) scaleswts.o last_tat.o tatstats_fs.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o mrandom.o url_subs.o $(LIB_M)
 
 
 project "tfasty36" 
@@ -630,6 +753,261 @@ project "tfastm36"
 			"COMP_MLIB"
 		}
 
+project "calcons_sw" 
+	language    "C"
+	kind        "StaticLib"
+
+	files
+	{
+		SRCDIR.."cal_cons.c"
+	}
+	
+	defines { "SSEARCH" }
+
+
+project "ssearch36" 
+	language    "C"
+	kind        "ConsoleApp"
+
+	files
+	{
+
+		SRCDIR.."re_getlib.c"
+		,SRCDIR.."htime.c"
+		,SRCDIR.."apam.c"
+		,SRCDIR.."scaleswn.c"
+		,SRCDIR.."doinit.c"
+		,SRCDIR.."initfa.c"
+		,SRCDIR.."scaleswn.c" -- scalese DLOCAL_SCORE --
+		,SRCDIR.."dropgsw2.c"
+		,SRCDIR.."karlin.c"
+		,SRCDIR.."wm_align.c"
+		,SRCDIR.."c_dispn.c"
+		,SRCDIR.."lib_sel.c"
+		,SRCDIR.."mrandom.c"
+		,SRCDIR.."url_subs.c"
+		,SRCDIR.."pssm_asn_subs.c"
+
+	}
+
+	defines
+	{
+		"SSEARCH"
+		,"LOCAL_SCORE"
+		--,"LALIGN"
+		--,"LCAL_CONS"
+	}
+	
+	links { "calcons_sw" }
+
+	configuration "linux"
+		files
+		{
+
+			SRCDIR.."comp_lib8.c"
+			,SRCDIR.."compacc2.c"
+			,SRCDIR.."mshowbest.c"
+			,SRCDIR.."build_ares.c"
+			,SRCDIR.."mshowalign2.c"
+			,SRCDIR.."nmgetlib.c"
+			,SRCDIR.."mmgetaa.c"
+			,SRCDIR.."ncbl2_mlib.c"
+		}
+
+		defines
+		{
+			"COMP_MLIB"
+		}
+ 	 
+project "glsearch36" 
+	language    "C"
+	kind        "ConsoleApp"
+
+	files
+	{
+
+		SRCDIR.."re_getlib.c"
+		,SRCDIR.."htime.c"
+		,SRCDIR.."apam.c"
+		,SRCDIR.."scaleswn.c"
+		,SRCDIR.."doinit.c"
+		,SRCDIR.."initfa.c"
+		,SRCDIR.."scaleswn.c" -- scalese DLOCAL_SCORE --
+		,SRCDIR.."dropnnw2.c"
+		,SRCDIR.."karlin.c"
+		,SRCDIR.."wm_align.c"
+		,SRCDIR.."c_dispn.c"
+		,SRCDIR.."lib_sel.c"
+		,SRCDIR.."mrandom.c"
+		,SRCDIR.."url_subs.c"
+		,SRCDIR.."pssm_asn_subs.c"
+
+	}
+
+	links { "calcons_sw" }
+
+	defines
+	{
+		"GLSEARCH"
+		,"NORMAL_DIST"
+		--,"LALIGN"
+		--,"LCAL_CONS"
+	}
+
+
+	configuration "linux"
+		files
+		{
+
+			SRCDIR.."comp_lib8.c"
+			,SRCDIR.."compacc2.c"
+			,SRCDIR.."mshowbest.c"
+			,SRCDIR.."build_ares.c"
+			,SRCDIR.."mshowalign2.c"
+			,SRCDIR.."nmgetlib.c"
+			,SRCDIR.."mmgetaa.c"
+			,SRCDIR.."ncbl2_mlib.c"
+		}
+
+		defines
+		{
+			"COMP_MLIB"
+		}
+
+project "lalign36" 
+	language    "C"
+	kind        "ConsoleApp"
+
+	files
+	{
+
+		SRCDIR.."re_getlib.c"
+		,SRCDIR.."htime.c"
+		,SRCDIR.."apam.c"
+		,SRCDIR.."initfa.c"
+		,SRCDIR.."doinit.c"
+		,SRCDIR.."scaleswn.c" -- scalese DLOCAL_SCORE --
+		,SRCDIR.."karlin.c"
+		,SRCDIR.."dropgsw2.c"
+		,SRCDIR.."wm_align.c"
+		,SRCDIR.."cal_cons.c"
+		,SRCDIR.."lsim4.c"
+		,SRCDIR.."c_dispn.c"
+		,SRCDIR.."lib_sel.c"
+		,SRCDIR.."scaleswn.c"
+		,SRCDIR.."mrandom.c"
+		,SRCDIR.."url_subs.c"
+		,SRCDIR.."pssm_asn_subs.c"
+		,SRCDIR.."last_thresh.c"
+
+	}
+
+	defines
+	{
+		"LALIGN"
+		,"LOCAL_SCORE"
+		,"LCAL_CONS"
+	}
+
+
+	configuration "linux"
+		files
+		{
+
+			SRCDIR.."comp_lib8.c"
+			,SRCDIR.."compacc2.c"
+			,SRCDIR.."mshowbest.c"
+			,SRCDIR.."build_ares.c"
+			,SRCDIR.."mshowalign2.c"
+			,SRCDIR.."nmgetlib.c"
+			,SRCDIR.."mmgetaa.c"
+			,SRCDIR.."ncbl2_mlib.c"
+		}
+
+		defines
+		{
+			"COMP_MLIB"
+		}
+
+
+project "map_db" 
+	language    "C"
+	kind        "ConsoleApp"
+
+	files
+	{
+		SRCDIR.."map_db.c"
+	}
+
+	
+project "lav2ps" 
+	language    "C"
+	kind        "ConsoleApp"
+
+	files
+	{
+		SRCDIR.."lav2plt.c"
+		,SRCDIR.."lavplt_ps.c"
+	}
+
+	defines
+	{
+		"UNIX"
+	}
+
+project "lav2svg" 
+	language    "C"
+	kind        "ConsoleApp"
+
+	files
+	{
+		SRCDIR.."lav2plt.c"
+		,SRCDIR.."lavplt_svg.c"
+	}
+
+	defines
+	{
+		"UNIX"
+	}
+
+ 
+
+ 
+--lav2ps : lav2plt.o lavplt_ps.o	-DUNIX 
+--
+--lav2svg : lav2plt.o lavplt_svg.o -DUNIX 
+--
+
+
+
+
+
+--lalign36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(LSHOWALIGN).o htime.o apam.o doinit.o init_lal.o scale_se.o karlin.o last_thresh.o $(DROPLAL_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o
+--	$(CC) $(HFLAGS) $(BIN)/lalign36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(LSHOWALIGN).o htime.o apam.o doinit.o init_lal.o $(DROPLAL_O) scale_se.o karlin.o last_thresh.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o $(LIB_M)
+--
+	
+--ggsearch36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o scale_sn.o karlin.o $(DROPGNW_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o
+--	$(CC) $(HFLAGS) $(BIN)/ggsearch36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o $(DROPGNW_O) scale_sn.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o $(LIB_M)
+--
+
+
+--glsearch36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o scale_sn.o karlin.o $(DROPLNW_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o
+--	$(CC) $(HFLAGS) $(BIN)/glsearch36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o $(DROPLNW_O) scale_sn.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o $(LIB_M)
+--
+
+--ssearch36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o scale_se.o karlin.o $(DROPGSW_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o
+--	$(CC) $(HFLAGS) $(BIN)/ssearch36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o $(DROPGSW_O) scale_se.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o $(LIB_M)
+--
+
+
+
+
+
+
+
+--fasta36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_fa.o scale_se.o karlin.o $(DROPNFA_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o mrandom.o url_subs.o
+--	$(CC) $(HFLAGS) $(BIN)/fasta36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_fa.o $(DROPNFA_O) scale_se.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o $(LIB_M)
+--
 
 --fasta36_t : $(COMP_THRO) $(WORK_THRO) $(THR_SUBS).o $(COMPACC_TO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_T).o htime.o apam.o doinit.o init_fa.o scale_se.o karlin.o $(DROPNFA_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o
 --	$(CC) $(HFLAGS) $(BIN)/fasta36_t $(COMP_THRO) $(WORK_THRO) $(THR_SUBS).o $(COMPACC_TO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_T).o htime.o apam.o doinit.o init_fa.o $(DROPNFA_O) scale_se.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o $(LIB_M) $(THR_LIBS)
@@ -681,26 +1059,14 @@ project "tfastm36"
 
 
 
-
---ssearch36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o scale_se.o karlin.o $(DROPGSW_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o
---	$(CC) $(HFLAGS) $(BIN)/ssearch36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o $(DROPGSW_O) scale_se.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o $(LIB_M)
---
 --# do not use accelerated Smith-Waterman
 --ssearch36s : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o scale_se.o karlin.o $(DROPGSW_NA_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o
 --	$(CC) $(HFLAGS) $(BIN)/ssearch36s $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o $(DROPGSW_NA_O) scale_se.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o $(LIB_M)
 --
---lalign36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(LSHOWALIGN).o htime.o apam.o doinit.o init_lal.o scale_se.o karlin.o last_thresh.o $(DROPLAL_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o
---	$(CC) $(HFLAGS) $(BIN)/lalign36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(LSHOWALIGN).o htime.o apam.o doinit.o init_lal.o $(DROPLAL_O) scale_se.o karlin.o last_thresh.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o $(LIB_M)
---
 --osearch36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_ssw.o scale_se.o karlin.o $(DROPNSW_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o
 --	$(CC) $(HFLAGS) $(BIN)/osearch36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_ssw.o $(DROPNSW_O) scale_se.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o $(LIB_M)
 --
---glsearch36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o scale_sn.o karlin.o $(DROPLNW_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o
---	$(CC) $(HFLAGS) $(BIN)/glsearch36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o $(DROPLNW_O) scale_sn.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o $(LIB_M)
---
---ggsearch36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o scale_sn.o karlin.o $(DROPGNW_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o
---	$(CC) $(HFLAGS) $(BIN)/ggsearch36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o $(DROPGNW_O) scale_sn.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o url_subs.o mrandom.o pssm_asn_subs.o $(LIB_M)
---
+
 --prss36 : ssearch36
 --	ln -sf ssearch36 prss36
 --
@@ -761,23 +1127,9 @@ project "tfastm36"
 --	$(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_fx.o drop_fx.o scale_se.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o faatran.o url_subs.o mrandom.o $(LIB_M)
 --
 
---fasts36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_fs.o scaleswts.o last_tat.o tatstats_fs.o karlin.o $(DROPFS_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o mrandom.o url_subs.o
---	$(CC) $(HFLAGS) $(BIN)/fasts36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_fs.o $(DROPFS_O) scaleswts.o last_tat.o tatstats_fs.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o mrandom.o url_subs.o $(LIB_M)
 
---tfasts36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_tfs.o scaleswts.o tatstats_fs.o last_tat.o karlin.o $(DROPTFS_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o faatran.o mrandom.o url_subs.o
---	$(CC) $(HFLAGS) $(BIN)/tfasts36 $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_tfs.o $(DROPTFS_O) scaleswts.o tatstats_fs.o last_tat.o karlin.o $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o faatran.o mrandom.o url_subs.o $(LIB_M)
---
-
-
-
---
---lav2ps : lav2plt.o lavplt_ps.o	-DUNIX 
---
---lav2svg : lav2plt.o lavplt_svg.o -DUNIX 
---
 --print_pssm : print_pssm.c getseq.c karlin.c apam.c $(LIB_M)
 --
---map_db : map_db.c 
 --
 --list_db : list_db.c
 --
