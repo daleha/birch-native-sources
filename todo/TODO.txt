@@ -1,11 +1,10 @@
 Need sources for:
 
--mrtrans 
--DIALIGN 
--cap3 
+-mrtrans (can't find)
+-weblogo (isn't C )
+-cap3 (can't get source, but binaries available for some platforms at http://seq.cs.iastate.edu/cap3.html )
 -mapmaker3 
 -primer3
--weblogo 
 
 Need further testing of:
 
@@ -14,14 +13,13 @@ Need further testing of:
 -xylem
 -fsap
 -mrbayes
-
-Not much to do:
 -weighbor
+
+to build:
+-ncbi (legacy, but i've also found ncbi+ sources as well at ftp://ftp.ncbi.nih.gov/toolbox/ )
+-DIALIGN 
 
 Probably lots of work:
 
--tcoffee 
-
-Need to test builds of:
-
+-tcoffee  (perl modules, etc)
 -emboss (uses automake?)

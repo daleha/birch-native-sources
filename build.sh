@@ -38,6 +38,13 @@ cd build
 "$MAKE" "$MAKEOPTS"
 cd $ROOTDIR
 
+cd dialign
+"$PREMAKE" gmake
+cd build
+"$MAKE" clean
+"$MAKE" "$MAKEOPTS"
+cd $ROOTDIR
+
 
 
 echo "Copying binaries..."
