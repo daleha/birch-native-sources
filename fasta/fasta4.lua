@@ -48,9 +48,6 @@ INCDIR=PROJDIR.."include/"
 			,"z"
 		}
 
-		location "build"
-		targetdir "bin_pre" -- and the bins into bin
-
 		--dofile "./phylip4_lib.lua"
 
 	configuration "linux"
