@@ -11,12 +11,11 @@ Need further testing of:
 
 -phylip
 -FASTA
-
-Not much to do:
--p2c
 -xylem
 -fsap
 -mrbayes
+
+Not much to do:
 -weighbor
 
 Probably lots of work:

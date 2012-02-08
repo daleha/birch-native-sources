@@ -1,11 +1,13 @@
 #!/bin/bash
 
+
+# usage: build.sh [premake path] [ make path ] [cc type ]
 rm -rf bin
 mkdir bin
 
-MAKE="make" # for solaris, set this to gmake
-MAKEOPTS="" # for solaris, set this to CC=gcc
-PREMAKE=`which premake4`
+PREMAKE=$1
+MAKE=$2 # for solaris, set this to gmake
+MAKEOPTS="CC=$3" # for solaris, set this to CC=gcc
 ROOTDIR=`pwd`
 
 cd phylip
@@ -23,6 +25,13 @@ cd build
 cd $ROOTDIR
 
 cd xylem
+"$PREMAKE" gmake
+cd build
+"$MAKE" clean
+"$MAKE" "$MAKEOPTS"
+cd $ROOTDIR
+
+cd mrbayes
 "$PREMAKE" gmake
 cd build
 "$MAKE" clean
