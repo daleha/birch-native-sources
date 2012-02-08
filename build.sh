@@ -22,13 +22,14 @@ cd build
 "$MAKE" "$MAKEOPTS"
 cd $ROOTDIR
 
-
-cd fsap
+cd xylem
 "$PREMAKE" gmake
 cd build
 "$MAKE" clean
 "$MAKE" "$MAKEOPTS"
 cd $ROOTDIR
+
+
 
 echo "Copying binaries..."
 cp */bin/* bin

@@ -1,6 +1,6 @@
 
 
-PROJDIR=ROOTDIR.."fsap/"
+PROJDIR=ROOTDIR.."xylem/"
 SRCDIR=PROJDIR.."source/"
 INCDIR=PROJDIR.."include/"
 
@@ -21,7 +21,9 @@ INCDIR=PROJDIR.."include/"
 			"m"
 		}	
 		
-		
+		location "build"	
+		targetdir "bin"
+
 	project "p2c" 
 		language    "C"
 		kind        "StaticLib"
@@ -33,7 +35,7 @@ INCDIR=PROJDIR.."include/"
 
 
 
-	project "bachrest" 
+	project "dbstat" 
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -41,11 +43,13 @@ INCDIR=PROJDIR.."include/"
 		files
 		{
 
-			SRCDIR.."bachrest.c" 
+			SRCDIR.."dbstat.c" 
 
 		}
 
-	project "d3hom" 
+
+
+	project "getloc" 
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -53,12 +57,12 @@ INCDIR=PROJDIR.."include/"
 		files
 		{
 
-			SRCDIR.."d3hom.c" 
+			SRCDIR.."getloc.c" 
 
 		}
 
 
-	project "d4hom" 
+	project "getob" 
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -66,12 +70,12 @@ INCDIR=PROJDIR.."include/"
 		files
 		{
 
-			SRCDIR.."d4hom.c" 
+			SRCDIR.."getob.c" 
 
 		}
 
 
-	project "multidigest"
+	project "identify"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -79,12 +83,12 @@ INCDIR=PROJDIR.."include/"
 		files
 		{
 
-			SRCDIR.."multidigest.c" 
+			SRCDIR.."identify.c" 
 
 		}
 
 
-	project "funnel"
+	project "prot2nuc"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -92,12 +96,12 @@ INCDIR=PROJDIR.."include/"
 		files
 		{
 
-			SRCDIR.."funnel.c" 
+			SRCDIR.."prot2nuc.c" 
 
 		}
 
 
-	project "gel"
+	project "reform"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -105,12 +109,12 @@ INCDIR=PROJDIR.."include/"
 		files
 		{
 
-			SRCDIR.."gel.c" 
+			SRCDIR.."reform.c" 
 
 		}
 
 
-	project "intrest"
+	project "ribosome"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -118,12 +122,12 @@ INCDIR=PROJDIR.."include/"
 		files
 		{
 
-			SRCDIR.."intrest.c" 
+			SRCDIR.."ribosome.c" 
 
 		}
 
 
-	project "numseq"
+	project "splitdb"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -131,11 +135,12 @@ INCDIR=PROJDIR.."include/"
 		files
 		{
 
-			SRCDIR.."numseq.c" 
+			SRCDIR.."splitdb.c" 
 
 		}
 
-	project "p1hom"
+
+	project "shuffle"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -143,12 +148,12 @@ INCDIR=PROJDIR.."include/"
 		files
 		{
 
-			SRCDIR.."p1hom.c" 
+			SRCDIR.."shuffle.c" 
 
 		}
 
 
-	project "p2hom"
+	project "flat2phyl"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -156,12 +161,12 @@ INCDIR=PROJDIR.."include/"
 		files
 		{
 
-			SRCDIR.."p2hom.c" 
+			SRCDIR.."flat2phyl.c" 
 
 		}
 
 
-	project "prostat"
+	project "phyl2flat"
 		language    "C"
 		kind        "ConsoleApp"
 
@@ -169,22 +174,10 @@ INCDIR=PROJDIR.."include/"
 		files
 		{
 
-			SRCDIR.."prostat.c" 
+			SRCDIR.."phyl2flat.c" 
 
 		}
 
-
-	project "testcode"
-		language    "C"
-		kind        "ConsoleApp"
-
-		links { "p2c" }
-		files
-		{
-
-			SRCDIR.."testcode.c" 
-
-		}
 
 
 
