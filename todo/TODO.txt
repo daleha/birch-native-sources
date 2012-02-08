@@ -1,10 +1,14 @@
+Add version numbers to all sources that i've aquired
 Need sources for:
 
 -mrtrans (can't find)
+-mapmaker3 (can't find )
 -weblogo (isn't C )
 -cap3 (can't get source, but binaries available for some platforms at http://seq.cs.iastate.edu/cap3.html )
--mapmaker3 
--primer3
+
+to build:
+-ncbi (legacy, but i've also found ncbi+ sources as well at ftp://ftp.ncbi.nih.gov/toolbox/ )
+
 
 Need further testing of:
 
@@ -14,10 +18,8 @@ Need further testing of:
 -fsap
 -mrbayes
 -weighbor
-
-to build:
--ncbi (legacy, but i've also found ncbi+ sources as well at ftp://ftp.ncbi.nih.gov/toolbox/ )
 -DIALIGN 
+-primer3
 
 Probably lots of work:
 
