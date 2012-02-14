@@ -24,7 +24,13 @@ INCDIR=PROJDIR.."include/"
 		{ 
 			"m"
 		}	
+	
+	configuration "windows"
 		
+		defines
+		{
+			"__MINGW__"
+		}	
 	
 
 	project "dialigntx" 

@@ -5,7 +5,8 @@
  * 2004-08-30  Dorothea Emig Volker Menrad
  *             
  */
-
+#ifndef __IO_H__
+#define __IO_H__
     /************************************************/
     /*                                              */
     /*                  structs                     */
@@ -45,3 +46,4 @@ void print_pdist_matrix(struct prob_dist *sdist,char *filename);
 void error(char *message);
 void merror(char *msg1, char *msg2);
 char* build_pathname(char *dir, char *file);
+#endif

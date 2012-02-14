@@ -9,6 +9,12 @@
 #include "struct.h"
 #include "parameters.h"
 
+
+#ifdef __MINGW__
+#define random rand
+#define srandom srand
+#endif
+
 extern void error(char *message);
 extern void merror(char *msg1, char *msg2);
 

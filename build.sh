@@ -47,7 +47,7 @@ cd ../..
 
 echo "******* Building dialign *******"
 
-cd dialign
+cd dialigntx
 "$PREMAKE" gmake
 cd build
 "$MAKE" clean
