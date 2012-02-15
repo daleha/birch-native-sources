@@ -19,13 +19,13 @@ cd build
 "$MAKE" "$MAKEOPTS"
 cd ../..
 
-#echo "******* Building fasta *******"
-#cd fasta
-#"$PREMAKE" gmake
-#cd build
-#"$MAKE" clean
-#"$MAKE" "$MAKEOPTS"
-#cd ../..
+echo "******* Building fasta *******"
+cd fasta
+"$PREMAKE" gmake
+cd build
+"$MAKE" clean
+"$MAKE" "$MAKEOPTS"
+cd ../..
 
 echo "******* Building xylem *******"
 
