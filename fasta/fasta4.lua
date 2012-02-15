@@ -17,20 +17,16 @@ INCDIR=PROJDIR.."include/"
 		{
 			"SHOW_HELP" 
 			,"SHOWSIM" 
-			,"UNIX" 
-			,"TIMES" 
 			,"HZ=100" 
 			,"MAX_WORKERS=4"
 			,"THR_EXIT=pthread_exit" 
 			,"PROGRESS" 
 			,"FASTA_HOST='\"your_fasta_host_here\"'" 
-			,"USE_MMAP" 
 			,"_REENTRANT" 
 			,"HAS_INTTYPES" 
 			,"_LARGEFILE_SOURCE" 
 			,"_LARGEFILE64_SOURCE" 
 			,"_FILE_OFFSET_BITS=64" 
-			,"USE_FSEEKO"
 			,"SAMP_STATS"
 			,"PGM_DOC" 
 			,"BIG_LIB64"
@@ -49,6 +45,29 @@ INCDIR=PROJDIR.."include/"
 		}
 
 		--dofile "./phylip4_lib.lua"
+
+	configuration "not windows"
+		defines
+		{
+			"UNIX" 
+			,"TIMES" 
+			,"USE_MMAP" 
+			,"USE_FSEEKO"
+
+		}
+
+	configuration "windows"
+		defines
+		{
+			"WIN32"
+		}
+
+		libdirs
+		{
+			"/usr/local/lib"
+		}
+
+
 
 	configuration "linux"
 
@@ -144,35 +163,44 @@ project "fasta36"
 		,SRCDIR.."url_subs.c"
 		,SRCDIR.."pssm_asn_subs.c"
 
+		,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."dropnfa.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
+
 	}
 
 	defines
 	{
 		"FASTA"
 		,"LOCAL_SCORE"
+		,"COMP_MLIB"
 		--,"LALIGN"
 		--,"LCAL_CONS"
 	}
 
 
-	configuration "linux"
+	configuration "not windows"
 		files
 		{
-
-			SRCDIR.."comp_lib8.c"
-			,SRCDIR.."compacc2.c"
-			,SRCDIR.."mshowbest.c"
-			,SRCDIR.."build_ares.c"
-			,SRCDIR.."mshowalign2.c"
-			,SRCDIR.."dropnfa.c"
-			,SRCDIR.."nmgetlib.c"
-			,SRCDIR.."mmgetaa.c"
-			,SRCDIR.."ncbl2_mlib.c"
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
 		}
 
 		defines
 		{
-			"COMP_MLIB"
+		}
+
+	configuration "windows"
+
+		files
+		{
+			SRCDIR.."getopt.c"
 		}
 
 	 
