@@ -64,7 +64,7 @@ INCDIR=PROJDIR.."include/"
 
 		libdirs
 		{
-			"/usr/local/lib"
+			"/usr/local/lib" -- used for zlib, which must be build separately
 		}
 
 
@@ -225,6 +225,15 @@ project "fastx36"
                ,SRCDIR.."url_subs.c"
                ,SRCDIR.."pssm_asn_subs.c"
                ,SRCDIR.."faatran.c"
+        ,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
+
 
        }
 
@@ -232,29 +241,28 @@ project "fastx36"
        {
                "FASTX"
                ,"LOCAL_SCORE"
+               ,"COMP_MLIB"
                --,"LALIGN"
                --,"LCAL_CONS"
        }
 
 
-       configuration "linux"
-               files
-               {
+	configuration "not windows"
+		files
+		{
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
+		}
 
-                       SRCDIR.."comp_lib8.c"
-                       ,SRCDIR.."compacc2.c"
-                       ,SRCDIR.."mshowbest.c"
-                       ,SRCDIR.."build_ares.c"
-                       ,SRCDIR.."mshowalign2.c"
-                       ,SRCDIR.."nmgetlib.c"
-                       ,SRCDIR.."mmgetaa.c"
-                       ,SRCDIR.."ncbl2_mlib.c"
-               }
 
-               defines
-               {
-                       "COMP_MLIB"
-               }
+	configuration "windows"
+
+		files
+		{
+			SRCDIR.."getopt.c"
+		}
+
+
 
         
 
@@ -286,6 +294,14 @@ project "fasty36"
 		,SRCDIR.."url_subs.c"
 		,SRCDIR.."pssm_asn_subs.c"
 		,SRCDIR.."faatran.c"
+,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
 
 	}
 
@@ -293,29 +309,29 @@ project "fasty36"
 	{
 		"FASTY"
 		,"LOCAL_SCORE"
+        ,"COMP_MLIB"
 		--,"LALIGN"
 		--,"LCAL_CONS"
 	}
 
 
-	configuration "linux"
+	configuration "not windows"
 		files
 		{
-
-			SRCDIR.."comp_lib8.c"
-			,SRCDIR.."compacc2.c"
-			,SRCDIR.."mshowbest.c"
-			,SRCDIR.."build_ares.c"
-			,SRCDIR.."mshowalign2.c"
-			,SRCDIR.."nmgetlib.c"
-			,SRCDIR.."mmgetaa.c"
-			,SRCDIR.."ncbl2_mlib.c"
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
 		}
 
-		defines
+
+	configuration "windows"
+
+		files
 		{
-			"COMP_MLIB"
+			SRCDIR.."getopt.c"
 		}
+
+
+
 
 
 project "scaleswts"	 
@@ -351,6 +367,14 @@ project "fastf36"
 		,SRCDIR.."mrandom.c"
 		,SRCDIR.."url_subs.c"
 		,SRCDIR.."pssm_asn_subs.c"
+,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
 
 	}
 	links {"scaleswts" }
@@ -358,29 +382,29 @@ project "fastf36"
 	defines
 	{
 		"FASTF"
+        ,"COMP_MLIB"
 		--,"LALIGN"
 		--,"LCAL_CONS"
 	}
 
 
-	configuration "linux"
+
+	configuration "not windows"
 		files
 		{
-
-			SRCDIR.."comp_lib8.c"
-			,SRCDIR.."compacc2.c"
-			,SRCDIR.."mshowbest.c"
-			,SRCDIR.."build_ares.c"
-			,SRCDIR.."mshowalign2.c"
-			,SRCDIR.."nmgetlib.c"
-			,SRCDIR.."mmgetaa.c"
-			,SRCDIR.."ncbl2_mlib.c"
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
 		}
 
-		defines
+
+	configuration "windows"
+
+		files
 		{
-			"COMP_MLIB"
+			SRCDIR.."getopt.c"
 		}
+
+
 
 	
 project "fasts36" 
@@ -406,6 +430,14 @@ project "fasts36"
 		,SRCDIR.."mrandom.c"
 		,SRCDIR.."url_subs.c"
 		,SRCDIR.."pssm_asn_subs.c"
+,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
 
 	}
 	links {"scaleswts" }
@@ -413,29 +445,26 @@ project "fasts36"
 	defines
 	{
 		"FASTS"
+        ,"COMP_MLIB"
 		--,"LALIGN"
 		--,"LCAL_CONS"
 	}
 
-
-	configuration "linux"
+	configuration "not windows"
 		files
 		{
-
-			SRCDIR.."comp_lib8.c"
-			,SRCDIR.."compacc2.c"
-			,SRCDIR.."mshowbest.c"
-			,SRCDIR.."build_ares.c"
-			,SRCDIR.."mshowalign2.c"
-			,SRCDIR.."nmgetlib.c"
-			,SRCDIR.."mmgetaa.c"
-			,SRCDIR.."ncbl2_mlib.c"
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
 		}
 
-		defines
+
+	configuration "windows"
+
+		files
 		{
-			"COMP_MLIB"
+			SRCDIR.."getopt.c"
 		}
+
 
 	
 project "fastm36" 
@@ -461,6 +490,14 @@ project "fastm36"
 		,SRCDIR.."mrandom.c"
 		,SRCDIR.."url_subs.c"
 		,SRCDIR.."pssm_asn_subs.c"
+,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
 
 	}
 	links {"scaleswts" }
@@ -468,29 +505,26 @@ project "fastm36"
 	defines
 	{
 		"FASTM"
+        ,"COMP_MLIB"
 		--,"LALIGN"
 		--,"LCAL_CONS"
 	}
 
-
-	configuration "linux"
+	configuration "not windows"
 		files
 		{
-
-			SRCDIR.."comp_lib8.c"
-			,SRCDIR.."compacc2.c"
-			,SRCDIR.."mshowbest.c"
-			,SRCDIR.."build_ares.c"
-			,SRCDIR.."mshowalign2.c"
-			,SRCDIR.."nmgetlib.c"
-			,SRCDIR.."mmgetaa.c"
-			,SRCDIR.."ncbl2_mlib.c"
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
 		}
 
-		defines
+
+	configuration "windows"
+
+		files
 		{
-			"COMP_MLIB"
+			SRCDIR.."getopt.c"
 		}
+
 
 project "tfastx36" 
 	language    "C"
@@ -513,6 +547,14 @@ project "tfastx36"
 		,SRCDIR.."url_subs.c"
 		,SRCDIR.."pssm_asn_subs.c"
 		,SRCDIR.."faatran.c"
+,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
 
 	}
 
@@ -521,30 +563,25 @@ project "tfastx36"
 		"FASTX"
 		,"TFAST"
 		,"LOCAL_SCORE"
+        ,"COMP_MLIB"
 		--,"LALIGN"
 		--,"LCAL_CONS"
 	}
 
-
-	configuration "linux"
+	configuration "not windows"
 		files
 		{
-
-			SRCDIR.."comp_lib8.c"
-			,SRCDIR.."compacc2.c"
-			,SRCDIR.."mshowbest.c"
-			,SRCDIR.."build_ares.c"
-			,SRCDIR.."mshowalign2.c"
-			,SRCDIR.."nmgetlib.c"
-			,SRCDIR.."mmgetaa.c"
-			,SRCDIR.."ncbl2_mlib.c"
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
 		}
 
-		defines
+
+	configuration "windows"
+
+		files
 		{
-			"COMP_MLIB"
+			SRCDIR.."getopt.c"
 		}
-
 	
 project "tfasts36" 
 	language    "C"
@@ -570,6 +607,14 @@ project "tfasts36"
 		,SRCDIR.."url_subs.c"
 		,SRCDIR.."faatran.c"
 		,SRCDIR.."pssm_asn_subs.c"
+,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
 
 	}
 	links {"scaleswts" }
@@ -578,28 +623,25 @@ project "tfasts36"
 	{
 		"FASTS"
 		,"TFAST"
+        ,"COMP_MLIB"
 		--,"LALIGN"
 		--,"LCAL_CONS"
 	}
 
 
-	configuration "linux"
+	configuration "not windows"
 		files
 		{
-
-			SRCDIR.."comp_lib8.c"
-			,SRCDIR.."compacc2.c"
-			,SRCDIR.."mshowbest.c"
-			,SRCDIR.."build_ares.c"
-			,SRCDIR.."mshowalign2.c"
-			,SRCDIR.."nmgetlib.c"
-			,SRCDIR.."mmgetaa.c"
-			,SRCDIR.."ncbl2_mlib.c"
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
 		}
 
-		defines
+
+	configuration "windows"
+
+		files
 		{
-			"COMP_MLIB"
+			SRCDIR.."getopt.c"
 		}
 
 --tfasts36 : $(COMP_LIBO) $(COMPACC_SO) $(SHOWBESTO) re_getlib.o $(SHOWALIGN_S).o htime.o apam.o doinit.o init_tfs.o scaleswts.o tatstats_fs.o last_tat.o karlin.o $(DROPTFS_O) $(LGETLIB) c_dispn.o $(NCBL_LIB) lib_sel.o faatran.o mrandom.o url_subs.o
@@ -633,6 +675,14 @@ project "tfasty36"
 		,SRCDIR.."url_subs.c"
 		,SRCDIR.."pssm_asn_subs.c"
 		,SRCDIR.."faatran.c"
+,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
 
 	}
 
@@ -641,29 +691,26 @@ project "tfasty36"
 		"FASTY"
 		,"TFAST"
 		,"LOCAL_SCORE"
+        ,"COMP_MLIB"
 		--,"LALIGN"
 		--,"LCAL_CONS"
 	}
 
-
-	configuration "linux"
+	configuration "not windows"
 		files
 		{
-
-			SRCDIR.."comp_lib8.c"
-			,SRCDIR.."compacc2.c"
-			,SRCDIR.."mshowbest.c"
-			,SRCDIR.."build_ares.c"
-			,SRCDIR.."mshowalign2.c"
-			,SRCDIR.."nmgetlib.c"
-			,SRCDIR.."mmgetaa.c"
-			,SRCDIR.."ncbl2_mlib.c"
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
 		}
 
-		defines
+
+	configuration "windows"
+
+		files
 		{
-			"COMP_MLIB"
+			SRCDIR.."getopt.c"
 		}
+
 
 
 project "tfastf36" 
@@ -691,6 +738,14 @@ project "tfastf36"
 		,SRCDIR.."url_subs.c"
 		,SRCDIR.."pssm_asn_subs.c"
 		,SRCDIR.."faatran.c"
+,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
 
 	}
 
@@ -698,29 +753,27 @@ project "tfastf36"
 	{
 		"FASTF"
 		,"TFAST"
+        ,"COMP_MLIB"
 		--,"LALIGN"
 		--,"LCAL_CONS"
 	}
 
-
-	configuration "linux"
+	configuration "not windows"
 		files
 		{
-
-			SRCDIR.."comp_lib8.c"
-			,SRCDIR.."compacc2.c"
-			,SRCDIR.."mshowbest.c"
-			,SRCDIR.."build_ares.c"
-			,SRCDIR.."mshowalign2.c"
-			,SRCDIR.."nmgetlib.c"
-			,SRCDIR.."mmgetaa.c"
-			,SRCDIR.."ncbl2_mlib.c"
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
 		}
 
-		defines
+
+	configuration "windows"
+
+		files
 		{
-			"COMP_MLIB"
+			SRCDIR.."getopt.c"
 		}
+
+
 	
 project "tfastm36" 
 	language    "C"
@@ -746,6 +799,14 @@ project "tfastm36"
 		,SRCDIR.."url_subs.c"
 		,SRCDIR.."pssm_asn_subs.c"
 		,SRCDIR.."faatran.c"
+,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
 
 	}
 	links {"scaleswts" }
@@ -754,29 +815,26 @@ project "tfastm36"
 	{
 		"FASTM"
 		,"TFAST"
+        ,"COMP_MLIB"
 		--,"LALIGN"
 		--,"LCAL_CONS"
 	}
 
-
-	configuration "linux"
+	configuration "not windows"
 		files
 		{
-
-			SRCDIR.."comp_lib8.c"
-			,SRCDIR.."compacc2.c"
-			,SRCDIR.."mshowbest.c"
-			,SRCDIR.."build_ares.c"
-			,SRCDIR.."mshowalign2.c"
-			,SRCDIR.."nmgetlib.c"
-			,SRCDIR.."mmgetaa.c"
-			,SRCDIR.."ncbl2_mlib.c"
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
 		}
 
-		defines
+
+	configuration "windows"
+
+		files
 		{
-			"COMP_MLIB"
+			SRCDIR.."getopt.c"
 		}
+
 
 project "calcons_sw" 
 	language    "C"
@@ -812,6 +870,14 @@ project "ssearch36"
 		,SRCDIR.."mrandom.c"
 		,SRCDIR.."url_subs.c"
 		,SRCDIR.."pssm_asn_subs.c"
+,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
 
 	}
 
@@ -819,30 +885,28 @@ project "ssearch36"
 	{
 		"SSEARCH"
 		,"LOCAL_SCORE"
+        ,"COMP_MLIB"
 		--,"LALIGN"
 		--,"LCAL_CONS"
 	}
 	
 	links { "calcons_sw" }
 
-	configuration "linux"
+	configuration "not windows"
 		files
 		{
-
-			SRCDIR.."comp_lib8.c"
-			,SRCDIR.."compacc2.c"
-			,SRCDIR.."mshowbest.c"
-			,SRCDIR.."build_ares.c"
-			,SRCDIR.."mshowalign2.c"
-			,SRCDIR.."nmgetlib.c"
-			,SRCDIR.."mmgetaa.c"
-			,SRCDIR.."ncbl2_mlib.c"
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
 		}
 
-		defines
+
+	configuration "windows"
+
+		files
 		{
-			"COMP_MLIB"
+			SRCDIR.."getopt.c"
 		}
+
  	 
 project "glsearch36" 
 	language    "C"
@@ -866,6 +930,14 @@ project "glsearch36"
 		,SRCDIR.."mrandom.c"
 		,SRCDIR.."url_subs.c"
 		,SRCDIR.."pssm_asn_subs.c"
+,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
 
 	}
 
@@ -875,28 +947,24 @@ project "glsearch36"
 	{
 		"GLSEARCH"
 		,"NORMAL_DIST"
+        ,"COMP_MLIB"
 		--,"LALIGN"
 		--,"LCAL_CONS"
 	}
 
-
-	configuration "linux"
+	configuration "not windows"
 		files
 		{
-
-			SRCDIR.."comp_lib8.c"
-			,SRCDIR.."compacc2.c"
-			,SRCDIR.."mshowbest.c"
-			,SRCDIR.."build_ares.c"
-			,SRCDIR.."mshowalign2.c"
-			,SRCDIR.."nmgetlib.c"
-			,SRCDIR.."mmgetaa.c"
-			,SRCDIR.."ncbl2_mlib.c"
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
 		}
 
-		defines
+
+	configuration "windows"
+
+		files
 		{
-			"COMP_MLIB"
+			SRCDIR.."getopt.c"
 		}
 
 project "lalign36" 
@@ -924,6 +992,14 @@ project "lalign36"
 		,SRCDIR.."url_subs.c"
 		,SRCDIR.."pssm_asn_subs.c"
 		,SRCDIR.."last_thresh.c"
+,SRCDIR.."comp_lib8.c"
+		,SRCDIR.."compacc2.c"
+		,SRCDIR.."mshowbest.c"
+		,SRCDIR.."build_ares.c"
+		,SRCDIR.."mshowalign2.c"
+		,SRCDIR.."nmgetlib.c"
+		,SRCDIR.."ncbl2_mlib.c"
+
 
 	}
 
@@ -932,27 +1008,25 @@ project "lalign36"
 		"LALIGN"
 		,"LOCAL_SCORE"
 		,"LCAL_CONS"
+        ,"COMP_MLIB"
 	}
 
-
-	configuration "linux"
+	configuration "not windows"
 		files
 		{
-
-			SRCDIR.."comp_lib8.c"
-			,SRCDIR.."compacc2.c"
-			,SRCDIR.."mshowbest.c"
-			,SRCDIR.."build_ares.c"
-			,SRCDIR.."mshowalign2.c"
-			,SRCDIR.."nmgetlib.c"
-			,SRCDIR.."mmgetaa.c"
-			,SRCDIR.."ncbl2_mlib.c"
+			SRCDIR.."mmgetaa.c"
+			,SRCDIR.."getseq.c"
 		}
 
-		defines
+
+	configuration "windows"
+
+		files
 		{
-			"COMP_MLIB"
+			SRCDIR.."getopt.c"
 		}
+
+
 
 
 project "map_db" 
@@ -975,11 +1049,6 @@ project "lav2ps"
 		,SRCDIR.."lavplt_ps.c"
 	}
 
-	defines
-	{
-		"UNIX"
-	}
-
 project "lav2svg" 
 	language    "C"
 	kind        "ConsoleApp"
@@ -990,12 +1059,7 @@ project "lav2svg"
 		,SRCDIR.."lavplt_svg.c"
 	}
 
-	defines
-	{
-		"UNIX"
-	}
-
- 
+	 
 
  
 --lav2ps : lav2plt.o lavplt_ps.o	-DUNIX 
